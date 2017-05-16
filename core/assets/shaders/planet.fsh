@@ -11,7 +11,11 @@ void main() {
     float y = 2.0 * (v_texCoord0.y - 0.5);
     float r = sqrt(x*x + y*y);
 
-    float d = r ? asin(r) / r : 0.0;
+    float d = 0.0;
+    if(r != 0.0) {
+        d = asin(r) / r;
+    }
+
     float x2 = d * x;
     float y2 = d * y;
 
@@ -20,5 +24,7 @@ void main() {
 
     if(r <= 1.0) {
         gl_FragColor = texture2D(u_sampler2D, vec2(x3, y3)) * v_color;
+    } else {
+        gl_FragColor = vec4(0, 0, 0, 0);
     }
 }
