@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 
 /**
  * Planet shader code: https://gamedev.stackexchange.com/questions/9346/2d-shader-to-draw-representation-of-rotating-sphere
@@ -16,6 +17,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 public class PlanetGenerator extends ApplicationAdapter {
     public static final int BUFFER_WIDTH = 640;
     public static final int BUFFER_HEIGHT = 360;
+    public static final int CENTER_X = BUFFER_WIDTH / 2;
+    public static final int CENTER_Y = BUFFER_HEIGHT / 2;
 
     private OrthographicCamera gameCamera;
     private OrthographicCamera camera;
@@ -23,7 +26,13 @@ public class PlanetGenerator extends ApplicationAdapter {
     private ShaderProgram planetShader;
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
+
     private Sprite planet;
+
+    private Sprite moon;
+    private float angularVelocity;
+    private float angle;
+    private float radius;
 
     private float time;
     private float speed = 1/10f;
@@ -65,17 +74,31 @@ public class PlanetGenerator extends ApplicationAdapter {
         });
 
         generateRandomPlanet();
+
+        moon = createMoon();
+        moon.setOriginCenter();
+        angularVelocity = 90;
+        radius = 150;
     }
 
     private void generateRandomPlanet() {
         planet = new Sprite(generatePlanetTexture(256));
         planet.setSize(128, 128);
-        planet.setPosition(gameCamera.viewportWidth / 2 - planet.getWidth() / 2, gameCamera.viewportHeight / 2 - planet.getHeight() / 2);
+        planet.setPosition(CENTER_X - planet.getWidth() / 2, CENTER_Y - planet.getHeight() / 2);
     }
 
     @Override
     public void render() {
-        time += Gdx.graphics.getDeltaTime() * speed;
+        float delta = Gdx.graphics.getDeltaTime();
+
+        time += delta * speed;
+
+        angle += (angularVelocity * delta);
+        angle %= 360;
+
+        float x = CENTER_X - moon.getWidth()/2 + radius * MathUtils.cosDeg(angle);
+        float y = CENTER_Y - moon.getHeight()/2;
+        moon.setPosition(x, y);
 
         planetShader.begin();
         planetShader.setUniformf("time", time);
@@ -85,15 +108,33 @@ public class PlanetGenerator extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(37f / 255f, 38f / 255f, 54f / 255f, 1);
 
-        batch.setShader(planetShader);
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
-        planet.draw(batch);
+
+        System.out.println(angle);
+        if(angle <= 180) {
+            drawPlanet();
+            drawMoon();
+        } else {
+            drawMoon();
+            drawPlanet();
+        }
+
         batch.end();
         pixelBuffer.end();
 
         batch.setShader(null);
         pixelBuffer.render(batch, camera);
+    }
+
+    private void drawPlanet() {
+        batch.setShader(planetShader);
+        planet.draw(batch);
+    }
+
+    private void drawMoon() {
+        batch.setShader(null); //TODO: Generate random moon textures?
+        moon.draw(batch);
     }
 
     @Override
@@ -125,5 +166,14 @@ public class PlanetGenerator extends ApplicationAdapter {
         Texture planetTexture = new Texture(pixmap);
         pixmap.dispose();
         return planetTexture;
+    }
+
+    private Sprite createMoon() {
+        Pixmap pixmap = new Pixmap(24, 24, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f));
+        pixmap.fillCircle(pixmap.getWidth()/2, pixmap.getHeight()/2, 11);
+        Sprite sprite = new Sprite(new Texture(pixmap));
+        pixmap.dispose();
+        return sprite;
     }
 }
