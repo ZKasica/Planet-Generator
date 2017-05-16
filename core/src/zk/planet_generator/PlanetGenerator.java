@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 
 /**
@@ -33,6 +34,9 @@ public class PlanetGenerator extends ApplicationAdapter {
     private float angularVelocity;
     private float angle;
     private float radius;
+    private float tilt;
+
+    private Orbiter testOrbiter;
 
     private float time;
     private float speed = 1/10f;
@@ -74,11 +78,7 @@ public class PlanetGenerator extends ApplicationAdapter {
         });
 
         generateRandomPlanet();
-
-        moon = createMoon();
-        moon.setOriginCenter();
-        angularVelocity = 90;
-        radius = 150;
+        testOrbiter = new Orbiter(createMoon(), 15, 10, 75, 250);
     }
 
     private void generateRandomPlanet() {
@@ -90,16 +90,9 @@ public class PlanetGenerator extends ApplicationAdapter {
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
+        testOrbiter.update(delta);
 
-        time += delta * speed;
-
-        angle += (angularVelocity * delta);
-        angle %= 360;
-
-        float x = CENTER_X - moon.getWidth()/2 + radius * MathUtils.cosDeg(angle);
-        float y = CENTER_Y - moon.getHeight()/2;
-        moon.setPosition(x, y);
-
+        time += speed * delta;
         planetShader.begin();
         planetShader.setUniformf("time", time);
         planetShader.end();
@@ -111,8 +104,7 @@ public class PlanetGenerator extends ApplicationAdapter {
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
 
-        System.out.println(angle);
-        if(angle <= 180) {
+        if(testOrbiter.getAngle() <= 180) {
             drawPlanet();
             drawMoon();
         } else {
@@ -134,7 +126,7 @@ public class PlanetGenerator extends ApplicationAdapter {
 
     private void drawMoon() {
         batch.setShader(null); //TODO: Generate random moon textures?
-        moon.draw(batch);
+        testOrbiter.render(batch);
     }
 
     @Override
