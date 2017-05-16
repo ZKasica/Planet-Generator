@@ -105,12 +105,14 @@ public class PlanetGenerator extends ApplicationAdapter {
         float[][] generated = NoiseGenerator.GenerateWhiteNoise(size, size);
         generated = NoiseGenerator.GeneratePerlinNoise(generated, 7);
 
-        Pixmap pixmap = new Pixmap(generated.length - 1, generated.length - 1, Pixmap.Format.RGBA8888);
-        for (int x = 0; x < generated.length - 1; x++) {
-            for (int y = 0; y < generated.length - 1; y++) {
+        Pixmap pixmap = new Pixmap(generated.length, generated.length, Pixmap.Format.RGBA8888);
+        for (int x = 0; x < generated.length; x++) {
+            for (int y = 0; y < generated.length; y++) {
                 double value = generated[x][y];
 
-                if (value < 0.55f) {
+                if(value < 0.40f) {
+                    pixmap.drawPixel(x, y, Color.rgba8888(47f / 255f, 86f / 255f, 118f / 255f, 1f));
+                } else if (value < 0.55f) {
                     pixmap.drawPixel(x, y, Color.rgba8888(62f / 255f, 120f / 255f, 160f / 255f, 1f));
                 } else if (value < 0.57f) {
                     pixmap.drawPixel(x, y, Color.rgba8888(220f / 255f, 235f / 255f, 175f / 255f, 1f));
