@@ -7,21 +7,21 @@ import com.badlogic.gdx.math.MathUtils;
 /**
  * Created by Zach on 5/16/2017.
  */
-public class Orbiter {
-    private Sprite sprite;
+public class Orbiter extends SpaceObject {
     private float angularVelocity;
     private float tilt;
     private float angle;
     private float radius;
 
     public Orbiter(Sprite sprite, float angularVelocity, float tilt, float angle, float radius) {
-        this.sprite = sprite;
+        super(sprite);
         this.angularVelocity = angularVelocity;
         this.tilt = tilt;
         this.angle = angle;
         this.radius = radius;
     }
 
+    @Override
     public void update(float delta) {
         angle += (angularVelocity * delta);
         angle %= 360;
@@ -31,11 +31,9 @@ public class Orbiter {
 
         x = x*MathUtils.cosDeg(tilt) - y*MathUtils.sinDeg(tilt);
         y = x*MathUtils.sinDeg(tilt) + y*MathUtils.cosDeg(tilt);
-        sprite.setPosition(PlanetGenerator.CENTER_X - sprite.getWidth()/2 + x, PlanetGenerator.CENTER_Y - sprite.getHeight()/2 + y);
-    }
+        getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + x, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + y);
 
-    public void render(SpriteBatch batch) {
-        sprite.draw(batch);
+        setZCoord((int) (radius * MathUtils.sinDeg(angle)));
     }
 
     public float getAngularVelocity() {
