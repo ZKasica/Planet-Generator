@@ -30,15 +30,18 @@ public class Orbiter extends SpaceObject {
         angle += (angularVelocity * delta);
         angle %= 360;
 
+        // Start object on the XZ plane
         Vector3 position = new Vector3(radius * MathUtils.cosDeg(angle), 0, radius * MathUtils.sinDeg(angle));
+
+        // Create rotation matrices and rotate objects to their final positions
         Matrix3 rotZ = new Matrix3().setToRotation(zTilt);
         Matrix3 rotX = new Matrix3().setToRotation(Vector3.X, xTilt);
 
         position.mul(rotZ);
         position.mul(rotX);
 
+        // Set sprite position and zCoord for ordering and rendering
         getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + position.x, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + position.y);
-
         setZCoord((int)position.z);
     }
 

@@ -211,10 +211,13 @@ public class PlanetGenerator extends ApplicationAdapter {
                 double value = generated[x][y];
 
                 if(value < 0.40f) {
+                    // Deep ocean
                     pixmap.drawPixel(x, y, Color.rgba8888(47f / 255f, 86f / 255f, 118f / 255f, 1f));
                 } else if (value < 0.55f) {
+                    // Ocean
                     pixmap.drawPixel(x, y, Color.rgba8888(62f / 255f, 120f / 255f, 160f / 255f, 1f));
                 } else {
+                    // Land
                     pixmap.drawPixel(x, y, Color.rgba8888(146f / 255f, 209f / 255f, 135f / 255f, 1f));
                 }
             }
