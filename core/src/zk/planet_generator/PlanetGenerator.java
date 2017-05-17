@@ -32,7 +32,6 @@ public class PlanetGenerator extends ApplicationAdapter {
 
     private Array<Star> stars;
     private Array<SpaceObject> spaceObjects;
-    private Array<Integer> orbiterColors;
 
     @Override
     public void create() {
@@ -62,19 +61,60 @@ public class PlanetGenerator extends ApplicationAdapter {
 
     private void generateObjects() {
         spaceObjects = new Array<SpaceObject>();
-        orbiterColors = new Array<Integer>();
-        orbiterColors.add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f));
-        orbiterColors.add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f));
 
         generateRandomPlanet();
-        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), 50, 35, 86, 250));
-        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), 20, 10, 0, 300));
+
+        Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
+        moonBlueprint.angularVelocity = 50;
+        moonBlueprint.tilt = 35;
+        moonBlueprint.xTilt = -20;
+        moonBlueprint.angle = 86;
+        moonBlueprint.radius = 250;
+        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), moonBlueprint));
+
+        Orbiter.OrbiterBlueprint moonBlueprint2 = new Orbiter.OrbiterBlueprint();
+        moonBlueprint2.angularVelocity = 20;
+        moonBlueprint2.tilt = 10;
+        moonBlueprint2.xTilt = -20;
+        moonBlueprint2.angle = 0;
+        moonBlueprint2.radius = 300;
+        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), moonBlueprint2));
+
+        ColorGroup inner = new ColorGroup()
+                .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
+                .add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f));
 
         for(int i = 0; i < 250; i++) {
+            Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
+            blueprint.angularVelocity = 25;
+            blueprint.tilt = 15;
+            blueprint.xTilt = -20;
+            blueprint.angle = MathUtils.random(0, 360);
+            blueprint.radius = MathUtils.random(80, 120);
+
             if (MathUtils.randomBoolean(0.9f)) {
-                spaceObjects.add(new Orbiter(createMoon(orbiterColors.random(), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
+                spaceObjects.add(new Orbiter(createMoon(inner.random(), MathUtils.random(4, 6)), blueprint));
             } else {
-                spaceObjects.add(new Orbiter(createSquare(orbiterColors.random(), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
+                spaceObjects.add(new Orbiter(createSquare(inner.random(), MathUtils.random(4, 6)), blueprint));
+            }
+        }
+
+        ColorGroup outer = new ColorGroup()
+                .add(Color.rgba8888(191f / 255f, 231f / 255f, 231f / 255f, 1f))
+                .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f));
+
+        for(int i = 0; i < 250; i++) {
+            Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
+            blueprint.angularVelocity = 25;
+            blueprint.tilt = 15;
+            blueprint.xTilt = -20;
+            blueprint.angle = MathUtils.random(0, 360);
+            blueprint.radius = MathUtils.random(130, 155);
+
+            if (MathUtils.randomBoolean(0.9f)) {
+                spaceObjects.add(new Orbiter(createMoon(outer.random(), MathUtils.random(4, 6)), blueprint));
+            } else {
+                spaceObjects.add(new Orbiter(createSquare(outer.random(), MathUtils.random(4, 6)), blueprint));
             }
         }
 
