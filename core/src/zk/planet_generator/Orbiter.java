@@ -11,8 +11,8 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class Orbiter extends SpaceObject {
     private float angularVelocity;
-    private float zTilt;
-    private float xTilt;
+    private float zTilt; // Affects how steep of an angle it orbits at
+    private float xTilt; // Affects how vertical it appears to the viewer
     private float angle;
     private float radius;
 
