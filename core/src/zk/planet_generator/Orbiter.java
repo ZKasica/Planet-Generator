@@ -2,24 +2,27 @@ package zk.planet_generator;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix3;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by Zach on 5/16/2017.
  */
 public class Orbiter extends SpaceObject {
     private float angularVelocity;
-    private float tilt;
+    private float zTilt;
+    private float xTilt;
     private float angle;
     private float radius;
 
-    public Orbiter(Sprite sprite, float angularVelocity, float tilt, float angle, float radius) {
+    public Orbiter(Sprite sprite, OrbiterBlueprint blueprint) {
         super(sprite);
-        this.angularVelocity = angularVelocity;
-        this.tilt = tilt;
-        this.angle = angle;
-        this.radius = radius;
+        this.angularVelocity = blueprint.angularVelocity;
+        this.zTilt = blueprint.tilt;
+        this.xTilt = blueprint.xTilt;
+        this.angle = blueprint.angle;
+        this.radius = blueprint.radius;
 
         sprite.getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
     }
@@ -29,14 +32,16 @@ public class Orbiter extends SpaceObject {
         angle += (angularVelocity * delta);
         angle %= 360;
 
-        float x = radius * MathUtils.cosDeg(angle);
-        float y = 0;
+        Vector3 position = new Vector3(radius * MathUtils.cosDeg(angle), 0, radius * MathUtils.sinDeg(angle));
+        Matrix3 rotZ = new Matrix3().setToRotation(zTilt);
+        Matrix3 rotX = new Matrix3().setToRotation(Vector3.X, xTilt);
 
-        float newX = x*MathUtils.cosDeg(tilt) - y*MathUtils.sinDeg(tilt);
-        float newY = x*MathUtils.sinDeg(tilt) + y*MathUtils.cosDeg(tilt);
-        getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + newX, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + newY);
+        position.mul(rotZ);
+        position.mul(rotX);
 
-        setZCoord((int) (radius * MathUtils.sinDeg(angle)));
+        getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + position.x, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + position.y);
+
+        setZCoord((int)position.z);
     }
 
     public float getAngularVelocity() {
@@ -47,12 +52,12 @@ public class Orbiter extends SpaceObject {
         this.angularVelocity = angularVelocity;
     }
 
-    public float getTilt() {
-        return tilt;
+    public float getZTilt() {
+        return zTilt;
     }
 
-    public void setTilt(float tilt) {
-        this.tilt = tilt;
+    public void setZTilt(float zTilt) {
+        this.zTilt = zTilt;
     }
 
     public float getAngle() {
@@ -69,5 +74,13 @@ public class Orbiter extends SpaceObject {
 
     public void setRadius(float radius) {
         this.radius = radius;
+    }
+
+    public static class OrbiterBlueprint {
+        public float angularVelocity;
+        public float tilt;
+        public float xTilt;
+        public float angle;
+        public float radius;
     }
 }
