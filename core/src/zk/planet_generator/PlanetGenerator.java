@@ -86,7 +86,7 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         for(int i = 0; i < 250; i++) {
             Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
-            blueprint.angularVelocity = 25;
+            blueprint.angularVelocity = 35;
             blueprint.tilt = 15;
             blueprint.xTilt = -20;
             blueprint.angle = MathUtils.random(0, 360);
@@ -95,7 +95,7 @@ public class PlanetGenerator extends ApplicationAdapter {
             if (MathUtils.randomBoolean(0.9f)) {
                 spaceObjects.add(new Orbiter(createMoon(inner.random(), MathUtils.random(4, 6)), blueprint));
             } else {
-                spaceObjects.add(new Orbiter(createSquare(inner.random(), MathUtils.random(4, 6)), blueprint));
+                spaceObjects.add(new Orbiter(createSquare(inner.random(), MathUtils.random(4, 5)), blueprint));
             }
         }
 
@@ -105,7 +105,7 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         for(int i = 0; i < 250; i++) {
             Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
-            blueprint.angularVelocity = 25;
+            blueprint.angularVelocity = 15;
             blueprint.tilt = 15;
             blueprint.xTilt = -20;
             blueprint.angle = MathUtils.random(0, 360);
@@ -114,7 +114,7 @@ public class PlanetGenerator extends ApplicationAdapter {
             if (MathUtils.randomBoolean(0.9f)) {
                 spaceObjects.add(new Orbiter(createMoon(outer.random(), MathUtils.random(4, 6)), blueprint));
             } else {
-                spaceObjects.add(new Orbiter(createSquare(outer.random(), MathUtils.random(4, 6)), blueprint));
+                spaceObjects.add(new Orbiter(createSquare(outer.random(), MathUtils.random(4, 5)), blueprint));
             }
         }
 

@@ -20,10 +20,6 @@ public abstract class SpaceObject implements Comparable<SpaceObject> {
         sprite.draw(batch);
     }
 
-    public int getZCoord() {
-        return zCoord;
-    }
-
     public void setZCoord(int zCoord) {
         this.zCoord = zCoord;
     }
