@@ -30,6 +30,7 @@ public class PlanetGenerator extends ApplicationAdapter {
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
 
+    private Array<Star> stars;
     private Array<SpaceObject> spaceObjects;
     private Array<Color> orbiterColors;
 
@@ -63,8 +64,6 @@ public class PlanetGenerator extends ApplicationAdapter {
         spaceObjects = new Array<SpaceObject>();
         orbiterColors = new Array<Color>();
 
-        //orbiterColors.add();
-
         generateRandomPlanet();
         spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), 50, 35, 86, 250));
         spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), 20, 10, 0, 300));
@@ -75,6 +74,21 @@ public class PlanetGenerator extends ApplicationAdapter {
             } else {
                 spaceObjects.add(new Orbiter(createSquare(Color.rgba8888(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
             }
+        }
+
+        stars = new Array<Star>();
+        float starAmount  = MathUtils.random(20, 100);
+        Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
+        for(int i = 0; i < starAmount; i++) {
+            Sprite star = new Sprite(pixelTexture);
+            star.setPosition(MathUtils.random(0, BUFFER_WIDTH), MathUtils.random(0, BUFFER_HEIGHT));
+            star.setColor(Color.WHITE);
+
+            if(MathUtils.randomBoolean(0.1f)) {
+                star.setSize(2, 2);
+            }
+
+            stars.add(new Star(star));
         }
     }
 
@@ -87,7 +101,7 @@ public class PlanetGenerator extends ApplicationAdapter {
                         return true;
 
                     case Input.Keys.R:
-                        generateRandomPlanet();
+                        reset();
                         return true;
                 }
 
@@ -118,10 +132,16 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         pixelBuffer.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.gl.glClearColor(37f / 255f, 38f / 255f, 54f / 255f, 1);
+        //Gdx.gl.glClearColor(25f / 255f, 20f / 255f, 30f / 255f, 1);
+        Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1);
 
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
+        for(Star star : stars) {
+            //star.update(delta);
+            star.render(batch);
+        }
+
         for(SpaceObject spaceObject : spaceObjects) {
             spaceObject.render(batch);
         }
@@ -179,5 +199,11 @@ public class PlanetGenerator extends ApplicationAdapter {
         Sprite sprite = new Sprite(new Texture(pixmap));
         pixmap.dispose();
         return sprite;
+    }
+
+    public void reset() {
+        spaceObjects.clear();
+        stars.clear();
+        generateObjects();
     }
 }
