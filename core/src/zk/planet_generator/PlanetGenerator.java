@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
@@ -21,30 +22,33 @@ public class PlanetGenerator extends ApplicationAdapter {
     public static final int CENTER_X = BUFFER_WIDTH / 2;
     public static final int CENTER_Y = BUFFER_HEIGHT / 2;
 
+    public static ShaderProgram planetShader;
+
     private OrthographicCamera gameCamera;
     private OrthographicCamera camera;
 
-    private ShaderProgram planetShader;
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
 
-    private Sprite planet;
     private Array<SpaceObject> spaceObjects;
-
-    private float time;
-    private float speed = 1/50f;
+    private Array<Color> orbiterColors;
 
     @Override
     public void create() {
+        setupRendering();
+        generateObjects();
+        initializeInput();
+    }
+
+    private void setupRendering() {
         ShaderProgram.pedantic = false;
         planetShader = new ShaderProgram(Gdx.files.internal("shaders/planet.vsh"), Gdx.files.internal("shaders/planet.fsh"));
         if(!planetShader.isCompiled()) {
-            Gdx.app.error("Shader", planetShader.getLog());
+            Gdx.app.error("Planet Shader", "\n" + planetShader.getLog());
         }
 
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
-        //gameCamera.rotate(MathUtils.random(0, 360));
         gameCamera.update();
 
         camera = new OrthographicCamera();
@@ -53,7 +57,28 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         batch = new SpriteBatch();
         pixelBuffer = new PixelBuffer();
+    }
 
+    private void generateObjects() {
+        spaceObjects = new Array<SpaceObject>();
+        orbiterColors = new Array<Color>();
+
+        //orbiterColors.add();
+
+        generateRandomPlanet();
+        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), 50, 35, 86, 250));
+        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), 20, 10, 0, 300));
+
+        for(int i = 0; i < 250; i++) {
+            if (MathUtils.randomBoolean(0.9f)) {
+                spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
+            } else {
+                spaceObjects.add(new Orbiter(createSquare(Color.rgba8888(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
+            }
+        }
+    }
+
+    private void initializeInput() {
         Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown (int keycode) {
                 switch(keycode) {
@@ -69,21 +94,6 @@ public class PlanetGenerator extends ApplicationAdapter {
                 return false;
             }
         });
-
-        spaceObjects = new Array<SpaceObject>();
-        generateRandomPlanet();
-        //spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), 20, 35, 75, 250));
-        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), 50, 35, 75, 250));
-        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), 20, 10, 0, 300));
-
-
-        for(int i = 0; i < 250; i++) {
-            if(MathUtils.randomBoolean(0.9f)) {
-                spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 250)));
-            } else {
-                spaceObjects.add(new Orbiter(createSquare(Color.rgba8888(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 250)));
-            }
-        }
     }
 
     private Sprite generatePlanetSprite(int size) {
@@ -91,10 +101,10 @@ public class PlanetGenerator extends ApplicationAdapter {
     }
 
     private void generateRandomPlanet() {
-        planet = generatePlanetSprite(1024);
+        Sprite planet = generatePlanetSprite(1024);
         planet.setSize(128, 128);
         planet.setPosition(CENTER_X - planet.getWidth() / 2, CENTER_Y - planet.getHeight() / 2);
-        spaceObjects.add(new Planet(planet, planetShader));
+        spaceObjects.add(new Planet(planet));
     }
 
     @Override
@@ -106,32 +116,15 @@ public class PlanetGenerator extends ApplicationAdapter {
         }
         spaceObjects.sort();
 
-        time += speed * delta;
-        planetShader.begin();
-        planetShader.setUniformf("time", time);
-        planetShader.end();
-
         pixelBuffer.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glClearColor(37f / 255f, 38f / 255f, 54f / 255f, 1);
 
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
-        batch.setShader(null);
         for(SpaceObject spaceObject : spaceObjects) {
             spaceObject.render(batch);
         }
-
-        //drawPlanet();
-
-//        if(testOrbiter.getAngle() <= 180) {
-//            drawPlanet();
-//            drawMoon();
-//        } else {
-//            drawMoon();
-//            drawPlanet();
-//        }
-
         batch.end();
         pixelBuffer.end();
 
@@ -139,19 +132,11 @@ public class PlanetGenerator extends ApplicationAdapter {
         pixelBuffer.render(batch, camera);
     }
 
-    private void drawPlanet() {
-        batch.setShader(planetShader);
-        planet.draw(batch);
-    }
-
-    private void drawMoon() {
-        batch.setShader(null); //TODO: Generate random moon textures?
-        //testOrbiter.render(batch);
-    }
-
     @Override
     public void dispose() {
-
+        batch.dispose();
+        pixelBuffer.dispose();
+        planetShader.dispose();
     }
 
     private Texture generatePlanetTexture(int size) {

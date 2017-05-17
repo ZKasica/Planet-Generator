@@ -1,5 +1,6 @@
 package zk.planet_generator;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,6 +20,8 @@ public class Orbiter extends SpaceObject {
         this.tilt = tilt;
         this.angle = angle;
         this.radius = radius;
+
+        sprite.getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
     }
 
     @Override
@@ -29,9 +32,9 @@ public class Orbiter extends SpaceObject {
         float x = radius * MathUtils.cosDeg(angle);
         float y = 0;
 
-        x = x*MathUtils.cosDeg(tilt) - y*MathUtils.sinDeg(tilt);
-        y = x*MathUtils.sinDeg(tilt) + y*MathUtils.cosDeg(tilt);
-        getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + x, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + y);
+        float newX = x*MathUtils.cosDeg(tilt) - y*MathUtils.sinDeg(tilt);
+        float newY = x*MathUtils.sinDeg(tilt) + y*MathUtils.cosDeg(tilt);
+        getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + newX, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + newY);
 
         setZCoord((int) (radius * MathUtils.sinDeg(angle)));
     }

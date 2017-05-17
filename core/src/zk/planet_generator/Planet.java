@@ -8,21 +8,24 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
  * Created by Zach on 5/16/2017.
  */
 public class Planet extends SpaceObject {
-    private ShaderProgram planetShader;
+    private float time;
+    private float speed = 1/50f;
 
-    public Planet(Sprite sprite, ShaderProgram planetShader) {
+    public Planet(Sprite sprite) {
         super(sprite);
-        this.planetShader = planetShader;
     }
 
     @Override
     public void update(float delta) {
-
+        time += speed * delta;
+        PlanetGenerator.planetShader.begin();
+        PlanetGenerator.planetShader.setUniformf("time", time);
+        PlanetGenerator.planetShader.end();
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.setShader(planetShader);
+        batch.setShader(PlanetGenerator.planetShader);
         super.render(batch);
         batch.setShader(null);
     }
