@@ -32,7 +32,7 @@ public class PlanetGenerator extends ApplicationAdapter {
 
     private Array<Star> stars;
     private Array<SpaceObject> spaceObjects;
-    private Array<Color> orbiterColors;
+    private Array<Integer> orbiterColors;
 
     @Override
     public void create() {
@@ -62,7 +62,9 @@ public class PlanetGenerator extends ApplicationAdapter {
 
     private void generateObjects() {
         spaceObjects = new Array<SpaceObject>();
-        orbiterColors = new Array<Color>();
+        orbiterColors = new Array<Integer>();
+        orbiterColors.add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f));
+        orbiterColors.add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f));
 
         generateRandomPlanet();
         spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), 50, 35, 86, 250));
@@ -70,9 +72,9 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         for(int i = 0; i < 250; i++) {
             if (MathUtils.randomBoolean(0.9f)) {
-                spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
+                spaceObjects.add(new Orbiter(createMoon(orbiterColors.random(), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
             } else {
-                spaceObjects.add(new Orbiter(createSquare(Color.rgba8888(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
+                spaceObjects.add(new Orbiter(createSquare(orbiterColors.random(), MathUtils.random(4, 6)), 25, 15, MathUtils.random(0, 360), MathUtils.random(100, 150)));
             }
         }
 
