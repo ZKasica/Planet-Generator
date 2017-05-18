@@ -87,7 +87,7 @@ public class PlanetGenerator extends ApplicationAdapter {
             Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
             blueprint.angularVelocity = 25;
             blueprint.zTilt = 15;
-            blueprint.xTilt = -20;
+            blueprint.xTilt = -25;
             blueprint.angle = MathUtils.random(0, 360);
             blueprint.radius = MathUtils.random(80, 120);
 
@@ -106,7 +106,7 @@ public class PlanetGenerator extends ApplicationAdapter {
             Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
             blueprint.angularVelocity = 15;
             blueprint.zTilt = 15;
-            blueprint.xTilt = -20;
+            blueprint.xTilt = -25;
             blueprint.angle = MathUtils.random(0, 360);
             blueprint.radius = MathUtils.random(130, 155);
 
@@ -165,6 +165,10 @@ public class PlanetGenerator extends ApplicationAdapter {
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.E)) {
+            delta *= 5;
+        }
 
         for(SpaceObject spaceObject : spaceObjects) {
             spaceObject.update(delta);
