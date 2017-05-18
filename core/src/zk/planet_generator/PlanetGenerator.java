@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
@@ -66,7 +65,7 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
         moonBlueprint.angularVelocity = 50;
-        moonBlueprint.tilt = 35;
+        moonBlueprint.zTilt = 35;
         moonBlueprint.xTilt = -20;
         moonBlueprint.angle = 86;
         moonBlueprint.radius = 250;
@@ -74,7 +73,7 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         Orbiter.OrbiterBlueprint moonBlueprint2 = new Orbiter.OrbiterBlueprint();
         moonBlueprint2.angularVelocity = 20;
-        moonBlueprint2.tilt = 10;
+        moonBlueprint2.zTilt = 10;
         moonBlueprint2.xTilt = -20;
         moonBlueprint2.angle = 0;
         moonBlueprint2.radius = 300;
@@ -86,8 +85,8 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         for(int i = 0; i < 250; i++) {
             Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
-            blueprint.angularVelocity = 35;
-            blueprint.tilt = 15;
+            blueprint.angularVelocity = 25;
+            blueprint.zTilt = 15;
             blueprint.xTilt = -20;
             blueprint.angle = MathUtils.random(0, 360);
             blueprint.radius = MathUtils.random(80, 120);
@@ -106,7 +105,7 @@ public class PlanetGenerator extends ApplicationAdapter {
         for(int i = 0; i < 250; i++) {
             Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
             blueprint.angularVelocity = 15;
-            blueprint.tilt = 15;
+            blueprint.zTilt = 15;
             blueprint.xTilt = -20;
             blueprint.angle = MathUtils.random(0, 360);
             blueprint.radius = MathUtils.random(130, 155);

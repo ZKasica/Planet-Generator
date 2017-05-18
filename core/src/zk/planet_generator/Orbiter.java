@@ -1,6 +1,5 @@
 package zk.planet_generator;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
@@ -19,7 +18,7 @@ public class Orbiter extends SpaceObject {
     public Orbiter(Sprite sprite, OrbiterBlueprint blueprint) {
         super(sprite);
         this.angularVelocity = blueprint.angularVelocity;
-        this.zTilt = blueprint.tilt;
+        this.zTilt = blueprint.zTilt;
         this.xTilt = blueprint.xTilt;
         this.angle = blueprint.angle;
         this.radius = blueprint.radius;
@@ -47,7 +46,7 @@ public class Orbiter extends SpaceObject {
 
     public static class OrbiterBlueprint {
         public float angularVelocity;
-        public float tilt;
+        public float zTilt;
         public float xTilt;
         public float angle;
         public float radius;
