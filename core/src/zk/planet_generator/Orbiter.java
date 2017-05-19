@@ -15,6 +15,10 @@ public class Orbiter extends SpaceObject {
     private float angle;
     private float radius;
 
+    private Vector3 position;
+    private Matrix3 rotZ;
+    private Matrix3 rotX;
+
     public Orbiter(Sprite sprite, OrbiterBlueprint blueprint) {
         super(sprite);
         this.angularVelocity = blueprint.angularVelocity;
@@ -22,20 +26,18 @@ public class Orbiter extends SpaceObject {
         this.xTilt = blueprint.xTilt;
         this.angle = blueprint.angle;
         this.radius = blueprint.radius;
+
+        position = new Vector3();
+        rotZ = new Matrix3().setToRotation(zTilt);
+        rotX = new Matrix3().setToRotation(Vector3.X, xTilt);
     }
 
     @Override
     public void update(float delta) {
-        angle += (angularVelocity * delta);
-        angle %= 360;
+        angle = (angle + (angularVelocity * delta)) % 360;
 
         // Start object on the XZ plane
-        Vector3 position = new Vector3(radius * MathUtils.cosDeg(angle), 0, radius * MathUtils.sinDeg(angle));
-
-        // Create rotation matrices and rotate objects to their final positions
-        Matrix3 rotZ = new Matrix3().setToRotation(zTilt);
-        Matrix3 rotX = new Matrix3().setToRotation(Vector3.X, xTilt);
-
+        position.set(radius * MathUtils.cosDeg(angle), 0, radius * MathUtils.sinDeg(angle));
         position.mul(rotZ);
         position.mul(rotX);
 
