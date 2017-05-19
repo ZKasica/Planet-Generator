@@ -14,6 +14,7 @@ public class Orbiter extends SpaceObject {
     private float xTilt; // Affects how vertical it appears to the viewer
     private float angle;
     private float radius;
+    private float yOffset;
 
     private Vector3 position;
     private Matrix3 rotZ;
@@ -26,6 +27,7 @@ public class Orbiter extends SpaceObject {
         this.xTilt = blueprint.xTilt;
         this.angle = blueprint.angle;
         this.radius = blueprint.radius;
+        this.yOffset = blueprint.yOffset;
 
         position = new Vector3();
         rotZ = new Matrix3().setToRotation(zTilt);
@@ -42,7 +44,7 @@ public class Orbiter extends SpaceObject {
         position.mul(rotX);
 
         // Set sprite position and zCoord for ordering and rendering
-        getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + position.x, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + position.y);
+        getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + position.x, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + position.y + yOffset);
         setZCoord((int)position.z);
     }
 
@@ -52,5 +54,6 @@ public class Orbiter extends SpaceObject {
         public float xTilt;
         public float angle;
         public float radius;
+        public float yOffset;
     }
 }

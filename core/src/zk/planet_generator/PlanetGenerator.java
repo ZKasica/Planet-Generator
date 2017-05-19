@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -115,6 +116,43 @@ public class PlanetGenerator extends ApplicationAdapter {
             } else {
                 spaceObjects.add(new Orbiter(createSquare(outer.random(), MathUtils.random(4, 5)), blueprint));
             }
+        }
+
+
+        for(int i = 0; i < 30; i++) {
+            Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
+            cloudBlueprint.angularVelocity = 50;
+            cloudBlueprint.zTilt = 0;
+            cloudBlueprint.xTilt = -MathUtils.random(5, 15);
+            cloudBlueprint.angle = MathUtils.random(0, 40);
+            cloudBlueprint.radius = 30 + MathUtils.random(0, 6);
+            cloudBlueprint.yOffset = 56;
+
+            spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 8)), cloudBlueprint));
+        }
+
+        for(int i = 0; i < 30; i++) {
+            Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
+            cloudBlueprint.angularVelocity = 50;
+            cloudBlueprint.zTilt = 0;
+            cloudBlueprint.xTilt = -10;
+            cloudBlueprint.angle = MathUtils.random(60, 70);
+            cloudBlueprint.radius = 68 + MathUtils.random(0, 6);
+            cloudBlueprint.yOffset = MathUtils.random(0, 8);
+
+            spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 9)), cloudBlueprint));
+        }
+
+        for(int i = 0; i < 50; i++) {
+            Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
+            cloudBlueprint.angularVelocity = 50;
+            cloudBlueprint.zTilt = 0;
+            cloudBlueprint.xTilt = -10;
+            cloudBlueprint.angle = MathUtils.random(160, 190);
+            cloudBlueprint.radius = 64 + MathUtils.random(0, 6);
+            cloudBlueprint.yOffset = -MathUtils.random(20, 30);
+
+            spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 14)), cloudBlueprint));
         }
 
         stars = new Array<Star>();
