@@ -10,9 +10,11 @@ public class Planet extends SpaceObject {
     private float time;
     private float rotationSpeed;
     private float radius;
+    private float direction;
 
-    public Planet(Sprite sprite) {
+    public Planet(Sprite sprite, int direction) {
         super(sprite);
+        this.direction = direction;
 
         rotationSpeed = 1/50f;
         radius = sprite.getWidth()/2;
@@ -24,7 +26,7 @@ public class Planet extends SpaceObject {
 
         // If the code below this comment is moved to render, it causes graphic issues with orbiting objects
         PlanetGenerator.planetShader.begin();
-        PlanetGenerator.planetShader.setUniformf("time", time);
+        PlanetGenerator.planetShader.setUniformf("time", direction * time);
         PlanetGenerator.planetShader.end();
     }
 

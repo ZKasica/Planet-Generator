@@ -50,6 +50,7 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
+        gameCamera.zoom = 1f;
         gameCamera.update();
 
         camera = new OrthographicCamera();
@@ -63,14 +64,17 @@ public class PlanetGenerator extends ApplicationAdapter {
     private void generateObjects() {
         spaceObjects = new Array<SpaceObject>();
 
-        createPlanet();
-        createMoons();
-        createRings();
-        createClouds();
+        int zDir = MathUtils.randomSign();
+        int velDir = MathUtils.randomSign();
+
+        createPlanet(velDir);
+        createMoons(velDir, zDir);
+        createRings(velDir, zDir);
+        createClouds(velDir);
         createStars();
     }
 
-    private void createMoons() {
+    private void createMoons(int velDir, int zDir) {
         Array<Integer> colors = new Array<Integer>();
         colors.add(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f));
         colors.add(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f));
@@ -79,16 +83,16 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         int moonCount = MathUtils.random(0, 8);
 
-        float zTilt = MathUtils.randomSign() * MathUtils.random(10, 50);
+        float zTilt = /*MathUtils.randomSign()*/ zDir * MathUtils.random(10, 50);
         float xTilt = -MathUtils.random(15, 55);
 
         for(int i = 0; i < moonCount; i++) {
             Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
-            moonBlueprint.angularVelocity = 50;
+            moonBlueprint.angularVelocity = velDir * MathUtils.random(15, 60);
             moonBlueprint.zTilt = zTilt + MathUtils.random(-10, 10);
             moonBlueprint.xTilt = xTilt + MathUtils.random(-10, 10);
             moonBlueprint.angle = MathUtils.random(0, 360);
-            moonBlueprint.radius = MathUtils.random(100, 350);
+            moonBlueprint.radius = MathUtils.random(100, 250);
             spaceObjects.add(new Orbiter(createMoon(colors.random(), MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint));
         }
     }
@@ -112,7 +116,7 @@ public class PlanetGenerator extends ApplicationAdapter {
 //        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), moonBlueprint2));
 //    }
 
-    private void createRings() {
+    private void createRings(int velDir, int zDir) {
         boolean shouldGenerateRings = MathUtils.randomBoolean();
         if(!shouldGenerateRings) {
             return;
@@ -128,12 +132,17 @@ public class PlanetGenerator extends ApplicationAdapter {
                 .add(Color.rgba8888(191f / 255f, 231f / 255f, 231f / 255f, 1f))
                 .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f)));
 
+        colors.add(new ColorGroup()
+                //.add(Color.rgba8888(124f / 255f, 176f / 255f, 133 / 255f, 1f))
+                .add(Color.rgba8888(169f / 255f, 194f / 255f, 175f / 255f, 1f))
+                .add(Color.rgba8888(30f / 255f, 97f / 255f, 42f / 255f, 1f)));
+
         int objectCount = MathUtils.random(200, 300);
-        float angularVelocity = MathUtils.random(20, 35);
-        float zTilt = MathUtils.randomSign() * MathUtils.random(10, 50);
-        float xTilt = -MathUtils.random(10, 50);
-        float minimumRadius = 90;
-        float maximumRadius = minimumRadius + MathUtils.random(40, 60);
+        float angularVelocity = velDir * MathUtils.random(20, 35);
+        float zTilt = /*MathUtils.randomSign()*/ zDir * MathUtils.random(10, 50);
+        float xTilt = -MathUtils.random(10, 40);
+        float minimumRadius = planet.getWidthAtY(0) + 20;
+        float maximumRadius = minimumRadius + MathUtils.random(20, 60);
         ColorGroup colorGroup = colors.random();
         colors.removeValue(colorGroup, true);
 
@@ -158,9 +167,9 @@ public class PlanetGenerator extends ApplicationAdapter {
         }
 
         objectCount = MathUtils.random(200, 350);
-        angularVelocity = angularVelocity - MathUtils.random(5, 15);
-        minimumRadius = maximumRadius + MathUtils.random(5);
-        maximumRadius = minimumRadius + MathUtils.random(30, 50);
+        angularVelocity = angularVelocity - velDir * MathUtils.random(5, 15);
+        minimumRadius = maximumRadius + 5 + MathUtils.random(5);
+        maximumRadius = minimumRadius + MathUtils.random(20, 50);
         colorGroup = colors.random();
         colors.removeValue(colorGroup, true);
 
@@ -221,24 +230,24 @@ public class PlanetGenerator extends ApplicationAdapter {
 //        }
 //    }
 
-    private void createClouds() {
+    private void createClouds(int velDir) {
        int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
 
         for(int i = 0; i < 30; i++) {
             Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-            cloudBlueprint.angularVelocity = 20;
+            cloudBlueprint.angularVelocity = velDir * 20;
             cloudBlueprint.zTilt = 0;
             cloudBlueprint.xTilt = -15;
             cloudBlueprint.angle = MathUtils.random(0, 30);
-            cloudBlueprint.radius = 36 + MathUtils.random(0,  6);
             cloudBlueprint.yOffset = 56;
+            cloudBlueprint.radius = planet.getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
             spaceObjects.add(new Orbiter(createMoon(cloudColor, MathUtils.random(5, 8)), cloudBlueprint));
         }
 
         for(int i = 0; i < 50; i++) {
             Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-            cloudBlueprint.angularVelocity = 20;
+            cloudBlueprint.angularVelocity = velDir * 20;
             cloudBlueprint.zTilt = 0;
             cloudBlueprint.xTilt = -15;
             cloudBlueprint.angle = MathUtils.random(40, 70);
@@ -250,12 +259,12 @@ public class PlanetGenerator extends ApplicationAdapter {
 
         for(int i = 0; i < 50; i++) {
             Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-            cloudBlueprint.angularVelocity = 20;
+            cloudBlueprint.angularVelocity = velDir * 20;
             cloudBlueprint.zTilt = 0;
             cloudBlueprint.xTilt = -15;
             cloudBlueprint.angle = MathUtils.random(160, 190);
-            cloudBlueprint.radius = 64 + MathUtils.random(0, 6);
             cloudBlueprint.yOffset = -MathUtils.random(20, 30);
+            cloudBlueprint.radius = planet.getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
             spaceObjects.add(new Orbiter(createMoon(cloudColor, MathUtils.random(5, 9)), cloudBlueprint));
         }
@@ -315,11 +324,12 @@ public class PlanetGenerator extends ApplicationAdapter {
         return new Sprite(generatePlanetTexture(size));
     }
 
-    private void createPlanet() {
+    private void createPlanet(int velDir) {
         Sprite planet = generatePlanetSprite(1024);
-        planet.setSize(128, 128);
+        int size = MathUtils.random(100, 148);
+        planet.setSize(size, size);
         planet.setPosition(CENTER_X - planet.getWidth() / 2, CENTER_Y - planet.getHeight() / 2);
-        this.planet = new Planet(planet);
+        this.planet = new Planet(planet, velDir);
         spaceObjects.add(this.planet);
     }
 
