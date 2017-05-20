@@ -38,12 +38,12 @@ public class Orbiter extends SpaceObject {
     public void update(float delta) {
         angle = (angle + (angularVelocity * delta)) % 360;
 
-        // Start object on the XZ plane
+        // Start object on the XZ plane and rotate to correct 3D orientation
         position.set(radius * MathUtils.cosDeg(angle), 0, radius * MathUtils.sinDeg(angle));
         position.mul(rotZ);
         position.mul(rotX);
 
-        // Set sprite position and zCoord for ordering and rendering
+        // Set sprite position for 2D rendering and zCoord for ordering
         getSprite().setPosition(PlanetGenerator.CENTER_X - getSprite().getWidth()/2 + position.x, PlanetGenerator.CENTER_Y - getSprite().getHeight()/2 + position.y + yOffset);
         setZCoord((int)position.z);
     }

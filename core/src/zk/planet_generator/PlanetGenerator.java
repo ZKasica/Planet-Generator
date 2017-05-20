@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -26,12 +25,12 @@ public class PlanetGenerator extends ApplicationAdapter {
 
     private OrthographicCamera gameCamera;
     private OrthographicCamera camera;
-
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
 
     private Array<Star> stars;
     private Array<SpaceObject> spaceObjects;
+    private Planet planet;
 
     @Override
     public void create() {
@@ -62,8 +61,14 @@ public class PlanetGenerator extends ApplicationAdapter {
     private void generateObjects() {
         spaceObjects = new Array<SpaceObject>();
 
-        generateRandomPlanet();
+        createPlanet();
+        createMoons();
+        createRings();
+        createClouds();
+        createStars();
+    }
 
+    private void createMoons() {
         Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
         moonBlueprint.angularVelocity = 50;
         moonBlueprint.zTilt = 35;
@@ -79,7 +84,9 @@ public class PlanetGenerator extends ApplicationAdapter {
         moonBlueprint2.angle = 0;
         moonBlueprint2.radius = 300;
         spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), moonBlueprint2));
+    }
 
+    private void createRings() {
         ColorGroup inner = new ColorGroup()
                 .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
                 .add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f));
@@ -90,7 +97,7 @@ public class PlanetGenerator extends ApplicationAdapter {
             blueprint.zTilt = 15;
             blueprint.xTilt = -25;
             blueprint.angle = MathUtils.random(0, 360);
-            blueprint.radius = MathUtils.random(80, 120);
+            blueprint.radius = MathUtils.random(90, 130);
 
             if (MathUtils.randomBoolean(0.9f)) {
                 spaceObjects.add(new Orbiter(createMoon(inner.random(), MathUtils.random(4, 6)), blueprint));
@@ -109,7 +116,7 @@ public class PlanetGenerator extends ApplicationAdapter {
             blueprint.zTilt = 15;
             blueprint.xTilt = -25;
             blueprint.angle = MathUtils.random(0, 360);
-            blueprint.radius = MathUtils.random(130, 155);
+            blueprint.radius = MathUtils.random(135, 160);
 
             if (MathUtils.randomBoolean(0.9f)) {
                 spaceObjects.add(new Orbiter(createMoon(outer.random(), MathUtils.random(4, 6)), blueprint));
@@ -117,44 +124,47 @@ public class PlanetGenerator extends ApplicationAdapter {
                 spaceObjects.add(new Orbiter(createSquare(outer.random(), MathUtils.random(4, 5)), blueprint));
             }
         }
+    }
 
-
+    private void createClouds() {
         for(int i = 0; i < 30; i++) {
             Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-            cloudBlueprint.angularVelocity = 50;
+            cloudBlueprint.angularVelocity = 20;
             cloudBlueprint.zTilt = 0;
-            cloudBlueprint.xTilt = -MathUtils.random(5, 15);
-            cloudBlueprint.angle = MathUtils.random(0, 40);
-            cloudBlueprint.radius = 30 + MathUtils.random(0, 6);
+            cloudBlueprint.xTilt = -15;
+            cloudBlueprint.angle = MathUtils.random(0, 30);
+            cloudBlueprint.radius = 36 + MathUtils.random(0,  6);
             cloudBlueprint.yOffset = 56;
 
             spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 8)), cloudBlueprint));
         }
 
-        for(int i = 0; i < 30; i++) {
+        for(int i = 0; i < 50; i++) {
             Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-            cloudBlueprint.angularVelocity = 50;
+            cloudBlueprint.angularVelocity = 20;
             cloudBlueprint.zTilt = 0;
-            cloudBlueprint.xTilt = -10;
-            cloudBlueprint.angle = MathUtils.random(60, 70);
-            cloudBlueprint.radius = 68 + MathUtils.random(0, 6);
-            cloudBlueprint.yOffset = MathUtils.random(0, 8);
+            cloudBlueprint.xTilt = -15;
+            cloudBlueprint.angle = MathUtils.random(40, 70);
+            cloudBlueprint.yOffset = MathUtils.random(10, 20);
+            cloudBlueprint.radius = planet.getCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
             spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 9)), cloudBlueprint));
         }
 
         for(int i = 0; i < 50; i++) {
             Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-            cloudBlueprint.angularVelocity = 50;
+            cloudBlueprint.angularVelocity = 20;
             cloudBlueprint.zTilt = 0;
-            cloudBlueprint.xTilt = -10;
+            cloudBlueprint.xTilt = -15;
             cloudBlueprint.angle = MathUtils.random(160, 190);
             cloudBlueprint.radius = 64 + MathUtils.random(0, 6);
             cloudBlueprint.yOffset = -MathUtils.random(20, 30);
 
             spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 14)), cloudBlueprint));
         }
+    }
 
+    private void createStars() {
         stars = new Array<Star>();
         float starAmount  = MathUtils.random(20, 100);
         Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
@@ -193,11 +203,12 @@ public class PlanetGenerator extends ApplicationAdapter {
         return new Sprite(generatePlanetTexture(size));
     }
 
-    private void generateRandomPlanet() {
+    private void createPlanet() {
         Sprite planet = generatePlanetSprite(1024);
         planet.setSize(128, 128);
         planet.setPosition(CENTER_X - planet.getWidth() / 2, CENTER_Y - planet.getHeight() / 2);
-        spaceObjects.add(new Planet(planet));
+        this.planet = new Planet(planet);
+        spaceObjects.add(this.planet);
     }
 
     @Override
@@ -288,8 +299,16 @@ public class PlanetGenerator extends ApplicationAdapter {
     }
 
     public void reset() {
+        for(SpaceObject object : spaceObjects) {
+            object.getSprite().getTexture().dispose();
+        }
         spaceObjects.clear();
+
+        for(Star star : stars) {
+            star.getSprite().getTexture().dispose();
+        }
         stars.clear();
+
         generateObjects();
     }
 }
