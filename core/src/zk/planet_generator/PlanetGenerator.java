@@ -32,6 +32,8 @@ public class PlanetGenerator extends ApplicationAdapter {
     private Array<SpaceObject> spaceObjects;
     private Planet planet;
 
+    private boolean shouldSpeedUpTime;
+
     @Override
     public void create() {
         setupRendering();
@@ -69,64 +71,159 @@ public class PlanetGenerator extends ApplicationAdapter {
     }
 
     private void createMoons() {
-        Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
-        moonBlueprint.angularVelocity = 50;
-        moonBlueprint.zTilt = 35;
-        moonBlueprint.xTilt = -20;
-        moonBlueprint.angle = 86;
-        moonBlueprint.radius = 250;
-        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), moonBlueprint));
+        Array<Integer> colors = new Array<Integer>();
+        colors.add(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f));
+        colors.add(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f));
+        colors.add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f));
+        colors.add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f));
 
-        Orbiter.OrbiterBlueprint moonBlueprint2 = new Orbiter.OrbiterBlueprint();
-        moonBlueprint2.angularVelocity = 20;
-        moonBlueprint2.zTilt = 10;
-        moonBlueprint2.xTilt = -20;
-        moonBlueprint2.angle = 0;
-        moonBlueprint2.radius = 300;
-        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), moonBlueprint2));
+        int moonCount = MathUtils.random(0, 8);
+
+        float zTilt = MathUtils.randomSign() * MathUtils.random(10, 50);
+        float xTilt = -MathUtils.random(15, 55);
+
+        for(int i = 0; i < moonCount; i++) {
+            Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
+            moonBlueprint.angularVelocity = 50;
+            moonBlueprint.zTilt = zTilt + MathUtils.random(-10, 10);
+            moonBlueprint.xTilt = xTilt + MathUtils.random(-10, 10);
+            moonBlueprint.angle = MathUtils.random(0, 360);
+            moonBlueprint.radius = MathUtils.random(100, 350);
+            spaceObjects.add(new Orbiter(createMoon(colors.random(), MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint));
+        }
     }
+
+    /** Non-random Moons */
+//    private void createMoons() {
+//        Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
+//        moonBlueprint.angularVelocity = 50;
+//        moonBlueprint.zTilt = 35;
+//        moonBlueprint.xTilt = -20;
+//        moonBlueprint.angle = 86;
+//        moonBlueprint.radius = 250;
+//        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), moonBlueprint));
+//
+//        Orbiter.OrbiterBlueprint moonBlueprint2 = new Orbiter.OrbiterBlueprint();
+//        moonBlueprint2.angularVelocity = 20;
+//        moonBlueprint2.zTilt = 10;
+//        moonBlueprint2.xTilt = -20;
+//        moonBlueprint2.angle = 0;
+//        moonBlueprint2.radius = 300;
+//        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), moonBlueprint2));
+//    }
 
     private void createRings() {
-        ColorGroup inner = new ColorGroup()
-                .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
-                .add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f));
+        boolean shouldGenerateRings = MathUtils.randomBoolean();
+        if(!shouldGenerateRings) {
+            return;
+        }
 
-        for(int i = 0; i < 250; i++) {
+        Array<ColorGroup> colors = new Array<ColorGroup>();
+
+        colors.add(new ColorGroup()
+                .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
+                .add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f)));
+
+        colors.add(new ColorGroup()
+                .add(Color.rgba8888(191f / 255f, 231f / 255f, 231f / 255f, 1f))
+                .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f)));
+
+        int objectCount = MathUtils.random(200, 300);
+        float angularVelocity = MathUtils.random(20, 35);
+        float zTilt = MathUtils.randomSign() * MathUtils.random(10, 50);
+        float xTilt = -MathUtils.random(10, 50);
+        float minimumRadius = 90;
+        float maximumRadius = minimumRadius + MathUtils.random(40, 60);
+        ColorGroup colorGroup = colors.random();
+        colors.removeValue(colorGroup, true);
+
+        for(int i = 0; i < objectCount; i++) {
             Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
-            blueprint.angularVelocity = 25;
-            blueprint.zTilt = 15;
-            blueprint.xTilt = -25;
+            blueprint.angularVelocity = angularVelocity;
+            blueprint.zTilt = zTilt;
+            blueprint.xTilt = xTilt;
             blueprint.angle = MathUtils.random(0, 360);
-            blueprint.radius = MathUtils.random(90, 130);
+            blueprint.radius = MathUtils.random(minimumRadius, maximumRadius);
 
             if (MathUtils.randomBoolean(0.9f)) {
-                spaceObjects.add(new Orbiter(createMoon(inner.random(), MathUtils.random(4, 6)), blueprint));
+                spaceObjects.add(new Orbiter(createMoon(colorGroup.random(), MathUtils.random(4, 6)), blueprint));
             } else {
-                spaceObjects.add(new Orbiter(createSquare(inner.random(), MathUtils.random(4, 5)), blueprint));
+                spaceObjects.add(new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint));
             }
         }
 
-        ColorGroup outer = new ColorGroup()
-                .add(Color.rgba8888(191f / 255f, 231f / 255f, 231f / 255f, 1f))
-                .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f));
+        boolean shouldGenerateOuterRings = MathUtils.randomBoolean();
+        if(!shouldGenerateOuterRings) {
+            return;
+        }
 
-        for(int i = 0; i < 250; i++) {
+        objectCount = MathUtils.random(200, 350);
+        angularVelocity = angularVelocity - MathUtils.random(5, 15);
+        minimumRadius = maximumRadius + MathUtils.random(5);
+        maximumRadius = minimumRadius + MathUtils.random(30, 50);
+        colorGroup = colors.random();
+        colors.removeValue(colorGroup, true);
+
+        for(int i = 0; i < objectCount; i++) {
             Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
-            blueprint.angularVelocity = 15;
-            blueprint.zTilt = 15;
-            blueprint.xTilt = -25;
+            blueprint.angularVelocity = angularVelocity;
+            blueprint.zTilt = zTilt;
+            blueprint.xTilt = xTilt;
             blueprint.angle = MathUtils.random(0, 360);
-            blueprint.radius = MathUtils.random(135, 160);
+            blueprint.radius = MathUtils.random(minimumRadius, maximumRadius);
 
             if (MathUtils.randomBoolean(0.9f)) {
-                spaceObjects.add(new Orbiter(createMoon(outer.random(), MathUtils.random(4, 6)), blueprint));
+                spaceObjects.add(new Orbiter(createMoon(colorGroup.random(), MathUtils.random(4, 6)), blueprint));
             } else {
-                spaceObjects.add(new Orbiter(createSquare(outer.random(), MathUtils.random(4, 5)), blueprint));
+                spaceObjects.add(new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint));
             }
         }
     }
 
+    /** Non-random Rings */
+//    private void createRings() {
+//        ColorGroup inner = new ColorGroup()
+//                .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
+//                .add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f));
+//
+//        for(int i = 0; i < 250; i++) {
+//            Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
+//            blueprint.angularVelocity = 25;
+//            blueprint.zTilt = 15;
+//            blueprint.xTilt = -25;
+//            blueprint.angle = MathUtils.random(0, 360);
+//            blueprint.radius = MathUtils.random(90, 130);
+//
+//            if (MathUtils.randomBoolean(0.9f)) {
+//                spaceObjects.add(new Orbiter(createMoon(inner.random(), MathUtils.random(4, 6)), blueprint));
+//            } else {
+//                spaceObjects.add(new Orbiter(createSquare(inner.random(), MathUtils.random(4, 5)), blueprint));
+//            }
+//        }
+//
+//        ColorGroup outer = new ColorGroup()
+//                .add(Color.rgba8888(191f / 255f, 231f / 255f, 231f / 255f, 1f))
+//                .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f));
+//
+//        for(int i = 0; i < 250; i++) {
+//            Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
+//            blueprint.angularVelocity = 15;
+//            blueprint.zTilt = 15;
+//            blueprint.xTilt = -25;
+//            blueprint.angle = MathUtils.random(0, 360);
+//            blueprint.radius = MathUtils.random(135, 160);
+//
+//            if (MathUtils.randomBoolean(0.9f)) {
+//                spaceObjects.add(new Orbiter(createMoon(outer.random(), MathUtils.random(4, 6)), blueprint));
+//            } else {
+//                spaceObjects.add(new Orbiter(createSquare(outer.random(), MathUtils.random(4, 5)), blueprint));
+//            }
+//        }
+//    }
+
     private void createClouds() {
+       int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
+
         for(int i = 0; i < 30; i++) {
             Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
             cloudBlueprint.angularVelocity = 20;
@@ -136,7 +233,7 @@ public class PlanetGenerator extends ApplicationAdapter {
             cloudBlueprint.radius = 36 + MathUtils.random(0,  6);
             cloudBlueprint.yOffset = 56;
 
-            spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 8)), cloudBlueprint));
+            spaceObjects.add(new Orbiter(createMoon(cloudColor, MathUtils.random(5, 8)), cloudBlueprint));
         }
 
         for(int i = 0; i < 50; i++) {
@@ -146,9 +243,9 @@ public class PlanetGenerator extends ApplicationAdapter {
             cloudBlueprint.xTilt = -15;
             cloudBlueprint.angle = MathUtils.random(40, 70);
             cloudBlueprint.yOffset = MathUtils.random(10, 20);
-            cloudBlueprint.radius = planet.getCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
+            cloudBlueprint.radius = planet.getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
-            spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 9)), cloudBlueprint));
+            spaceObjects.add(new Orbiter(createMoon(cloudColor, MathUtils.random(5, 9)), cloudBlueprint));
         }
 
         for(int i = 0; i < 50; i++) {
@@ -160,7 +257,7 @@ public class PlanetGenerator extends ApplicationAdapter {
             cloudBlueprint.radius = 64 + MathUtils.random(0, 6);
             cloudBlueprint.yOffset = -MathUtils.random(20, 30);
 
-            spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(1f, 1f, 1f, 1f), MathUtils.random(5, 14)), cloudBlueprint));
+            spaceObjects.add(new Orbiter(createMoon(cloudColor, MathUtils.random(5, 9)), cloudBlueprint));
         }
     }
 
@@ -192,6 +289,21 @@ public class PlanetGenerator extends ApplicationAdapter {
                     case Input.Keys.R:
                         reset();
                         return true;
+
+                    case Input.Keys.E:
+                        shouldSpeedUpTime = true;
+                        return true;
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                switch(keycode) {
+                    case Input.Keys.E:
+                        shouldSpeedUpTime = false;
+                        return true;
                 }
 
                 return false;
@@ -215,7 +327,7 @@ public class PlanetGenerator extends ApplicationAdapter {
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.E)) {
+        if(shouldSpeedUpTime) {
             delta *= 5;
         }
 
