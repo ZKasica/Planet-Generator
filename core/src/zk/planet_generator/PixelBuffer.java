@@ -14,10 +14,10 @@ public class PixelBuffer extends FrameBuffer {
     private TextureRegion pixelBufferRegion;
 
     public PixelBuffer() {
-        super(Pixmap.Format.RGBA8888, PlanetGenerator.BUFFER_WIDTH, PlanetGenerator.BUFFER_HEIGHT, false);
+        super(Pixmap.Format.RGBA8888, PlanetGeneratorGame.BUFFER_WIDTH, PlanetGeneratorGame.BUFFER_HEIGHT, false);
         getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        pixelBufferRegion = new TextureRegion(getColorBufferTexture(), 0, 0, PlanetGenerator.BUFFER_WIDTH, PlanetGenerator.BUFFER_HEIGHT);
+        pixelBufferRegion = new TextureRegion(getColorBufferTexture(), 0, 0, PlanetGeneratorGame.BUFFER_WIDTH, PlanetGeneratorGame.BUFFER_HEIGHT);
         pixelBufferRegion.flip(false, true);
     }
 

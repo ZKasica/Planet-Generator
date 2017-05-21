@@ -25,14 +25,14 @@ public class Planet extends SpaceObject {
         time += rotationSpeed * delta;
 
         // If the code below this comment is moved to render, it causes graphic issues with orbiting objects
-        PlanetGenerator.planetShader.begin();
-        PlanetGenerator.planetShader.setUniformf("time", direction * time);
-        PlanetGenerator.planetShader.end();
+        PlanetGeneratorGame.planetShader.begin();
+        PlanetGeneratorGame.planetShader.setUniformf("time", direction * time);
+        PlanetGeneratorGame.planetShader.end();
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.setShader(PlanetGenerator.planetShader);
+        batch.setShader(PlanetGeneratorGame.planetShader);
         super.render(batch);
         batch.setShader(null);
     }
