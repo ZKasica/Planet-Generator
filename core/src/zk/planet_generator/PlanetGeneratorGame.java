@@ -75,15 +75,17 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
     }
 
     private void createMoons(int velDir, int zDir) {
-        Array<Integer> colors = new Array<Integer>();
-        colors.add(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f));
-        colors.add(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f));
-        colors.add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f));
-        colors.add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f));
+        // TODO: Moons outside of outer rings radius
+
+        ColorGroup colors = new ColorGroup()
+                .add(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f))
+                .add(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f))
+                .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
+                .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f));
 
         int moonCount = MathUtils.random(0, 8);
 
-        float zTilt = /*MathUtils.randomSign()*/ zDir * MathUtils.random(10, 50);
+        float zTilt = zDir * MathUtils.random(10, 50);
         float xTilt = -MathUtils.random(15, 55);
 
         for(int i = 0; i < moonCount; i++) {
@@ -96,25 +98,6 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
             spaceObjects.add(new Orbiter(createMoon(colors.random(), MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint));
         }
     }
-
-    /** Non-random Moons */
-//    private void createMoons() {
-//        Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
-//        moonBlueprint.angularVelocity = 50;
-//        moonBlueprint.zTilt = 35;
-//        moonBlueprint.xTilt = -20;
-//        moonBlueprint.angle = 86;
-//        moonBlueprint.radius = 250;
-//        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f), 32), moonBlueprint));
-//
-//        Orbiter.OrbiterBlueprint moonBlueprint2 = new Orbiter.OrbiterBlueprint();
-//        moonBlueprint2.angularVelocity = 20;
-//        moonBlueprint2.zTilt = 10;
-//        moonBlueprint2.xTilt = -20;
-//        moonBlueprint2.angle = 0;
-//        moonBlueprint2.radius = 300;
-//        spaceObjects.add(new Orbiter(createMoon(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f), 20), moonBlueprint2));
-//    }
 
     private void createRings(int velDir, int zDir) {
         boolean shouldGenerateRings = MathUtils.randomBoolean();
@@ -133,13 +116,12 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
                 .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f)));
 
         colors.add(new ColorGroup()
-                //.add(Color.rgba8888(124f / 255f, 176f / 255f, 133 / 255f, 1f))
                 .add(Color.rgba8888(169f / 255f, 194f / 255f, 175f / 255f, 1f))
                 .add(Color.rgba8888(30f / 255f, 97f / 255f, 42f / 255f, 1f)));
 
         int objectCount = MathUtils.random(200, 300);
         float angularVelocity = velDir * MathUtils.random(20, 35);
-        float zTilt = /*MathUtils.randomSign()*/ zDir * MathUtils.random(10, 50);
+        float zTilt = zDir * MathUtils.random(10, 50);
         float xTilt = -MathUtils.random(10, 40);
         float minimumRadius = planet.getWidthAtY(0) + 25;
         float maximumRadius = minimumRadius + MathUtils.random(20, 60);
@@ -189,47 +171,6 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         }
     }
 
-    /** Non-random Rings */
-//    private void createRings() {
-//        ColorGroup inner = new ColorGroup()
-//                .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
-//                .add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f));
-//
-//        for(int i = 0; i < 250; i++) {
-//            Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
-//            blueprint.angularVelocity = 25;
-//            blueprint.zTilt = 15;
-//            blueprint.xTilt = -25;
-//            blueprint.angle = MathUtils.random(0, 360);
-//            blueprint.radius = MathUtils.random(90, 130);
-//
-//            if (MathUtils.randomBoolean(0.9f)) {
-//                spaceObjects.add(new Orbiter(createMoon(inner.random(), MathUtils.random(4, 6)), blueprint));
-//            } else {
-//                spaceObjects.add(new Orbiter(createSquare(inner.random(), MathUtils.random(4, 5)), blueprint));
-//            }
-//        }
-//
-//        ColorGroup outer = new ColorGroup()
-//                .add(Color.rgba8888(191f / 255f, 231f / 255f, 231f / 255f, 1f))
-//                .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f));
-//
-//        for(int i = 0; i < 250; i++) {
-//            Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
-//            blueprint.angularVelocity = 15;
-//            blueprint.zTilt = 15;
-//            blueprint.xTilt = -25;
-//            blueprint.angle = MathUtils.random(0, 360);
-//            blueprint.radius = MathUtils.random(135, 160);
-//
-//            if (MathUtils.randomBoolean(0.9f)) {
-//                spaceObjects.add(new Orbiter(createMoon(outer.random(), MathUtils.random(4, 6)), blueprint));
-//            } else {
-//                spaceObjects.add(new Orbiter(createSquare(outer.random(), MathUtils.random(4, 5)), blueprint));
-//            }
-//        }
-//    }
-
     private void createClouds(int velDir) {
         int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
 
@@ -253,48 +194,6 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
             }
         }
     }
-
-
-    /** Non-random Clouds */
-//    private void createClouds(int velDir) {
-//       int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
-//
-//        for(int i = 0; i < 30; i++) {
-//            Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-//            cloudBlueprint.angularVelocity = velDir * 20;
-//            cloudBlueprint.zTilt = 0;
-//            cloudBlueprint.xTilt = -15;
-//            cloudBlueprint.angle = MathUtils.random(0, 30);
-//            cloudBlueprint.yOffset = 56;
-//            cloudBlueprint.radius = planet.getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
-//
-//            spaceObjects.add(new Orbiter(createMoon(cloudColor, MathUtils.random(5, 8)), cloudBlueprint));
-//        }
-//
-//        for(int i = 0; i < 50; i++) {
-//            Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-//            cloudBlueprint.angularVelocity = velDir * 20;
-//            cloudBlueprint.zTilt = 0;
-//            cloudBlueprint.xTilt = -15;
-//            cloudBlueprint.angle = MathUtils.random(40, 70);
-//            cloudBlueprint.yOffset = MathUtils.random(10, 20);
-//            cloudBlueprint.radius = planet.getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
-//
-//            spaceObjects.add(new Orbiter(createMoon(cloudColor, MathUtils.random(5, 9)), cloudBlueprint));
-//        }
-//
-//        for(int i = 0; i < 50; i++) {
-//            Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
-//            cloudBlueprint.angularVelocity = velDir * 20;
-//            cloudBlueprint.zTilt = 0;
-//            cloudBlueprint.xTilt = -15;
-//            cloudBlueprint.angle = MathUtils.random(160, 190);
-//            cloudBlueprint.yOffset = -MathUtils.random(20, 30);
-//            cloudBlueprint.radius = planet.getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
-//
-//            spaceObjects.add(new Orbiter(createMoon(cloudColor, MathUtils.random(5, 9)), cloudBlueprint));
-//        }
-//    }
 
     private void createStars() {
         stars = new Array<Star>();
@@ -364,7 +263,7 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         float delta = Gdx.graphics.getDeltaTime();
 
         if(shouldSpeedUpTime) {
-            delta *= 5;
+            delta *= 10;
         }
 
         for(SpaceObject spaceObject : spaceObjects) {
@@ -374,8 +273,8 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
 
         pixelBuffer.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        //Gdx.gl.glClearColor(25f / 255f, 20f / 255f, 30f / 255f, 1);
-        Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1);
+        Gdx.gl.glClearColor(25f / 255f, 20f / 255f, 30f / 255f, 1);
+        //Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1);
 
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
