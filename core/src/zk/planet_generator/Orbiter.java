@@ -44,7 +44,7 @@ public class Orbiter extends SpaceObject {
         position.mul(rotX);
 
         // Set sprite position for 2D rendering and zCoord for ordering
-        getSprite().setPosition(PlanetGeneratorGame.CENTER_X - getSprite().getWidth()/2 + position.x, PlanetGeneratorGame.CENTER_Y - getSprite().getHeight()/2 + position.y + yOffset);
+        getSprite().setPosition(Scene.CENTER_X - getSprite().getWidth()/2 + position.x, Scene.CENTER_Y - getSprite().getHeight()/2 + position.y + yOffset);
         setZCoord((int)position.z);
     }
 
@@ -56,4 +56,9 @@ public class Orbiter extends SpaceObject {
         public float radius;
         public float yOffset;
     }
+
+//    public void updateZTilt(float amount) {
+//        zTilt += amount;
+//        rotZ.setToRotation(zTilt);
+//    }
 }
