@@ -22,6 +22,7 @@ public class Orbiter extends SpaceObject {
 
     public Orbiter(Sprite sprite, OrbiterBlueprint blueprint) {
         super(sprite);
+
         this.angularVelocity = blueprint.angularVelocity;
         this.zTilt = blueprint.zTilt;
         this.xTilt = blueprint.xTilt;
