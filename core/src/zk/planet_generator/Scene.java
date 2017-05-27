@@ -26,11 +26,11 @@ public class Scene {
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
 
-    private Array<Star> stars;
     private Array<SpaceObject> spaceObjects;
     private Array<Orbiter> moons;
     private Array<Orbiter> rings;
     private Array<Orbiter> clouds;
+    private Array<Star> stars;
     private Planet planet;
 
     private boolean shouldSpeedUpTime;
@@ -51,6 +51,7 @@ public class Scene {
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
         gameCamera.zoom = 1f;
+        gameCamera.translate(100, 0);
         gameCamera.update();
 
         camera = new OrthographicCamera();
@@ -82,7 +83,7 @@ public class Scene {
 
     private void initializeInput() {
         Gdx.input.setInputProcessor(new InputAdapter() {
-            public boolean keyDown (int keycode) {
+            public boolean keyDown(int keycode) {
                 switch(keycode) {
                     case Input.Keys.ESCAPE:
                         Gdx.app.exit();
@@ -144,8 +145,11 @@ public class Scene {
         }
         spaceObjects.sort();
 
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(25f / 255f, 20f / 255f, 30f / 255f, 1);
+
         pixelBuffer.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(25f / 255f, 20f / 255f, 30f / 255f, 1);
         //Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1);
 

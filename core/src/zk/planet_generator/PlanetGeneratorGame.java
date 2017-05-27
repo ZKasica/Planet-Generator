@@ -17,21 +17,31 @@ import com.badlogic.gdx.utils.Array;
  */
 public class PlanetGeneratorGame extends ApplicationAdapter {
     private Scene scene;
+    private EditorUI editorUI;
 
     @Override
     public void create() {
         scene = new Scene();
+        editorUI = new EditorUI(scene);
     }
 
     @Override
     public void render() {
         super.render();
         scene.render();
+        editorUI.render(Gdx.graphics.getDeltaTime());
     }
 
     @Override
     public void dispose() {
         super.dispose();
         scene.dispose();
+        editorUI.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        editorUI.resize(width, height);
     }
 }

@@ -159,11 +159,11 @@ public class ObjectGenerator {
 
     public Array<Star> createStars() {
         Array<Star> stars = new Array<>();
-        float starAmount  = MathUtils.random(20, 100);
+        float starAmount  = MathUtils.random(20, 120);
         Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
         for(int i = 0; i < starAmount; i++) {
             Sprite star = new Sprite(pixelTexture);
-            star.setPosition(MathUtils.random(0, Scene.BUFFER_WIDTH), MathUtils.random(0, Scene.BUFFER_HEIGHT));
+            star.setPosition(MathUtils.random(0, Scene.BUFFER_WIDTH * 2), MathUtils.random(0, Scene.BUFFER_HEIGHT));
             star.setColor(Color.WHITE);
 
             if(MathUtils.randomBoolean(0.1f)) {
