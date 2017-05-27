@@ -16,7 +16,7 @@ public class EditorUI {
         this.scene = scene;
         stage = new Stage();
 
-        Gdx.input.setInputProcessor(stage);
+        // Gdx.input.setInputProcessor(stage);
         // TODO: Use input multiplexer for input
 
         initialize();
@@ -25,9 +25,9 @@ public class EditorUI {
     private void initialize() {
         VisUI.load();
 
-        VisSlider visSlider = new VisSlider(0, 90, 1, false);
-        visSlider.setWidth(200);
-        stage.addActor(visSlider);
+//        VisSlider visSlider = new VisSlider(0, 90, 1, false);
+//        visSlider.setWidth(200);
+//        stage.addActor(visSlider);
     }
 
     public void render(float delta) {
