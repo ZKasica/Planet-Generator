@@ -17,6 +17,8 @@ public class Orbiter extends SpaceObject {
     private float radius;
     private float yOffset;
 
+    private int color;
+
     private Vector3 position;
     private Matrix3 rotZ;
     private Matrix3 rotX;
@@ -34,6 +36,11 @@ public class Orbiter extends SpaceObject {
         position = new Vector3();
         rotZ = new Matrix3().setToRotation(zTilt);
         rotX = new Matrix3().setToRotation(Vector3.X, xTilt);
+    }
+
+    public Orbiter(Sprite sprite, OrbiterBlueprint blueprint, int color) {
+        this(sprite, blueprint);
+        this.color = color;
     }
 
     @Override
@@ -82,6 +89,14 @@ public class Orbiter extends SpaceObject {
 
     public float getRadius() {
         return radius;
+    }
+
+    public float getSize() {
+        return getSprite().getWidth();
+    }
+
+    public int getColor() {
+        return color;
     }
 
     public static class OrbiterBlueprint {

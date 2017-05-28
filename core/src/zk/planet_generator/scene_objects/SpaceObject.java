@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Created by Zach on 5/16/2017.
  */
 public abstract class SpaceObject implements Comparable<SpaceObject> {
-    private final Sprite sprite;
+    private Sprite sprite;
     private int zCoord;
 
     public SpaceObject(Sprite sprite) {
@@ -26,6 +26,10 @@ public abstract class SpaceObject implements Comparable<SpaceObject> {
 
     public Sprite getSprite() {
         return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
     }
 
     @Override

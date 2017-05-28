@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import zk.planet_generator.ColorGroup;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.*;
@@ -53,7 +52,8 @@ public class ObjectGenerator {
             moonBlueprint.angle = MathUtils.random(0, 360);
             moonBlueprint.radius = MathUtils.random(100, 250);
 
-            Orbiter moon = new Orbiter(createMoon(colors.random(), MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint);
+            int color = colors.random();
+            Orbiter moon = new Orbiter(createMoonSprite(color, MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint, color);
             moons.add(moon);
         }
 
@@ -83,7 +83,8 @@ public class ObjectGenerator {
         moonBlueprint.angle = MathUtils.random(0, 360);
         moonBlueprint.radius = MathUtils.random(100, 250);
 
-        Orbiter moon = new Orbiter(createMoon(colors.random(), MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint);
+        int color = colors.random();
+        Orbiter moon = new Orbiter(createMoonSprite(color, MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint, color);
         moons.add(moon);
         scene.addSpaceObjects(moons);
 
@@ -132,7 +133,7 @@ public class ObjectGenerator {
 
             Orbiter ringObject = null;
             if (MathUtils.randomBoolean(0.9f)) {
-                ringObject = new Orbiter(createMoon(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
+                ringObject = new Orbiter(createMoonSprite(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
             } else {
                 ringObject = new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint);
             }
@@ -165,7 +166,7 @@ public class ObjectGenerator {
 
             Orbiter ringObject = null;
             if (MathUtils.randomBoolean(0.9f)) {
-                ringObject = new Orbiter(createMoon(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
+                ringObject = new Orbiter(createMoonSprite(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
             } else {
                 ringObject = new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint);
             }
@@ -211,7 +212,7 @@ public class ObjectGenerator {
 
             Orbiter ringObject = null;
             if (MathUtils.randomBoolean(0.9f)) {
-                ringObject = new Orbiter(createMoon(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
+                ringObject = new Orbiter(createMoonSprite(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
             } else {
                 ringObject = new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint);
             }
@@ -243,7 +244,7 @@ public class ObjectGenerator {
                 cloudBlueprint.yOffset = yOffset + MathUtils.random(-5, 5);
                 cloudBlueprint.radius = scene.getPlanet().getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
-                Orbiter cloud = new Orbiter(createMoon(cloudColor, MathUtils.random(5, 8)), cloudBlueprint);
+                Orbiter cloud = new Orbiter(createMoonSprite(cloudColor, MathUtils.random(5, 8)), cloudBlueprint);
                 clouds.add(cloud);
             }
         }
@@ -275,7 +276,7 @@ public class ObjectGenerator {
         return stars;
     }
 
-    protected Sprite createMoon(int color, int size) {
+    public Sprite createMoonSprite(int color, int size) {
         Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
         pixmap.setColor(color);
         pixmap.fillCircle(pixmap.getWidth()/2, pixmap.getHeight()/2, size / 2 - 1);

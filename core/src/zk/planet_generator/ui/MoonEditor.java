@@ -1,5 +1,6 @@
 package zk.planet_generator.ui;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -45,7 +46,7 @@ public class MoonEditor extends ObjectEditor {
         add(velocitySlider).expandX().fill().padRight(5);
         add(new VisLabel("" + velocitySlider.getMaxValue())).row();
 
-        // Radius slider
+        // Radius Slider
         int min = (int)scene.getPlanet().getMinimumCloudRadiusAtY(0) + 5;
 
         add(new VisLabel("Radius")).left();
@@ -72,6 +73,84 @@ public class MoonEditor extends ObjectEditor {
 
         add(radiusSlider).expandX().fill().padRight(5);
         add(new VisLabel("" + radiusSlider.getMaxValue())).row();
+
+        // Z Rotation Slider
+        add(new VisLabel("Z-Rot.")).left();
+        add(new VisLabel(-90 + ""));
+
+        VisSlider zSlider = new VisSlider(-90, 90, 1, false);
+        zSlider.setSnapToValues(new float[]{0}, 10);
+        zSlider.setValue(moon.getzTilt());
+
+        zSlider.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                event.stop();
+                return false;
+            }
+        });
+
+        zSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                moon.setZTilt(zSlider.getValue());
+            }
+        });
+
+        add(zSlider).expandX().fill().padRight(5);
+        add(new VisLabel("" + zSlider.getMaxValue())).row();
+
+        // X Rotation Slider
+        add(new VisLabel("X-Rot.")).left();
+        add(new VisLabel(-90 + ""));
+
+        VisSlider xSlider = new VisSlider(-90, 90, 1, false);
+        xSlider.setSnapToValues(new float[]{0}, 10);
+        xSlider.setValue(moon.getxTilt());
+
+        xSlider.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                event.stop();
+                return false;
+            }
+        });
+
+        xSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                moon.setXTilt(xSlider.getValue());
+            }
+        });
+
+        add(xSlider).expandX().fill().padRight(5);
+        add(new VisLabel("" + xSlider.getMaxValue())).row();
+
+        // Size Slider
+        add(new VisLabel("Size")).left();
+        add(new VisLabel(5 + ""));
+
+        VisSlider sizeSlider = new VisSlider(5, 32, 1, false);
+        sizeSlider.setValue(moon.getSize());
+
+        sizeSlider.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                event.stop();
+                return false;
+            }
+        });
+
+        sizeSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Sprite sprite = scene.getObjectGenerator().createMoonSprite(moon.getColor(), (int)sizeSlider.getValue());
+                moon.setSprite(sprite);
+            }
+        });
+
+        add(sizeSlider).expandX().fill().padRight(5);
+        add(new VisLabel("" + sizeSlider.getMaxValue())).row();
     }
 
     @Override
