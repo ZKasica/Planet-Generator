@@ -32,4 +32,11 @@ public abstract class SpaceObject implements Comparable<SpaceObject> {
     public int compareTo(SpaceObject other) {
         return zCoord - other.zCoord;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        SpaceObject other = (SpaceObject) o;
+        return sprite.equals(other.sprite) && zCoord == other.zCoord;
+    }
+
 }

@@ -68,6 +68,22 @@ public class Orbiter extends SpaceObject {
         this.radius = radius;
     }
 
+    public float getAngularVelocity() {
+        return angularVelocity;
+    }
+
+    public float getzTilt() {
+        return zTilt;
+    }
+
+    public float getxTilt() {
+        return xTilt;
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
     public static class OrbiterBlueprint {
         public float angularVelocity;
         public float zTilt;

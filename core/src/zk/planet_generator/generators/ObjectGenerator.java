@@ -62,6 +62,34 @@ public class ObjectGenerator {
         return moons;
     }
 
+    public Orbiter createMoon() {
+        Array<Orbiter> moons = new Array<>();
+
+        ColorGroup colors = new ColorGroup()
+                .add(Color.rgba8888(176f / 255f, 155f / 255f, 178f / 255f, 1f))
+                .add(Color.rgba8888(156f / 255f, 155f / 255f, 190f / 255f, 1f))
+                .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
+                .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f));
+
+        int moonCount = MathUtils.random(0, 8);
+
+        float zTilt = zDir * MathUtils.random(10, 50);
+        float xTilt = -MathUtils.random(15, 55);
+
+        Orbiter.OrbiterBlueprint moonBlueprint = new Orbiter.OrbiterBlueprint();
+        moonBlueprint.angularVelocity = velDir * MathUtils.random(15, 60);
+        moonBlueprint.zTilt = zTilt + MathUtils.random(-10, 10);
+        moonBlueprint.xTilt = xTilt + MathUtils.random(-10, 10);
+        moonBlueprint.angle = MathUtils.random(0, 360);
+        moonBlueprint.radius = MathUtils.random(100, 250);
+
+        Orbiter moon = new Orbiter(createMoon(colors.random(), MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint);
+        moons.add(moon);
+        scene.addSpaceObjects(moons);
+
+        return moon;
+    }
+
     public Array<Ring> createRings() {
         Array<Ring> rings = new Array<>();
 
@@ -112,7 +140,7 @@ public class ObjectGenerator {
         }
 
         scene.addSpaceObjects(ringObjects);
-        rings.add(new Ring(ringObjects));
+        rings.add(new Ring(ringObjects, minimumRadius, maximumRadius));
 
         boolean shouldGenerateOuterRings = MathUtils.randomBoolean();
         if(!shouldGenerateOuterRings) {
@@ -144,9 +172,54 @@ public class ObjectGenerator {
             ringObjects2.add(ringObject);
         }
         scene.addSpaceObjects(ringObjects2);
-        rings.add(new Ring(ringObjects2));
+        rings.add(new Ring(ringObjects2, minimumRadius, maximumRadius));
 
         return rings;
+    }
+
+    public Ring createRing(Ring previousRing) {
+        Array<ColorGroup> colors = new Array<ColorGroup>();
+
+        colors.add(new ColorGroup()
+                .add(Color.rgba8888(223f / 255f, 233f / 255f, 180f / 255f, 1f))
+                .add(Color.rgba8888(170f / 255f, 90f / 255f, 103f / 255f, 1f)));
+
+        colors.add(new ColorGroup()
+                .add(Color.rgba8888(191f / 255f, 231f / 255f, 231f / 255f, 1f))
+                .add(Color.rgba8888(75f / 255f, 109f / 255f, 133f / 255f, 1f)));
+
+        colors.add(new ColorGroup()
+                .add(Color.rgba8888(169f / 255f, 194f / 255f, 175f / 255f, 1f))
+                .add(Color.rgba8888(30f / 255f, 97f / 255f, 42f / 255f, 1f)));
+
+        int objectCount = previousRing == null ? MathUtils.random(200, 300) : MathUtils.random(200, 350);
+        float angularVelocity = 0;
+        float zTilt = 30;
+        float xTilt = -20;
+        float minimumRadius = previousRing == null ? scene.getPlanet().getWidthAtY(0) + 25 : previousRing.getMaxRadius() + 5;
+        float maximumRadius = previousRing == null ? minimumRadius + MathUtils.random(20, 60) : minimumRadius + MathUtils.random(20, 50);
+        ColorGroup colorGroup = colors.random();
+
+        Array<Orbiter> ringObjects = new Array<>();
+        for(int i = 0; i < objectCount; i++) {
+            Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
+            blueprint.angularVelocity = angularVelocity;
+            blueprint.zTilt = zTilt;
+            blueprint.xTilt = xTilt;
+            blueprint.angle = MathUtils.random(0, 360);
+            blueprint.radius = MathUtils.random(minimumRadius, maximumRadius);
+
+            Orbiter ringObject = null;
+            if (MathUtils.randomBoolean(0.9f)) {
+                ringObject = new Orbiter(createMoon(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
+            } else {
+                ringObject = new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint);
+            }
+            ringObjects.add(ringObject);
+        }
+
+        scene.addSpaceObjects(ringObjects);
+        return new Ring(ringObjects, minimumRadius, maximumRadius);
     }
 
     public Array<Orbiter> createClouds() {
@@ -180,7 +253,7 @@ public class ObjectGenerator {
     }
 
     public Array<Star> createStars() {
-        return createStars(MathUtils.random(20, 120));
+        return createStars(MathUtils.random(20, 200));
     }
 
     public Array<Star> createStars(int starAmount) {
@@ -188,7 +261,7 @@ public class ObjectGenerator {
         Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
         for(int i = 0; i < starAmount; i++) {
             Sprite star = new Sprite(pixelTexture);
-            star.setPosition(MathUtils.random(0, Scene.BUFFER_WIDTH * 2), MathUtils.random(0, Scene.BUFFER_HEIGHT));
+            star.setPosition(MathUtils.random(0, Scene.BUFFER_WIDTH + Scene.EDITOR_OFFSET), MathUtils.random(0, Scene.BUFFER_HEIGHT));
             star.setColor(Color.WHITE);
 
             if(MathUtils.randomBoolean(0.1f)) {

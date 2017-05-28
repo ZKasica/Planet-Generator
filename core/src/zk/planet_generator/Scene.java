@@ -23,6 +23,7 @@ public class Scene extends InputAdapter {
     public static final int BUFFER_HEIGHT = 360;
     public static final int CENTER_X = BUFFER_WIDTH / 2;
     public static final int CENTER_Y = BUFFER_HEIGHT / 2;
+    public static final int EDITOR_OFFSET = 100;
 
     public static ShaderProgram planetShader;
 
@@ -53,7 +54,7 @@ public class Scene extends InputAdapter {
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
         gameCamera.zoom = 1f;
-        gameCamera.translate(100, 0);
+        gameCamera.translate(EDITOR_OFFSET, 0);
         gameCamera.update();
 
         camera = new OrthographicCamera();
@@ -226,5 +227,9 @@ public class Scene extends InputAdapter {
 
     public ObjectGenerator getObjectGenerator() {
         return objectGenerator;
+    }
+
+    public void removeObject(SpaceObject object) {
+        spaceObjects.removeValue(object, false);
     }
 }
