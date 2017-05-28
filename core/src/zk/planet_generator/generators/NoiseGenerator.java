@@ -1,4 +1,4 @@
-package zk.planet_generator;
+package zk.planet_generator.generators;
 
 import java.util.Random;
 

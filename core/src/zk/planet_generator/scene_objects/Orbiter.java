@@ -1,9 +1,10 @@
-package zk.planet_generator;
+package zk.planet_generator.scene_objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
+import zk.planet_generator.Scene;
 
 /**
  * Created by Zach on 5/16/2017.
@@ -49,6 +50,24 @@ public class Orbiter extends SpaceObject {
         setZCoord((int)position.z);
     }
 
+    public void setXTilt(float xTilt) {
+        this.xTilt = xTilt;
+        rotX.setToRotation(Vector3.X, xTilt);
+    }
+
+    public void setZTilt(float amount) {
+        zTilt = amount;
+        rotZ.setToRotation(zTilt);
+    }
+
+    public void setAngularVelocity(float angularVelocity) {
+        this.angularVelocity = angularVelocity;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
     public static class OrbiterBlueprint {
         public float angularVelocity;
         public float zTilt;
@@ -57,9 +76,4 @@ public class Orbiter extends SpaceObject {
         public float radius;
         public float yOffset;
     }
-
-//    public void updateZTilt(float amount) {
-//        zTilt += amount;
-//        rotZ.setToRotation(zTilt);
-//    }
 }

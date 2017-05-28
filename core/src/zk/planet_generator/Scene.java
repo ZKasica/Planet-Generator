@@ -11,11 +11,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import zk.planet_generator.generators.NoiseGenerator;
+import zk.planet_generator.generators.ObjectGenerator;
+import zk.planet_generator.scene_objects.*;
 
 /**
  * Created by zach on 5/21/17.
  */
-public class Scene {
+public class Scene extends InputAdapter {
     public static final int BUFFER_WIDTH = 640;
     public static final int BUFFER_HEIGHT = 360;
     public static final int CENTER_X = BUFFER_WIDTH / 2;
@@ -28,19 +31,16 @@ public class Scene {
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
 
+    private ObjectGenerator objectGenerator;
     private Array<SpaceObject> spaceObjects;
-    private Array<Orbiter> moons;
-    private Array<Orbiter> rings;
-    private Array<Orbiter> clouds;
-    private Array<Star> stars;
     private Planet planet;
 
     private boolean shouldSpeedUpTime;
 
     public Scene() {
         setupRendering();
-        generateObjects();
-        initializeInput();
+        //generateObjects();
+        createEmptyScene();
     }
 
     private void setupRendering() {
@@ -53,7 +53,7 @@ public class Scene {
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
         gameCamera.zoom = 1f;
-        //gameCamera.translate(100, 0);
+        gameCamera.translate(100, 0);
         gameCamera.update();
 
         camera = new OrthographicCamera();
@@ -64,7 +64,14 @@ public class Scene {
         pixelBuffer = new PixelBuffer();
     }
 
-    private void generateObjects() {
+    public void createEmptyScene() {
+        spaceObjects = new Array<>();
+
+        createPlanet(MathUtils.randomSign());
+        objectGenerator = new ObjectGenerator(this);
+    }
+
+    public void generateObjects() {
         spaceObjects = new Array<>();
 
         int zDir = MathUtils.randomSign();
@@ -72,52 +79,45 @@ public class Scene {
 
         createPlanet(velDir);
 
-        ObjectGenerator objectGenerator = new ObjectGenerator(planet);
-        moons = objectGenerator.createMoons(velDir, zDir);
-        rings = objectGenerator.createRings(velDir, zDir);
-        clouds = objectGenerator.createClouds(velDir);
-        stars = objectGenerator.createStars();
-
-        spaceObjects.addAll(moons);
-        spaceObjects.addAll(rings);
-        spaceObjects.addAll(clouds);
+        objectGenerator = new ObjectGenerator(this, velDir, zDir);
+        objectGenerator.createMoons();
+        objectGenerator.createRings();
+        objectGenerator.createClouds();
+        objectGenerator.createStars();
     }
 
-    private void initializeInput() {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            public boolean keyDown(int keycode) {
-                switch(keycode) {
-                    case Input.Keys.ESCAPE:
-                        Gdx.app.exit();
-                        return true;
+    @Override
+    public boolean keyDown(int keycode) {
+        switch(keycode) {
+            case Input.Keys.ESCAPE:
+                Gdx.app.exit();
+                return true;
 
-                    case Input.Keys.R:
-                        reset();
-                        return true;
+            case Input.Keys.R:
+                reset();
+                return true;
 
-                    case Input.Keys.E:
-                        shouldSpeedUpTime = true;
-                        return true;
+            case Input.Keys.E:
+                shouldSpeedUpTime = true;
+                return true;
 
-                    case Input.Keys.F12:
-                        takeScreenshot();
-                        return true;
-                }
+            case Input.Keys.F12:
+                takeScreenshot();
+                return true;
+        }
 
-                return false;
-            }
+        return false;
+    }
 
-            @Override
-            public boolean keyUp(int keycode) {
-                switch(keycode) {
-                    case Input.Keys.E:
-                        shouldSpeedUpTime = false;
-                        return true;
-                }
+    @Override
+    public boolean keyUp(int keycode) {
+        switch(keycode) {
+            case Input.Keys.E:
+                shouldSpeedUpTime = false;
+                return true;
+        }
 
-                return false;
-            }
-        });
+        return false;
     }
 
     private Sprite generatePlanetSprite(int size) {
@@ -136,12 +136,6 @@ public class Scene {
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
 
-//        if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
-//            for(Orbiter ring : rings) {
-//                ring.updateZTilt(50 * delta);
-//            }
-//        }
-
         if(shouldSpeedUpTime) {
             delta *= 10;
         }
@@ -157,15 +151,9 @@ public class Scene {
         pixelBuffer.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(30f / 255f, 25f / 255f, 35f / 255f, 1);
-        //Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1);
 
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
-        for(Star star : stars) {
-            //star.update(delta);
-            star.render(batch);
-        }
-
         for(SpaceObject spaceObject : spaceObjects) {
             spaceObject.render(batch);
         }
@@ -215,16 +203,11 @@ public class Scene {
         }
         spaceObjects.clear();
 
-        for(Star star : stars) {
-            star.getSprite().getTexture().dispose();
-        }
-        stars.clear();
-
-        moons.clear();
-        rings.clear();
-        clouds.clear();
-
         generateObjects();
+    }
+
+    public void addSpaceObjects(Array<? extends SpaceObject> objects) {
+        spaceObjects.addAll(objects);
     }
 
     private void takeScreenshot() {
@@ -235,5 +218,13 @@ public class Scene {
         PixmapIO.writePNG(Gdx.files.external("screenshot.png"), pixmap);
         Gdx.app.log("Screenshot", "Saved screenshot to screenshot.png");
         pixmap.dispose();
+    }
+
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public ObjectGenerator getObjectGenerator() {
+        return objectGenerator;
     }
 }

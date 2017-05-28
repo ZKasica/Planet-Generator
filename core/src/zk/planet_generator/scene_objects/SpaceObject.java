@@ -1,4 +1,4 @@
-package zk.planet_generator;
+package zk.planet_generator.scene_objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
