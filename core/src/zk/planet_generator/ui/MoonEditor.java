@@ -21,136 +21,44 @@ public class MoonEditor extends ObjectEditor {
         super(scene, objectName);
         this.moon = moon;
 
-        // Velocity Slider
-        add(new VisLabel("Velocity")).left().padRight(10);
-        add(new VisLabel(-200 + "")).padRight(5);
+        float[] zeroSnap = new float[]{0};
 
-        VisSlider velocitySlider = new VisSlider(-200, 200, 1, false);
-        velocitySlider.setSnapToValues(new float[]{0}, 10);
-        velocitySlider.setValue(moon.getAngularVelocity());
-        velocitySlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                event.stop();
-                return false;
-            }
-        });
-
-        velocitySlider.addListener(new ChangeListener() {
+        createSlider("Velocity", -200, 200, zeroSnap, moon.getAngularVelocity(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                moon.setAngularVelocity(velocitySlider.getValue());
+                moon.setAngularVelocity(((VisSlider) actor).getValue());
             }
         });
 
-        add(velocitySlider).expandX().fill().padRight(5);
-        add(new VisLabel("" + velocitySlider.getMaxValue())).row();
-
-        // Radius Slider
-        int min = (int)scene.getPlanet().getMinimumCloudRadiusAtY(0) + 5;
-
-        add(new VisLabel("Radius")).left();
-        add(new VisLabel(min + ""));
-
-        VisSlider radiusSlider = new VisSlider(min, 400, 1, false);
-        velocitySlider.setSnapToValues(new float[]{0}, 10);
-        velocitySlider.setValue(moon.getRadius());
-
-        radiusSlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                event.stop();
-                return false;
-            }
-        });
-
-        radiusSlider.addListener(new ChangeListener() {
+        float radiusMin = scene.getPlanet().getMinimumCloudRadiusAtY(0) + 5;
+        createSlider("Radius", radiusMin, 400, null, moon.getRadius(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                moon.setRadius(radiusSlider.getValue());
+                moon.setRadius(((VisSlider) actor).getValue());
             }
         });
 
-        add(radiusSlider).expandX().fill().padRight(5);
-        add(new VisLabel("" + radiusSlider.getMaxValue())).row();
-
-        // Z Rotation Slider
-        add(new VisLabel("Z-Rot.")).left();
-        add(new VisLabel(-90 + ""));
-
-        VisSlider zSlider = new VisSlider(-90, 90, 1, false);
-        zSlider.setSnapToValues(new float[]{0}, 10);
-        zSlider.setValue(moon.getzTilt());
-
-        zSlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                event.stop();
-                return false;
-            }
-        });
-
-        zSlider.addListener(new ChangeListener() {
+        createSlider("Z-Rot", -90, 90, zeroSnap, moon.getzTilt(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                moon.setZTilt(zSlider.getValue());
+                moon.setZTilt(((VisSlider) actor).getValue());
             }
         });
 
-        add(zSlider).expandX().fill().padRight(5);
-        add(new VisLabel("" + zSlider.getMaxValue())).row();
-
-        // X Rotation Slider
-        add(new VisLabel("X-Rot.")).left();
-        add(new VisLabel(-90 + ""));
-
-        VisSlider xSlider = new VisSlider(-90, 90, 1, false);
-        xSlider.setSnapToValues(new float[]{0}, 10);
-        xSlider.setValue(moon.getxTilt());
-
-        xSlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                event.stop();
-                return false;
-            }
-        });
-
-        xSlider.addListener(new ChangeListener() {
+        createSlider("X-Rot", -90, 90, zeroSnap, moon.getxTilt(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                moon.setXTilt(xSlider.getValue());
+                moon.setXTilt(((VisSlider) actor).getValue());
             }
         });
 
-        add(xSlider).expandX().fill().padRight(5);
-        add(new VisLabel("" + xSlider.getMaxValue())).row();
-
-        // Size Slider
-        add(new VisLabel("Size")).left();
-        add(new VisLabel(5 + ""));
-
-        VisSlider sizeSlider = new VisSlider(5, 32, 1, false);
-        sizeSlider.setValue(moon.getSize());
-
-        sizeSlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                event.stop();
-                return false;
-            }
-        });
-
-        sizeSlider.addListener(new ChangeListener() {
+        createSlider("Size", 5, 32, null, moon.getSize(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Sprite sprite = scene.getObjectGenerator().createMoonSprite(moon.getColor(), (int)sizeSlider.getValue());
+                Sprite sprite = scene.getObjectGenerator().createMoonSprite(moon.getColor(), (int) ((VisSlider) actor).getValue());
                 moon.setSprite(sprite);
             }
         });
-
-        add(sizeSlider).expandX().fill().padRight(5);
-        add(new VisLabel("" + sizeSlider.getMaxValue())).row();
     }
 
     @Override

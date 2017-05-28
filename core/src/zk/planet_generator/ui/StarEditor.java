@@ -20,22 +20,8 @@ public class StarEditor extends ObjectEditor {
     public StarEditor(Scene scene, String objectName) {
         super(scene, objectName);
         shouldFireChange = true;
-        initialize();
-    }
 
-    private void initialize() {
-        add(new VisLabel(0 + "")).padRight(5);
-
-        slider = new VisSlider(0, 200, 1, false);
-        slider.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                event.stop();
-                return false;
-            }
-        });
-
-        slider.addListener(new ChangeListener() {
+        slider = createSlider("", 0, 200, null, 0, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(!shouldFireChange) {
@@ -46,9 +32,6 @@ public class StarEditor extends ObjectEditor {
                 previousValue = (int) slider.getValue();
             }
         });
-
-        add(slider).expandX().fill().padRight(5);
-        add(new VisLabel("  " + 200));
     }
 
     private void changeStarAmount(int change) {
