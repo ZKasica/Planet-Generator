@@ -195,8 +195,8 @@ public class ObjectGenerator {
 
         int objectCount = previousRing == null ? MathUtils.random(200, 300) : MathUtils.random(200, 350);
         float angularVelocity = 0;
-        float zTilt = 30;
-        float xTilt = -20;
+        float zTilt = previousRing == null ? 30 : previousRing.getZTilt();
+        float xTilt = previousRing == null ? -20 : previousRing.getXTilt();
         float minimumRadius = previousRing == null ? scene.getPlanet().getWidthAtY(0) + 25 : previousRing.getMaxRadius() + 5;
         float maximumRadius = previousRing == null ? minimumRadius + MathUtils.random(20, 60) : minimumRadius + MathUtils.random(20, 50);
         ColorGroup colorGroup = colors.random();

@@ -9,6 +9,7 @@ import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Orbiter;
+import zk.planet_generator.scene_objects.Ring;
 import zk.planet_generator.scene_objects.Star;
 
 /**
@@ -19,6 +20,7 @@ public class EditorUI {
     private Stage stage;
 
     private StarEditor starEditor;
+    private Ring previousRing;
 
     private VisTable objectEditorTable;
 
@@ -50,7 +52,7 @@ public class EditorUI {
         createRingButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                scene.getObjectGenerator().createRing(null);
+                createRingClicked();
             }
         });
         buttonTable.add(createRingButton).pad(5);
@@ -101,6 +103,13 @@ public class EditorUI {
 
         Array<Star> stars = scene.getObjectGenerator().createStars();
         starEditor.setStars(stars);
+    }
+
+    private void createRingClicked() {
+        Ring ring = scene.getObjectGenerator().createRing(previousRing);
+        RingEditor ringEditor = new RingEditor(scene, "Ring", ring);
+        addObjectEditor(ringEditor);
+        previousRing = ring;
     }
 
     private void createMoonClicked() {

@@ -79,11 +79,11 @@ public class Orbiter extends SpaceObject {
         return angularVelocity;
     }
 
-    public float getzTilt() {
+    public float getZTilt() {
         return zTilt;
     }
 
-    public float getxTilt() {
+    public float getXTilt() {
         return xTilt;
     }
 

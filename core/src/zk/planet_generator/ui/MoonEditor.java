@@ -2,12 +2,8 @@ package zk.planet_generator.ui;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSlider;
-import org.omg.CORBA.ORB;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Orbiter;
 
@@ -38,14 +34,14 @@ public class MoonEditor extends ObjectEditor {
             }
         });
 
-        createSlider("Z-Rot", -90, 90, zeroSnap, moon.getzTilt(), new ChangeListener() {
+        createSlider("Z-Rot", -90, 90, zeroSnap, moon.getZTilt(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 moon.setZTilt(((VisSlider) actor).getValue());
             }
         });
 
-        createSlider("X-Rot", -90, 90, zeroSnap, moon.getxTilt(), new ChangeListener() {
+        createSlider("X-Rot", -90, 90, zeroSnap, moon.getXTilt(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 moon.setXTilt(((VisSlider) actor).getValue());

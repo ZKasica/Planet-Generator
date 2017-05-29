@@ -1,5 +1,6 @@
 package zk.planet_generator.scene_objects;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -36,10 +37,8 @@ public class Ring {
         this.maxRadius = maxRadius;
     }
 
-    public void setZTilt(float tilt) {
-        for(Orbiter ring : objects) {
-            ring.setZTilt(tilt);
-        }
+    public float getAngularVelocity() {
+        return objects.first().getAngularVelocity();
     }
 
     public void setAngularVelocity(float vel) {
@@ -48,13 +47,50 @@ public class Ring {
         }
     }
 
+    public float getZTilt() {
+        return objects.first().getZTilt();
+    }
+
+    public void setZTilt(float tilt) {
+        for(Orbiter ring : objects) {
+            ring.setZTilt(tilt);
+        }
+    }
+
+    public float getXTilt() {
+        return objects.first().getXTilt();
+    }
+
     public void setXTilt(float tilt) {
         for(Orbiter ring : objects) {
             ring.setXTilt(tilt);
         }
     }
 
-    public void setMinimumRadius(float range) {
+    public void setMinimumRadius(float minimumRadius) {
+        this.minRadius = minimumRadius;
+        if(maxRadius < minRadius) {
+            maxRadius = minRadius + 1;
+        }
+        for(Orbiter ringObj : objects) {
+            ringObj.setRadius(MathUtils.random(minRadius, maxRadius));
+        }
 
+        // TODO: Scale radius of objects accordingly
+    }
+
+    public void setMaximumRadius(float maximumRadius) {
+        this.maxRadius = maximumRadius;
+        if(minRadius > maxRadius) {
+            minRadius = maxRadius - 1;
+        }
+
+        for(Orbiter ringObj : objects) {
+            ringObj.setRadius(MathUtils.random(minRadius, maxRadius));
+        }
+    }
+
+    private float map(float x, float in_min, float in_max, float out_min, float out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 }

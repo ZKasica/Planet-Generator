@@ -3,10 +3,13 @@ package zk.planet_generator.ui;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSlider;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import zk.planet_generator.Scene;
 
 /**
@@ -18,7 +21,17 @@ public abstract class ObjectEditor extends Table {
 
     public ObjectEditor(Scene scene, String objectName) {
         this.scene = scene;
-        left().add(new VisLabel(objectName)).padTop(30).row();
+        right().add(new VisLabel(objectName)).padTop(30).row();
+
+        // TODO: Make delete button work
+//        VisTextButton deleteObject = new VisTextButton("Delete");
+//        deleteObject.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                deleteObjects();
+//            }
+//        });
+//        add(deleteObject).row();
     }
 
     public abstract void deleteObjects();
