@@ -1,15 +1,16 @@
 package zk.planet_generator.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.kotcrab.vis.ui.widget.VisLabel;
-import com.kotcrab.vis.ui.widget.VisSlider;
-import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.widget.*;
 import zk.planet_generator.Scene;
 
 /**
@@ -17,26 +18,45 @@ import zk.planet_generator.Scene;
  */
 public abstract class ObjectEditor extends Table {
     protected Scene scene;
-    private String objectName;
 
     public ObjectEditor(Scene scene, String objectName) {
         this.scene = scene;
-        right().add(new VisLabel(objectName)).padTop(30).row();
 
-        // TODO: Make delete button work
-//        VisTextButton deleteObject = new VisTextButton("Delete");
-//        deleteObject.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                deleteObjects();
-//            }
-//        });
-//        add(deleteObject).row();
+        //debug();
+
+        Table top = new Table();
+        top.add(new VisLabel(objectName)).expandX().pad(0, 20, 0, 20);
+
+        VisTextButton randomizeObject = new VisTextButton("Randomize");
+        randomizeObject.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                randomize();
+            }
+        });
+        top.add(randomizeObject).pad(0, 20, 0, 20);
+
+        VisTextButton deleteObject = new VisTextButton("Delete");
+        deleteObject.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                delete();
+            }
+        });
+        top.add(deleteObject).pad(0, 20, 0, 20);
+
+        add(top).padTop(80).colspan(4).row();
 
         // TODO: Add randomize button
     }
 
+    public abstract void randomize();
     public abstract void deleteObjects();
+
+    public void delete() {
+        deleteObjects();
+        this.remove();
+    }
 
     public VisSlider createSlider(String label, float minimum, float maximum, float[] snapValues, float initialValue, ChangeListener changeListener) {
         return createSlider(label, minimum, maximum, snapValues, 10, initialValue, changeListener);

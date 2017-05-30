@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisSlider;
+import com.sun.corba.se.internal.iiop.ORB;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
@@ -56,6 +57,16 @@ public class CloudEditor extends ObjectEditor {
 
     @Override
     public void deleteObjects() {
+        int size = clouds.size;
+        for(int i = 0; i < size; i++) {
+            Array<Orbiter> cloudObjects = clouds.pop().getCloudObjects();
+            scene.removeObjects(cloudObjects);
+        }
+        clouds.clear();
+    }
+
+    @Override
+    public void randomize() {
 
     }
 }

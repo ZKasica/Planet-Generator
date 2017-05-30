@@ -60,5 +60,11 @@ public class StarEditor extends ObjectEditor {
         for(int i = 0; i < size; i++) {
             scene.removeObject(stars.pop());
         }
+        stars.clear();
+    }
+
+    @Override
+    public void randomize() {
+
     }
 }

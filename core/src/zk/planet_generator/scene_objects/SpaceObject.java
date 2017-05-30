@@ -42,5 +42,4 @@ public abstract class SpaceObject implements Comparable<SpaceObject> {
         SpaceObject other = (SpaceObject) o;
         return sprite.equals(other.sprite) && zCoord == other.zCoord;
     }
-
 }

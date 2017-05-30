@@ -91,6 +91,11 @@ public class RingEditor extends ObjectEditor {
 
     @Override
     public void deleteObjects() {
+        scene.removeObjects(ring.getObjects());
+    }
+
+    @Override
+    public void randomize() {
 
     }
 }

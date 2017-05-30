@@ -2,6 +2,7 @@ package zk.planet_generator.ui;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -24,7 +25,7 @@ public class EditorUI {
     private CloudEditor cloudEditor;
     private Ring previousRing;
 
-    private VisTable objectEditorTable;
+    private Table objectEditorTable;
 
     public EditorUI(Scene scene) {
         this.scene = scene;
@@ -81,18 +82,10 @@ public class EditorUI {
 
         stage.addActor(buttonTable);
 
-        // Object Editor Scrollpane
-        objectEditorTable = new VisTable();
-        objectEditorTable.addSeparator();
-
+        objectEditorTable = new Table();
         VisScrollPane objectEditor = new VisScrollPane(objectEditorTable);
         objectEditor.setScrollingDisabled(true, false);
-        //objectEditor.setSize(500, stage.getHeight());
-        //objectEditor.setPosition(stage.getWidth() - objectEditor.getWidth(), 0);
 
-        //stage.addActor(objectEditor);
-
-//        Code for putting the object scrollpane in a window
         VisWindow editorWindow = new VisWindow("Object Editor", true);
         editorWindow.setSize(600, stage.getHeight());
         editorWindow.setPosition(stage.getWidth() - editorWindow.getWidth(), 0);
@@ -102,8 +95,7 @@ public class EditorUI {
     }
 
     private void addObjectEditor(ObjectEditor objectEditor) {
-        objectEditorTable.add(objectEditor).fill().row();
-        objectEditorTable.addSeparator();
+        objectEditorTable.add(objectEditor).expand().fill().row();
     }
 
     private void createStarsClicked() {
