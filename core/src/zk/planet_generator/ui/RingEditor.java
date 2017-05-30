@@ -85,8 +85,6 @@ public class RingEditor extends ObjectEditor {
                         scene.removeObject(removed);
                     }
                 }
-
-                System.out.println(ring.getObjectCount());
             }
         });
     }

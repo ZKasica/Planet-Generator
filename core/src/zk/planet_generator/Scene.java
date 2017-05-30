@@ -207,14 +207,6 @@ public class Scene extends InputAdapter {
         generateObjects();
     }
 
-    public void addSpaceObjects(Array<? extends SpaceObject> objects) {
-        spaceObjects.addAll(objects);
-    }
-
-    public void addSpaceObject(SpaceObject object) {
-        spaceObjects.add(object);
-    }
-
     private void takeScreenshot() {
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
 
@@ -231,6 +223,18 @@ public class Scene extends InputAdapter {
 
     public ObjectGenerator getObjectGenerator() {
         return objectGenerator;
+    }
+
+    public void addSpaceObjects(Array<? extends SpaceObject> objects) {
+        spaceObjects.addAll(objects);
+    }
+
+    public void addSpaceObject(SpaceObject object) {
+        spaceObjects.add(object);
+    }
+
+    public void removeObjects(Array<? extends SpaceObject> objects) {
+        spaceObjects.removeAll(objects, false);
     }
 
     public void removeObject(SpaceObject object) {

@@ -238,8 +238,8 @@ public class ObjectGenerator {
         return ringObject;
     }
 
-    public Array<Orbiter> createClouds() {
-        Array<Orbiter> clouds = new Array<>();
+    public Array<Cloud> createClouds() {
+        Array<Cloud> clouds = new Array<>();
 
         int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
 
@@ -250,6 +250,7 @@ public class ObjectGenerator {
             int yOffset = MathUtils.random(-56, 56);
             int angle = MathUtils.random(0, 360);
 
+            Array<Orbiter> cloudObjects = new Array<>();
             for(int j = 0; j < clusterCount; j++) {
                 Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
                 cloudBlueprint.angularVelocity = velDir * velocity;
@@ -260,12 +261,41 @@ public class ObjectGenerator {
                 cloudBlueprint.radius = scene.getPlanet().getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
                 Orbiter cloud = new Orbiter(createMoonSprite(cloudColor, MathUtils.random(5, 8)), cloudBlueprint);
-                clouds.add(cloud);
+                cloudObjects.add(cloud);
             }
+
+            clouds.add(new Cloud(cloudObjects));
         }
 
-        scene.addSpaceObjects(clouds);
+        for(Cloud cloud : clouds) {
+            scene.addSpaceObjects(cloud.getCloudObjects());
+        }
         return clouds;
+    }
+
+    public Cloud createCloud(float velocity) {
+        int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
+
+        int clusterCount = MathUtils.random(6, 40);
+        int yOffset = MathUtils.random(-56, 56);
+        int angle = MathUtils.random(0, 360);
+
+        Array<Orbiter> cloudObjects = new Array<>();
+        for(int i = 0; i < clusterCount; i++) {
+            Orbiter.OrbiterBlueprint cloudBlueprint = new Orbiter.OrbiterBlueprint();
+            cloudBlueprint.angularVelocity = /*velDir * */ velocity;
+            cloudBlueprint.zTilt = 0;
+            cloudBlueprint.xTilt = -15;
+            cloudBlueprint.angle = angle + MathUtils.random(0, 30);
+            cloudBlueprint.yOffset = yOffset + MathUtils.random(-5, 5);
+            cloudBlueprint.radius = scene.getPlanet().getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
+
+            Orbiter cloud = new Orbiter(createMoonSprite(cloudColor, MathUtils.random(5, 8)), cloudBlueprint);
+            cloudObjects.add(cloud);
+        }
+
+        scene.addSpaceObjects(cloudObjects);
+        return new Cloud(cloudObjects);
     }
 
     public Array<Star> createStars() {

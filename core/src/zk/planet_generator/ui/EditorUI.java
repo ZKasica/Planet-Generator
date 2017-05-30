@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 import zk.planet_generator.Scene;
+import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
 import zk.planet_generator.scene_objects.Star;
@@ -20,6 +21,7 @@ public class EditorUI {
     private Stage stage;
 
     private StarEditor starEditor;
+    private CloudEditor cloudEditor;
     private Ring previousRing;
 
     private VisTable objectEditorTable;
@@ -66,6 +68,16 @@ public class EditorUI {
             }
         });
         buttonTable.add(createMoonButton).pad(5);
+
+        // Create Moon Button
+        VisTextButton createCloudButton = new VisTextButton("Create Clouds");
+        createCloudButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                createCloudClicked();
+            }
+        });
+        buttonTable.add(createCloudButton).pad(5);
 
         stage.addActor(buttonTable);
 
@@ -117,6 +129,14 @@ public class EditorUI {
         Orbiter moon = scene.getObjectGenerator().createMoon();
         MoonEditor moonEditor = new MoonEditor(scene, "Moon", moon);
         addObjectEditor(moonEditor);
+    }
+
+    private void createCloudClicked() {
+        if(cloudEditor == null) {
+            Array<Cloud> clouds = scene.getObjectGenerator().createClouds();
+            cloudEditor = new CloudEditor(scene, "Clouds", clouds);
+            addObjectEditor(cloudEditor);
+        }
     }
 
     public void render(float delta) {

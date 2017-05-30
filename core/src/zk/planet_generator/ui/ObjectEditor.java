@@ -32,18 +32,24 @@ public abstract class ObjectEditor extends Table {
 //            }
 //        });
 //        add(deleteObject).row();
+
+        // TODO: Add randomize button
     }
 
     public abstract void deleteObjects();
 
     public VisSlider createSlider(String label, float minimum, float maximum, float[] snapValues, float initialValue, ChangeListener changeListener) {
+        return createSlider(label, minimum, maximum, snapValues, 10, initialValue, changeListener);
+    }
+
+    public VisSlider createSlider(String label, float minimum, float maximum, float[] snapValues, float threshold, float initialValue, ChangeListener changeListener) {
         if(!label.isEmpty()) {
             add(new VisLabel(label)).left().padRight(10).padTop(20);
         }
         add(new VisLabel((int)minimum + "")).padRight(5).padTop(20);
 
         VisSlider slider = new VisSlider(minimum, maximum, 1, false);
-        slider.setSnapToValues(snapValues, 10);
+        slider.setSnapToValues(snapValues, threshold);
         slider.setValue(initialValue);
         slider.addListener(new EventListener() {
             @Override
