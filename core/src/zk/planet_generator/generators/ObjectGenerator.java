@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import org.omg.CORBA.ORB;
 import zk.planet_generator.ColorGroup;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.*;
@@ -141,7 +142,7 @@ public class ObjectGenerator {
         }
 
         scene.addSpaceObjects(ringObjects);
-        rings.add(new Ring(ringObjects, minimumRadius, maximumRadius));
+        rings.add(new Ring(ringObjects, colorGroup, minimumRadius, maximumRadius));
 
         boolean shouldGenerateOuterRings = MathUtils.randomBoolean();
         if(!shouldGenerateOuterRings) {
@@ -173,7 +174,7 @@ public class ObjectGenerator {
             ringObjects2.add(ringObject);
         }
         scene.addSpaceObjects(ringObjects2);
-        rings.add(new Ring(ringObjects2, minimumRadius, maximumRadius));
+        rings.add(new Ring(ringObjects2, colorGroup, minimumRadius, maximumRadius));
 
         return rings;
     }
@@ -220,7 +221,21 @@ public class ObjectGenerator {
         }
 
         scene.addSpaceObjects(ringObjects);
-        return new Ring(ringObjects, minimumRadius, maximumRadius);
+        return new Ring(ringObjects, colorGroup, minimumRadius, maximumRadius);
+    }
+
+    public Orbiter createObjectInRing(Ring ring) {
+        Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
+        blueprint.angle = MathUtils.random(0, 360);
+        blueprint.radius = MathUtils.random(ring.getMinRadius(), ring.getMaxRadius());
+        blueprint.zTilt = ring.getZTilt();
+        blueprint.xTilt = ring.getXTilt();
+        blueprint.angularVelocity = ring.getAngularVelocity();
+
+        Orbiter ringObject = new Orbiter(createMoonSprite(ring.getColors().random(), MathUtils.random(4, 6)), blueprint);
+        scene.addSpaceObject(ringObject);
+        ring.addObject(ringObject);
+        return ringObject;
     }
 
     public Array<Orbiter> createClouds() {

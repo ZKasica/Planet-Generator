@@ -75,17 +75,18 @@ public class EditorUI {
 
         VisScrollPane objectEditor = new VisScrollPane(objectEditorTable);
         objectEditor.setScrollingDisabled(true, false);
-        objectEditor.setSize(500, stage.getHeight());
-        objectEditor.setPosition(stage.getWidth() - objectEditor.getWidth(), 0);
+        //objectEditor.setSize(500, stage.getHeight());
+        //objectEditor.setPosition(stage.getWidth() - objectEditor.getWidth(), 0);
 
-        stage.addActor(objectEditor);
+        //stage.addActor(objectEditor);
 
 //        Code for putting the object scrollpane in a window
-//        VisWindow editorWindow = new VisWindow("Object Editor", true);
-//        editorWindow.setWidth(400);
-//        editorWindow.setSize(400, stage.getHeight());
+        VisWindow editorWindow = new VisWindow("Object Editor", true);
+        editorWindow.setSize(600, stage.getHeight());
+        editorWindow.setPosition(stage.getWidth() - editorWindow.getWidth(), 0);
+        editorWindow.add(objectEditor).fill().expand();
 
-//        editorWindow.add(objectEditor).fill().expand();
+        stage.addActor(editorWindow);
     }
 
     private void addObjectEditor(ObjectEditor objectEditor) {

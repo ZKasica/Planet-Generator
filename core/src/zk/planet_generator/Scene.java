@@ -211,6 +211,10 @@ public class Scene extends InputAdapter {
         spaceObjects.addAll(objects);
     }
 
+    public void addSpaceObject(SpaceObject object) {
+        spaceObjects.add(object);
+    }
+
     private void takeScreenshot() {
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
 

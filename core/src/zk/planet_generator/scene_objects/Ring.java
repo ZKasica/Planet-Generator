@@ -2,17 +2,20 @@ package zk.planet_generator.scene_objects;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import zk.planet_generator.ColorGroup;
 
 /**
  * Created by zach on 5/27/17.
  */
 public class Ring {
     private Array<Orbiter> objects;
+    private ColorGroup colors;
     private float minRadius;
     private float maxRadius;
 
-    public Ring(Array<Orbiter> objects, float minRadius, float maxRadius) {
+    public Ring(Array<Orbiter> objects, ColorGroup colors, float minRadius, float maxRadius) {
         this.objects = objects;
+        this.colors = colors;
         this.minRadius = minRadius;
         this.maxRadius = maxRadius;
     }
@@ -90,7 +93,19 @@ public class Ring {
         }
     }
 
-    private float map(float x, float in_min, float in_max, float out_min, float out_max) {
-        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    public int getObjectCount() {
+        return objects.size;
+    }
+
+    public ColorGroup getColors() {
+        return colors;
+    }
+
+    public void addObject(Orbiter orbiter) {
+        objects.add(orbiter);
+    }
+
+    public Orbiter removeObject() {
+        return objects.pop();
     }
 }

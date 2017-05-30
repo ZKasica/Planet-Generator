@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisSlider;
 import zk.planet_generator.Scene;
+import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
 
 /**
@@ -66,6 +67,26 @@ public class RingEditor extends ObjectEditor {
                     minRadiusSlider.setValue(ring.getMinRadius());
                     shouldFireChange = true;
                 }
+            }
+        });
+
+        createSlider("Objects", 25, 500, null, ring.getObjectCount(), new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                int count = (int) ((VisSlider) actor).getValue();
+
+                if(count > ring.getObjectCount()) {
+                    for(int i = 0; i < count - ring.getObjectCount(); i++) {
+                        scene.getObjectGenerator().createObjectInRing(ring);
+                    }
+                } else {
+                    for(int i = 0; i < ring.getObjectCount() - count; i++) {
+                        Orbiter removed = ring.removeObject();
+                        scene.removeObject(removed);
+                    }
+                }
+
+                System.out.println(ring.getObjectCount());
             }
         });
     }

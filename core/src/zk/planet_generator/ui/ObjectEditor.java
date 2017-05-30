@@ -40,7 +40,7 @@ public abstract class ObjectEditor extends Table {
         if(!label.isEmpty()) {
             add(new VisLabel(label)).left().padRight(10).padTop(20);
         }
-        add(new VisLabel(minimum + "")).padRight(5).padTop(20);
+        add(new VisLabel((int)minimum + "")).padRight(5).padTop(20);
 
         VisSlider slider = new VisSlider(minimum, maximum, 1, false);
         slider.setSnapToValues(snapValues, 10);
@@ -56,7 +56,7 @@ public abstract class ObjectEditor extends Table {
         slider.addListener(changeListener);
 
         add(slider).expandX().fill().padRight(5).padTop(20);
-        add(new VisLabel("" + slider.getMaxValue())).padTop(20).row();
+        add(new VisLabel("" + (int)maximum)).padTop(20).row();
 
         return slider;
     }
