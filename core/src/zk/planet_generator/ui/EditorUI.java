@@ -3,9 +3,11 @@ package zk.planet_generator.ui;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectFloatMap;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 import zk.planet_generator.Scene;
@@ -21,9 +23,12 @@ public class EditorUI {
     private Scene scene;
     private Stage stage;
 
+    private Array<ObjectEditor> objectEditors;
     private StarEditor starEditor;
     private CloudEditor cloudEditor;
-    private Ring previousRing;
+    private Ring previousRing; // TODO: Handle previousRing when the outer ring is deleted
+
+    private VisDialog resetDialog;
 
     private Table objectEditorTable;
 
@@ -36,6 +41,8 @@ public class EditorUI {
 
     private void initialize() {
         VisUI.load(VisUI.SkinScale.X2);
+
+        objectEditors = new Array<>();
 
         Table buttonTable = new Table();
         buttonTable.setFillParent(true);
@@ -80,6 +87,29 @@ public class EditorUI {
         });
         buttonTable.add(createCloudButton).pad(5);
 
+        // Reset Button
+        VisTextButton createResetButton = new VisTextButton("Reset");
+        createResetButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                resetClicked();
+            }
+        });
+        buttonTable.add(createResetButton).pad(5);
+
+        resetDialog = new VisDialog("Reset") {
+            @Override
+            protected void result(Object object) {
+                if(object.equals("yes")) {
+                    resetScene();
+                }
+            }
+        };
+        resetDialog.text("Do you want to reset the scene? Your changes will NOT be saved!");
+        resetDialog.button("Yes", "yes");
+        resetDialog.button("No", "no");
+
+
         stage.addActor(buttonTable);
 
         objectEditorTable = new Table();
@@ -96,6 +126,7 @@ public class EditorUI {
 
     private void addObjectEditor(ObjectEditor objectEditor) {
         objectEditorTable.add(objectEditor).expand().fill().row();
+        objectEditors.add(objectEditor);
     }
 
     private void createStarsClicked() {
@@ -129,6 +160,22 @@ public class EditorUI {
             cloudEditor = new CloudEditor(scene, "Clouds", clouds);
             addObjectEditor(cloudEditor);
         }
+    }
+
+    private void resetClicked() {
+        resetDialog.show(stage);
+    }
+
+    private void resetScene() {
+        int objectEditorCount = objectEditors.size;
+        for(int i = 0; i < objectEditorCount; i++) {
+            ObjectEditor editor = objectEditors.pop();
+            editor.delete();
+        }
+
+        starEditor = null;
+        cloudEditor = null;
+        previousRing = null;
     }
 
     public void render(float delta) {
