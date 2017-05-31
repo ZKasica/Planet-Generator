@@ -30,14 +30,15 @@ public class CloudEditor extends ObjectEditor {
                 int count = (int) ((VisSlider) actor).getValue();
 
                 if(count > clouds.size) {
-                    for(int i = 0; i < count - clouds.size; i++) {
+                    int amountToAdd = count - clouds.size;
+                    for(int i = 0; i < amountToAdd; i++) {
                         Cloud cloud = scene.getObjectGenerator().createCloud(velocity);
                         clouds.add(cloud);
                     }
                 } else {
-                    for(int i = 0; i < clouds.size - count; i++) {
+                    int amountToRemove = clouds.size - count;
+                    for(int i = 0; i < amountToRemove; i++) {
                         Cloud removed = clouds.pop();
-                        //scene.removeObjects(removed.getCloudObjects());
                         scene.removeCloud(removed);
                     }
                 }
@@ -59,8 +60,7 @@ public class CloudEditor extends ObjectEditor {
     }
 
     public void setClouds(Array<Cloud> clouds) {
-        this.clouds = new Array<>();
-        this.clouds.addAll(clouds);
+        this.clouds = new Array<>(clouds);
         count.setValue(this.clouds.size);
         velocitySlider.setValue(this.clouds.first().getAngularVelocity());
     }
@@ -69,9 +69,6 @@ public class CloudEditor extends ObjectEditor {
     public void deleteObjects() {
         int size = clouds.size;
         for(int i = 0; i < size; i++) {
-            //Array<Orbiter> cloudObjects = clouds.pop().getCloudObjects();
-            //scene.removeObjects(cloudObjects);
-
             Cloud cloud = clouds.pop();
             scene.removeCloud(cloud);
         }

@@ -232,6 +232,7 @@ public class EditorUI {
     private void randomClicked() {
         resetScene();
         scene.generateObjects();
+        updateToMatchScene();
     }
 
     private void exitClicked() {
@@ -271,6 +272,22 @@ public class EditorUI {
     }
 
     public void updateToMatchScene() {
+        starEditor = new StarEditor(scene, "Stars");
+        starEditor.setStars(scene.getStars());
+        addObjectEditor(starEditor);
 
+        cloudEditor = new CloudEditor(scene, "Clouds");
+        cloudEditor.setClouds(scene.getClouds());
+        addObjectEditor(cloudEditor);
+
+        int ringId = 0;
+        for(Ring ring : scene.getRings()) {
+            addObjectEditor(new RingEditor(scene, "Ring " + (++ringId), ring));
+        }
+
+        int moonId = 0;
+        for(Orbiter moon : scene.getMoons()) {
+            addObjectEditor(new MoonEditor(scene, "Moon " + (++moonId), moon));
+        }
     }
 }

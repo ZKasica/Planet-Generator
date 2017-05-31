@@ -25,10 +25,9 @@ public class StarEditor extends ObjectEditor {
                 int count = (int) ((VisSlider) actor).getValue();
 
                 if(count > stars.size) {
-                    int size = stars.size;
-                    for(int i = 0; i < count - size; i++) {
-                        stars.add(scene.getObjectGenerator().createStars(1).first());
-                    }
+                    int size = count - stars.size;
+                    Array<Star> generatedStars = scene.getObjectGenerator().createStars(size);
+                    stars.addAll(generatedStars);
                 } else {
                     int size = stars.size - count;
                     for(int i = 0; i < size; i++) {
@@ -41,8 +40,7 @@ public class StarEditor extends ObjectEditor {
     }
 
     public void setStars(Array<Star> stars) {
-        this.stars = new Array<>();
-        this.stars.addAll(stars);
+        this.stars = new Array<>(stars);
         slider.setValue(this.stars.size);
     }
 
