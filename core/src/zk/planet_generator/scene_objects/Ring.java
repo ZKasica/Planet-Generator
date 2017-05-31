@@ -12,12 +12,19 @@ public class Ring {
     private ColorGroup colors;
     private float minRadius;
     private float maxRadius;
+    private float angularVelocity;
+    private float zTilt;
+    private float xTilt;
 
     public Ring(Array<Orbiter> objects, ColorGroup colors, float minRadius, float maxRadius) {
         this.objects = objects;
         this.colors = colors;
         this.minRadius = minRadius;
         this.maxRadius = maxRadius;
+
+        this.angularVelocity = objects.first().getAngularVelocity();
+        this.zTilt = objects.first().getZTilt();
+        this.xTilt = objects.first().getXTilt();
     }
 
     public Array<Orbiter> getObjects() {
@@ -33,30 +40,33 @@ public class Ring {
     }
 
     public float getAngularVelocity() {
-        return objects.first().getAngularVelocity();
+        return angularVelocity;
     }
 
     public void setAngularVelocity(float vel) {
+        this.angularVelocity = vel;
         for(Orbiter ring : objects) {
             ring.setAngularVelocity(vel);
         }
     }
 
     public float getZTilt() {
-        return objects.first().getZTilt();
+        return zTilt;
     }
 
     public void setZTilt(float tilt) {
+        this.zTilt = tilt;
         for(Orbiter ring : objects) {
             ring.setZTilt(tilt);
         }
     }
 
     public float getXTilt() {
-        return objects.first().getXTilt();
+        return xTilt;
     }
 
     public void setXTilt(float tilt) {
+        this.xTilt = tilt;
         for(Orbiter ring : objects) {
             ring.setXTilt(tilt);
         }

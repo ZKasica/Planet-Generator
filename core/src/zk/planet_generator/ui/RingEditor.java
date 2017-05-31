@@ -71,17 +71,19 @@ public class RingEditor extends ObjectEditor {
             }
         });
 
-        createSlider("Objects", 25, 500, null, ring.getObjectCount(), new ChangeListener() {
+        createSlider("Objects", 0, 500, null, ring.getObjectCount(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 int count = (int) ((VisSlider) actor).getValue();
 
                 if(count > ring.getObjectCount()) {
-                    for(int i = 0; i < count - ring.getObjectCount(); i++) {
+                    int amountToAdd = count - ring.getObjectCount();
+                    for(int i = 0; i < amountToAdd; i++) {
                         scene.getObjectGenerator().createObjectInRing(ring);
                     }
                 } else {
-                    for(int i = 0; i < ring.getObjectCount() - count; i++) {
+                    int amountToRemove = ring.getObjectCount() - count;
+                    for(int i = 0; i < amountToRemove; i++) {
                         Orbiter removed = ring.removeObject();
                         scene.removeRingObject(removed);
                     }
