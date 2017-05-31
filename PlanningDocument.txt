@@ -4,6 +4,8 @@ Scene Editor
 To Do List:
     [] Save scene
     [] Load scene
+    [] Random scene
+    [] Close and open editor
 
     *** Use VisUI Color Picker for selecting color ***
     [] Change background color

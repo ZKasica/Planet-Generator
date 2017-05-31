@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectFloatMap;
 import com.kotcrab.vis.ui.VisUI;
@@ -47,48 +48,28 @@ public class EditorUI {
 
         objectEditors = new Array<>();
 
-        Table buttonTable = new Table();
-        buttonTable.setFillParent(true);
+        // Save Scene Button
+        Table testTable = new Table();
+        testTable.setFillParent(true);
 
-        // Create Stars Button
-        VisTextButton createStarsButton = new VisTextButton("Create Stars");
-        createStarsButton.addListener(new ClickListener() {
+        VisTextButton saveButton = new VisTextButton("Save");
+        saveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                createStarsClicked();
+                saveClicked();
             }
         });
-        buttonTable.top().left().add(createStarsButton).pad(5);
+        testTable.top().left().add(saveButton).pad(7);
 
-        // Create Ring Button
-        VisTextButton createRingButton = new VisTextButton("Create Ring");
-        createRingButton.addListener(new ClickListener() {
+        // Load Scene Button
+        VisTextButton loadButton = new VisTextButton("Load");
+        saveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                createRingClicked();
+                loadClicked();
             }
         });
-        buttonTable.add(createRingButton).pad(5);
-
-        // Create Moon Button
-        VisTextButton createMoonButton = new VisTextButton("Create Moon");
-        createMoonButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-               createMoonClicked();
-            }
-        });
-        buttonTable.add(createMoonButton).pad(5);
-
-        // Create Moon Button
-        VisTextButton createCloudButton = new VisTextButton("Create Clouds");
-        createCloudButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                createCloudClicked();
-            }
-        });
-        buttonTable.add(createCloudButton).pad(5);
+        testTable.add(loadButton).pad(7);
 
         // Reset Button
         VisTextButton createResetButton = new VisTextButton("Reset");
@@ -98,7 +79,7 @@ public class EditorUI {
                 resetClicked();
             }
         });
-        buttonTable.add(createResetButton).pad(5);
+        testTable.add(createResetButton).pad(7);
 
         resetDialog = new VisDialog("Reset") {
             @Override
@@ -112,6 +93,72 @@ public class EditorUI {
         resetDialog.button("Yes", "yes");
         resetDialog.button("No", "no");
 
+        // Random Button
+        VisTextButton randomButton = new VisTextButton("Random");
+        randomButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                randomClicked();
+            }
+        });
+        testTable.add(randomButton).pad(7);
+
+        // Exit Button
+        VisTextButton exitButton = new VisTextButton("Close Editor");
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                exitClicked();
+            }
+        });
+        testTable.add(exitButton).pad(7);
+        stage.addActor(testTable);
+
+        Table buttonTable = new Table();
+        buttonTable.setFillParent(true);
+
+        //buttonTable.debug();
+
+        // Create Stars Button
+        VisTextButton createStarsButton = new VisTextButton("Create Stars");
+        createStarsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                createStarsClicked();
+            }
+        });
+        buttonTable.bottom().left().add(createStarsButton).pad(7);
+
+        // Create Ring Button
+        VisTextButton createRingButton = new VisTextButton("Create Ring");
+        createRingButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                createRingClicked();
+            }
+        });
+        buttonTable.add(createRingButton).pad(7);
+
+        // Create Moon Button
+        VisTextButton createMoonButton = new VisTextButton("Create Moon");
+        createMoonButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+               createMoonClicked();
+            }
+        });
+        buttonTable.add(createMoonButton).pad(7);
+
+        // Create Moon Button
+        VisTextButton createCloudButton = new VisTextButton("Create Clouds");
+        createCloudButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                createCloudClicked();
+            }
+        });
+        buttonTable.add(createCloudButton).pad(7);
+
         stage.addActor(buttonTable);
 
         objectEditorTable = new Table();
@@ -122,6 +169,7 @@ public class EditorUI {
         editorWindow.setSize(600, stage.getHeight());
         editorWindow.setPosition(stage.getWidth() - editorWindow.getWidth(), 0);
         editorWindow.add(objectEditor).fill().expand();
+        editorWindow.setMovable(false);
 
         stage.addActor(editorWindow);
     }
@@ -129,6 +177,14 @@ public class EditorUI {
     private void addObjectEditor(ObjectEditor objectEditor) {
         objectEditorTable.add(objectEditor).expand().fill().row();
         objectEditors.add(objectEditor);
+    }
+
+    private void saveClicked() {
+
+    }
+
+    private void loadClicked() {
+
     }
 
     private void createStarsClicked() {
@@ -166,6 +222,15 @@ public class EditorUI {
 
     private void resetClicked() {
         resetDialog.show(stage);
+    }
+
+    private void randomClicked() {
+        resetScene();
+        scene.generateObjects();
+    }
+
+    private void exitClicked() {
+
     }
 
     private void resetScene() {

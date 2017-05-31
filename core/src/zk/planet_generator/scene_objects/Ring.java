@@ -28,16 +28,8 @@ public class Ring {
         return minRadius;
     }
 
-    public void setMinRadius(float minRadius) {
-        this.minRadius = minRadius;
-    }
-
     public float getMaxRadius() {
         return maxRadius;
-    }
-
-    public void setMaxRadius(float maxRadius) {
-        this.maxRadius = maxRadius;
     }
 
     public float getAngularVelocity() {
