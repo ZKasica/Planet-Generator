@@ -18,13 +18,13 @@ import zk.planet_generator.Scene;
  */
 public abstract class ObjectEditor extends Table {
     protected Scene scene;
-
+    private Table top;
     private boolean hasDeleteBeenPressed;
 
     public ObjectEditor(Scene scene, String objectName) {
         this.scene = scene;
 
-        Table top = new Table();
+        top = new Table();
         top.add(new VisLabel(objectName)).expandX().pad(0, 20, 0, 20);
 
         VisTextButton deleteObject = new VisTextButton("Delete");
@@ -78,5 +78,9 @@ public abstract class ObjectEditor extends Table {
 
     public boolean hasDeleteBeenPressed() {
         return hasDeleteBeenPressed;
+    }
+
+    public Table getTopBar() {
+        return top;
     }
 }

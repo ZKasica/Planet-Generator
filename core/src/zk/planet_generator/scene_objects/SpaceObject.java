@@ -32,6 +32,10 @@ public abstract class SpaceObject implements Comparable<SpaceObject> {
         this.sprite = sprite;
     }
 
+    public int getZCoord() {
+        return zCoord;
+    }
+
     @Override
     public int compareTo(SpaceObject other) {
         return zCoord - other.zCoord;

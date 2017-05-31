@@ -4,8 +4,9 @@ Scene Editor
 To Do List:
     [] Save scene
     [] Load scene
-    [] Random scene
+    [X] Random scene
     [] Close and open editor
+    [X] Show moon trajectory
 
     *** Use VisUI Color Picker for selecting color ***
     [] Change background color
@@ -21,7 +22,7 @@ To Do List:
         [] ??? Add additional planet layers
 
 Bugs
-    [] Can't add more clouds once you add them and then delete them
+    [X] Can't add more clouds once you add them and then delete them
             Fix 1: Always have a cloud slider that goes down to zero, can do the same for stars
             Fix 2: Use the code that the StarEditor did
 

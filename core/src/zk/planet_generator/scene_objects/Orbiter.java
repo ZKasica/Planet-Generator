@@ -101,6 +101,18 @@ public class Orbiter extends SpaceObject {
         return color;
     }
 
+    public Matrix3 getRotZ() {
+        return rotZ;
+    }
+
+    public Matrix3 getRotX() {
+        return rotX;
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
     public static class OrbiterBlueprint {
         public float angularVelocity;
         public float zTilt;

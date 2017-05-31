@@ -8,9 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.*;
+import com.sun.corba.se.internal.iiop.ORB;
 import zk.planet_generator.generators.NoiseGenerator;
 import zk.planet_generator.generators.ObjectGenerator;
 import zk.planet_generator.scene_objects.*;
@@ -24,6 +23,8 @@ public class Scene extends InputAdapter {
     public static final int CENTER_X = BUFFER_WIDTH / 2;
     public static final int CENTER_Y = BUFFER_HEIGHT / 2;
     public static final int EDITOR_OFFSET = 100;
+
+    public static final Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
 
     public static ShaderProgram planetShader;
 
@@ -41,6 +42,8 @@ public class Scene extends InputAdapter {
     private Array<Star> stars;
     private Array<Orbiter> moons;
 
+    private Array<Trajectory> trajectories;
+
     private boolean shouldSpeedUpTime;
 
     public Scene() {
@@ -51,6 +54,7 @@ public class Scene extends InputAdapter {
         clouds = new Array<>();
         stars = new Array<>();
         moons = new Array<>();
+        trajectories = new Array<>();
         //generateObjects();
         createEmptyScene();
     }
@@ -104,10 +108,6 @@ public class Scene extends InputAdapter {
                 Gdx.app.exit();
                 return true;
 
-            case Input.Keys.R:
-                reset();
-                return true;
-
             case Input.Keys.E:
                 shouldSpeedUpTime = true;
                 return true;
@@ -149,6 +149,10 @@ public class Scene extends InputAdapter {
 
         if(shouldSpeedUpTime) {
             delta *= 10;
+        }
+
+        for(Trajectory trajectory : trajectories) {
+            trajectory.update();
         }
 
         for(SpaceObject spaceObject : spaceObjects) {
@@ -307,5 +311,17 @@ public class Scene extends InputAdapter {
     public void removeMoon(Orbiter orbiter) {
         moons.removeValue(orbiter, false);
         removeObject(orbiter);
+    }
+
+    public Trajectory addTrajectory(Orbiter orbiter) {
+        Trajectory trajectory = new Trajectory(orbiter);
+        trajectories.add(trajectory);
+        addRing(trajectory.getPath());
+        return trajectory;
+    }
+
+    public void removeTrajectory(Trajectory trajectory) {
+        trajectories.removeValue(trajectory, false);
+        removeRing(trajectory.getPath());
     }
 }

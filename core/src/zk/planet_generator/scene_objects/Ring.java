@@ -16,6 +16,13 @@ public class Ring {
     private float zTilt;
     private float xTilt;
 
+    public Ring(Array<Orbiter> objects) {
+        this.objects = objects;
+        this.angularVelocity = objects.first().getAngularVelocity();
+        this.zTilt = objects.first().getZTilt();
+        this.xTilt = objects.first().getXTilt();
+    }
+
     public Ring(Array<Orbiter> objects, ColorGroup colors, float minRadius, float maxRadius) {
         this.objects = objects;
         this.colors = colors;
@@ -69,6 +76,12 @@ public class Ring {
         this.xTilt = tilt;
         for(Orbiter ring : objects) {
             ring.setXTilt(tilt);
+        }
+    }
+
+    public void setRadius(float radius) {
+        for(Orbiter ringObj : objects) {
+            ringObj.setRadius(radius);
         }
     }
 

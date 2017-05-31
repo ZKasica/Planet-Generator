@@ -318,9 +318,8 @@ public class ObjectGenerator {
 
     public Array<Star> createStars(int starAmount) {
         Array<Star> stars = new Array<>();
-        Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
         for(int i = 0; i < starAmount; i++) {
-            Sprite star = new Sprite(pixelTexture);
+            Sprite star = new Sprite(Scene.pixelTexture);
             star.setPosition(MathUtils.random(0, Scene.BUFFER_WIDTH + Scene.EDITOR_OFFSET), MathUtils.random(0, Scene.BUFFER_HEIGHT));
             star.setColor(Color.WHITE);
 
@@ -330,8 +329,6 @@ public class ObjectGenerator {
 
             stars.add(new Star(star));
         }
-
-        //scene.addSpaceObjects(stars);
 
         for(Star star : stars) {
             scene.addStar(star);
