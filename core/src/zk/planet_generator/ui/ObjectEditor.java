@@ -25,15 +25,6 @@ public abstract class ObjectEditor extends Table {
         Table top = new Table();
         top.add(new VisLabel(objectName)).expandX().pad(0, 20, 0, 20);
 
-        VisTextButton randomizeObject = new VisTextButton("Randomize");
-        randomizeObject.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                randomize();
-            }
-        });
-        top.add(randomizeObject).pad(0, 20, 0, 20);
-
         VisTextButton deleteObject = new VisTextButton("Delete");
         deleteObject.addListener(new ClickListener() {
             @Override
@@ -46,7 +37,6 @@ public abstract class ObjectEditor extends Table {
         add(top).padTop(80).colspan(4).row();
     }
 
-    public abstract void randomize();
     public abstract void deleteObjects();
 
     public void delete() {

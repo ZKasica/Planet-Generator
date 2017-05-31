@@ -1,5 +1,6 @@
 package zk.planet_generator.ui;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisSlider;
@@ -92,10 +93,5 @@ public class RingEditor extends ObjectEditor {
     @Override
     public void deleteObjects() {
         scene.removeObjects(ring.getObjects());
-    }
-
-    @Override
-    public void randomize() {
-
     }
 }

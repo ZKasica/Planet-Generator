@@ -5,8 +5,6 @@ To Do List:
     [] Save scene
     [] Load scene
 
-    [] Implement randomize button
-
     *** Use VisUI Color Picker for selecting color ***
     [] Change background color
     [] Change moon color

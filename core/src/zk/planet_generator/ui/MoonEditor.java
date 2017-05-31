@@ -62,9 +62,4 @@ public class MoonEditor extends ObjectEditor {
         moon.getSprite().getTexture().dispose();
         scene.removeObject(moon);
     }
-
-    @Override
-    public void randomize() {
-
-    }
 }

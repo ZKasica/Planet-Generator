@@ -112,7 +112,6 @@ public class EditorUI {
         resetDialog.button("Yes", "yes");
         resetDialog.button("No", "no");
 
-
         stage.addActor(buttonTable);
 
         objectEditorTable = new Table();
