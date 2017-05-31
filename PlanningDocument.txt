@@ -29,3 +29,6 @@ Other ideas:
     [] Use VisUI TabbedPane to organize moons, rings, etc
     [] Add tooltips to parts of the UI
 
+    [] Make it message based so that instead of calling a method in the scene class or ui class when an object is created or destroyed,
+          a message is sent instead?
+

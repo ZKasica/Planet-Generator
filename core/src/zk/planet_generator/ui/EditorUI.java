@@ -269,4 +269,8 @@ public class EditorUI {
     public Stage getStage() {
         return stage;
     }
+
+    public void updateToMatchScene() {
+
+    }
 }
