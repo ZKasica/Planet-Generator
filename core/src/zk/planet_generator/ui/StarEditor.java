@@ -40,7 +40,8 @@ public class StarEditor extends ObjectEditor {
             this.stars.addAll(stars);
         } else {
             for(int i = change; i < 0; i++) {
-                scene.removeObject(stars.pop());
+                //scene.removeObject(stars.pop());
+                scene.removeStar(stars.pop());
             }
         }
     }
@@ -58,7 +59,8 @@ public class StarEditor extends ObjectEditor {
     public void deleteObjects() {
         int size = stars.size;
         for(int i = 0; i < size; i++) {
-            scene.removeObject(stars.pop());
+            //scene.removeObject(stars.pop());
+            scene.removeStar(stars.pop());
         }
         stars.clear();
     }

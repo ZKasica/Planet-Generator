@@ -36,10 +36,21 @@ public class Scene extends InputAdapter {
     private Array<SpaceObject> spaceObjects;
     private Planet planet;
 
+    private Array<Ring> rings;
+    private Array<Cloud> clouds;
+    private Array<Star> stars;
+    private Array<Orbiter> moons;
+
     private boolean shouldSpeedUpTime;
 
     public Scene() {
         setupRendering();
+
+        spaceObjects = new Array<>();
+        rings = new Array<>();
+        clouds = new Array<>();
+        stars = new Array<>();
+        moons = new Array<>();
         //generateObjects();
         createEmptyScene();
     }
@@ -66,14 +77,13 @@ public class Scene extends InputAdapter {
     }
 
     public void createEmptyScene() {
-        spaceObjects = new Array<>();
-
+        //spaceObjects = new Array<>();
         createPlanet(MathUtils.randomSign());
         objectGenerator = new ObjectGenerator(this);
     }
 
     public void generateObjects() {
-        spaceObjects = new Array<>();
+        //spaceObjects = new Array<>();
 
         int zDir = MathUtils.randomSign();
         int velDir = MathUtils.randomSign();
@@ -203,8 +213,10 @@ public class Scene extends InputAdapter {
             object.getSprite().getTexture().dispose();
         }
         spaceObjects.clear();
-
-        generateObjects();
+        rings.clear();
+        clouds.clear();
+        moons.clear();
+        stars.clear();
     }
 
     private void takeScreenshot() {
@@ -225,19 +237,75 @@ public class Scene extends InputAdapter {
         return objectGenerator;
     }
 
-    public void addSpaceObjects(Array<? extends SpaceObject> objects) {
-        spaceObjects.addAll(objects);
-    }
-
-    public void addSpaceObject(SpaceObject object) {
-        spaceObjects.add(object);
-    }
-
-    public void removeObjects(Array<? extends SpaceObject> objects) {
+    private void removeObjects(Array<? extends SpaceObject> objects) {
         spaceObjects.removeAll(objects, false);
     }
 
-    public void removeObject(SpaceObject object) {
+    private void removeObject(SpaceObject object) {
         spaceObjects.removeValue(object, false);
+    }
+
+    public Array<Ring> getRings() {
+        return rings;
+    }
+
+    public void addRingObject(Orbiter ringObject) {
+        spaceObjects.add(ringObject);
+    }
+
+    public void addRing(Ring ring) {
+        rings.add(ring);
+        spaceObjects.addAll(ring.getObjects());
+    }
+
+    public void removeRingObject(Orbiter orbiter) {
+        spaceObjects.removeValue(orbiter, false);
+    }
+
+    public void removeRing(Ring ring) {
+        rings.removeValue(ring, false);
+        removeObjects(ring.getObjects());
+    }
+
+    public Array<Star> getStars() {
+        return stars;
+    }
+
+    public void addStar(Star star) {
+        stars.add(star);
+        spaceObjects.add(star);
+    }
+
+    public void removeStar(Star star) {
+        stars.removeValue(star, false);
+        removeObject(star);
+    }
+
+    public Array<Cloud> getClouds() {
+        return clouds;
+    }
+
+    public void addCloud(Cloud cloud) {
+        clouds.add(cloud);
+        spaceObjects.addAll(cloud.getCloudObjects());
+    }
+
+    public void removeCloud(Cloud cloud) {
+        clouds.removeValue(cloud, false);
+        removeObjects(cloud.getCloudObjects());
+    }
+
+    public Array<Orbiter> getMoons() {
+        return moons;
+    }
+
+    public void addMoon(Orbiter orbiter) {
+        moons.add(orbiter);
+        spaceObjects.add(orbiter);
+    }
+
+    public void removeMoon(Orbiter orbiter) {
+        moons.removeValue(orbiter, false);
+        removeObject(orbiter);
     }
 }

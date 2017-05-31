@@ -83,7 +83,7 @@ public class RingEditor extends ObjectEditor {
                 } else {
                     for(int i = 0; i < ring.getObjectCount() - count; i++) {
                         Orbiter removed = ring.removeObject();
-                        scene.removeObject(removed);
+                        scene.removeRingObject(removed);
                     }
                 }
             }
@@ -92,6 +92,6 @@ public class RingEditor extends ObjectEditor {
 
     @Override
     public void deleteObjects() {
-        scene.removeObjects(ring.getObjects());
+        scene.removeRing(ring);
     }
 }

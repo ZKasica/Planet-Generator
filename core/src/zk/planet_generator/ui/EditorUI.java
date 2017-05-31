@@ -86,6 +86,7 @@ public class EditorUI {
             protected void result(Object object) {
                 if(object.equals("yes")) {
                     resetScene();
+                    scene.createEmptyScene();
                 }
             }
         };
@@ -188,7 +189,7 @@ public class EditorUI {
     }
 
     private void createStarsClicked() {
-        if(starEditor == null) {
+        if(starEditor == null || starEditor.hasDeleteBeenPressed()) {
             starEditor = new StarEditor(scene, "Stars");
             addObjectEditor(starEditor);
         } else {
@@ -213,11 +214,15 @@ public class EditorUI {
     }
 
     private void createCloudClicked() {
-        if(cloudEditor == null) {
-            Array<Cloud> clouds = scene.getObjectGenerator().createClouds();
-            cloudEditor = new CloudEditor(scene, "Clouds", clouds);
+        if(cloudEditor == null || cloudEditor.hasDeleteBeenPressed()) {
+            cloudEditor = new CloudEditor(scene, "Clouds");
             addObjectEditor(cloudEditor);
+        } else {
+            cloudEditor.deleteObjects();
         }
+
+        Array<Cloud> clouds = scene.getObjectGenerator().createClouds();
+        cloudEditor.setClouds(clouds);
     }
 
     private void resetClicked() {
@@ -243,6 +248,8 @@ public class EditorUI {
         starEditor = null;
         cloudEditor = null;
         previousRing = null;
+
+        scene.reset();
     }
 
     public void render(float delta) {

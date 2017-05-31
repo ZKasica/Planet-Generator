@@ -19,6 +19,8 @@ import zk.planet_generator.Scene;
 public abstract class ObjectEditor extends Table {
     protected Scene scene;
 
+    private boolean hasDeleteBeenPressed;
+
     public ObjectEditor(Scene scene, String objectName) {
         this.scene = scene;
 
@@ -29,6 +31,7 @@ public abstract class ObjectEditor extends Table {
         deleteObject.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                hasDeleteBeenPressed = true;
                 delete();
             }
         });
@@ -71,5 +74,9 @@ public abstract class ObjectEditor extends Table {
         add(new VisLabel("" + (int)maximum)).padTop(20).row();
 
         return slider;
+    }
+
+    public boolean hasDeleteBeenPressed() {
+        return hasDeleteBeenPressed;
     }
 }

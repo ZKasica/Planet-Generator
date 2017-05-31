@@ -20,6 +20,12 @@ To Do List:
         [] Change height of planet layers
         [] ??? Add additional planet layers
 
+Bugs
+    [] Can't add more clouds once you add them and then delete them
+            Fix 1: Always have a cloud slider that goes down to zero, can do the same for stars
+            Fix 2: Use the code that the StarEditor did
+
 Other ideas:
     [] Use VisUI TabbedPane to organize moons, rings, etc
     [] Add tooltips to parts of the UI
+
