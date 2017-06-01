@@ -72,7 +72,7 @@ public class EditorUI {
         testTable.add(loadButton).pad(7);
 
         // Reset Button
-        VisTextButton createResetButton = new VisTextButton("Reset");
+        VisTextButton createResetButton = new VisTextButton("Clear");
         createResetButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -83,6 +83,9 @@ public class MoonEditor extends ObjectEditor {
     @Override
     public void deleteObjects() {
         scene.removeMoon(moon);
-        scene.removeTrajectory(trajectory);
+
+        if(trajectory != null) {
+            scene.removeTrajectory(trajectory);
+        }
     }
 }
