@@ -1,8 +1,13 @@
 package zk.planet_generator.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -236,7 +241,11 @@ public class EditorUI {
     }
 
     private void exitClicked() {
-
+        for(Actor actor : stage.getActors()) {
+            actor.setTouchable(Touchable.disabled);
+        }
+        stage.addAction(Actions.fadeOut(0.25f, Interpolation.circleOut));
+        scene.focusOnPlanet();
     }
 
     private void resetScene() {
@@ -267,10 +276,6 @@ public class EditorUI {
         VisUI.dispose();
     }
 
-    public Stage getStage() {
-        return stage;
-    }
-
     public void updateToMatchScene() {
         starEditor = new StarEditor(scene, "Stars");
         starEditor.setStars(scene.getStars());
@@ -289,5 +294,9 @@ public class EditorUI {
         for(Orbiter moon : scene.getMoons()) {
             addObjectEditor(new MoonEditor(scene, "Moon " + (++moonId), moon));
         }
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

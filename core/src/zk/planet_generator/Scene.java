@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.*;
 import com.sun.corba.se.internal.iiop.ORB;
@@ -23,12 +24,14 @@ public class Scene extends InputAdapter {
     public static final int CENTER_X = BUFFER_WIDTH / 2;
     public static final int CENTER_Y = BUFFER_HEIGHT / 2;
     public static final int EDITOR_OFFSET = 100;
+    public static final int STAR_EDITOR_OFFSET = 15;
 
     public static final Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
 
     public static ShaderProgram planetShader;
 
     private OrthographicCamera gameCamera;
+    private OrthographicCamera starCamera;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
@@ -45,6 +48,10 @@ public class Scene extends InputAdapter {
     private Array<Trajectory> trajectories;
 
     private boolean shouldSpeedUpTime;
+
+    private boolean focusOnPlanet;
+    private float elapsed;
+    private float lifetime;
 
     public Scene() {
         setupRendering();
@@ -72,6 +79,11 @@ public class Scene extends InputAdapter {
         gameCamera.translate(EDITOR_OFFSET, 0);
         gameCamera.update();
 
+        starCamera = new OrthographicCamera();
+        starCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
+        starCamera.translate(STAR_EDITOR_OFFSET, 0);
+        starCamera.update();
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
@@ -81,14 +93,11 @@ public class Scene extends InputAdapter {
     }
 
     public void createEmptyScene() {
-        //spaceObjects = new Array<>();
         createPlanet(MathUtils.randomSign());
         objectGenerator = new ObjectGenerator(this);
     }
 
     public void generateObjects() {
-        //spaceObjects = new Array<>();
-
         int zDir = MathUtils.randomSign();
         int velDir = MathUtils.randomSign();
 
@@ -151,6 +160,21 @@ public class Scene extends InputAdapter {
             delta *= 10;
         }
 
+        if(focusOnPlanet) {
+            elapsed += delta;
+            float progress = Math.min(1f, elapsed / lifetime);
+
+            gameCamera.position.x = Interpolation.circleOut.apply(CENTER_X + EDITOR_OFFSET, CENTER_X, progress);
+            gameCamera.update();
+
+            starCamera.position.x = Interpolation.circleOut.apply(CENTER_X + STAR_EDITOR_OFFSET, CENTER_X, progress);
+            starCamera.update();
+
+            if(progress == 1) {
+                focusOnPlanet = false;
+            }
+        }
+
         for(Trajectory trajectory : trajectories) {
             trajectory.update();
         }
@@ -167,8 +191,13 @@ public class Scene extends InputAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(30f / 255f, 25f / 255f, 35f / 255f, 1);
 
-        batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
+        batch.setProjectionMatrix(starCamera.combined);
+        for(Star star : stars) {
+            star.render(batch);
+        }
+
+        batch.setProjectionMatrix(gameCamera.combined);
         for(SpaceObject spaceObject : spaceObjects) {
             spaceObject.render(batch);
         }
@@ -277,12 +306,12 @@ public class Scene extends InputAdapter {
 
     public void addStar(Star star) {
         stars.add(star);
-        spaceObjects.add(star);
+        //spaceObjects.add(star);
     }
 
     public void removeStar(Star star) {
         stars.removeValue(star, false);
-        removeObject(star);
+        //removeObject(star);
     }
 
     public Array<Cloud> getClouds() {
@@ -323,5 +352,10 @@ public class Scene extends InputAdapter {
     public void removeTrajectory(Trajectory trajectory) {
         trajectories.removeValue(trajectory, false);
         removeRing(trajectory.getPath());
+    }
+
+    public void focusOnPlanet() {
+        focusOnPlanet = true;
+        lifetime = 0.7f;
     }
 }
