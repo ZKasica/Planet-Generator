@@ -4,16 +4,16 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.kotcrab.vis.ui.widget.*;
+import com.kotcrab.vis.ui.widget.VisDialog;
+import com.kotcrab.vis.ui.widget.VisScrollPane;
+import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.VisWindow;
 import zk.planet_generator.PlanetGeneratorGame;
 import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
 import zk.planet_generator.scene_objects.Star;
 
-/**
- * Created by zach on 5/26/17.
- */
 public class EditorUI extends GameUI {
     private Array<ObjectEditor> objectEditors;
     private StarEditor starEditor;
@@ -74,7 +74,7 @@ public class EditorUI extends GameUI {
                 }
             }
         };
-        resetDialog.text("Do you want to reset the scene? Your changes will NOT be saved!");
+        resetDialog.text("Do you want to clear the scene? Your changes will NOT be saved!");
         resetDialog.button("Yes", "yes");
         resetDialog.button("No", "no");
 
@@ -240,7 +240,7 @@ public class EditorUI extends GameUI {
         cloudEditor = null;
         previousRing = null;
 
-        scene.reset();
+        scene.clear();
     }
 
     public void updateToMatchScene() {

@@ -13,9 +13,6 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.*;
 import zk.planet_generator.Scene;
 
-/**
- * Created by zach on 5/27/17.
- */
 public abstract class ObjectEditor extends Table {
     protected Scene scene;
     private Table top;

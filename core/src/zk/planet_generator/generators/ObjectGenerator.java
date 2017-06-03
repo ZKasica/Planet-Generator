@@ -1,20 +1,15 @@
 package zk.planet_generator.generators;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
-import org.omg.CORBA.ORB;
 import zk.planet_generator.ColorGroup;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.*;
 
-/**
- * Created by zach on 5/26/17.
- */
 public class ObjectGenerator {
     private Scene scene;
     private int velDir;
@@ -204,7 +199,7 @@ public class ObjectGenerator {
         float angularVelocity = 0;
         float zTilt = previousRing == null ? 30 : previousRing.getZTilt();
         float xTilt = previousRing == null ? -20 : previousRing.getXTilt();
-        float minimumRadius = previousRing == null ? scene.getPlanet().getWidthAtY(0) + 25 : previousRing.getMaxRadius() + 5;
+        float minimumRadius = previousRing == null ? scene.getPlanet().getWidthAtY(0) + 25 : previousRing.getMaximumRadius() + 5;
         float maximumRadius = previousRing == null ? minimumRadius + MathUtils.random(20, 60) : minimumRadius + MathUtils.random(20, 50);
         ColorGroup colorGroup = colors.random();
 
@@ -236,7 +231,7 @@ public class ObjectGenerator {
     public Orbiter createObjectInRing(Ring ring) {
         Orbiter.OrbiterBlueprint blueprint = new Orbiter.OrbiterBlueprint();
         blueprint.angle = MathUtils.random(0, 360);
-        blueprint.radius = MathUtils.random(ring.getMinRadius(), ring.getMaxRadius());
+        blueprint.radius = MathUtils.random(ring.getMinimumRadius(), ring.getMaximumRadius());
         blueprint.zTilt = ring.getZTilt();
         blueprint.xTilt = ring.getXTilt();
         blueprint.angularVelocity = ring.getAngularVelocity();

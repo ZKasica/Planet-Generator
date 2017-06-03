@@ -4,12 +4,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import zk.planet_generator.ColorGroup;
 
-/**
- * Created by zach on 5/27/17.
- */
 public class Ring {
     private Array<Orbiter> objects;
     private ColorGroup colors;
+
     private float minRadius;
     private float maxRadius;
     private float angularVelocity;
@@ -36,14 +34,6 @@ public class Ring {
 
     public Array<Orbiter> getObjects() {
         return objects;
-    }
-
-    public float getMinRadius() {
-        return minRadius;
-    }
-
-    public float getMaxRadius() {
-        return maxRadius;
     }
 
     public float getAngularVelocity() {
@@ -85,6 +75,10 @@ public class Ring {
         }
     }
 
+    public float getMinimumRadius() {
+        return minRadius;
+    }
+
     public void setMinimumRadius(float minimumRadius) {
         this.minRadius = minimumRadius;
         if(maxRadius < minRadius) {
@@ -93,8 +87,10 @@ public class Ring {
         for(Orbiter ringObj : objects) {
             ringObj.setRadius(MathUtils.random(minRadius, maxRadius));
         }
+    }
 
-        // TODO: Scale radius of objects accordingly
+    public float getMaximumRadius() {
+        return maxRadius;
     }
 
     public void setMaximumRadius(float maximumRadius) {

@@ -1,6 +1,5 @@
 package zk.planet_generator.ui;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,12 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisSlider;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import zk.planet_generator.Scene;
-import zk.planet_generator.Trajectory;
 import zk.planet_generator.scene_objects.Orbiter;
+import zk.planet_generator.scene_objects.Trajectory;
 
-/**
- * Created by zach on 5/27/17.
- */
 public class MoonEditor extends ObjectEditor {
     private Orbiter moon;
     private boolean showTrajectory;

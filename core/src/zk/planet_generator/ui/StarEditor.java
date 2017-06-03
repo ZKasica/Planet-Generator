@@ -1,17 +1,12 @@
 package zk.planet_generator.ui;
 
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSlider;
 import zk.planet_generator.Scene;
-import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Star;
 
-/**
- * Created by zach on 5/27/17.
- */
 public class StarEditor extends ObjectEditor {
     private Array<Star> stars;
     private VisSlider slider;

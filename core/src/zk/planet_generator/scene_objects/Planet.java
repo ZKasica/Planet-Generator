@@ -1,13 +1,14 @@
 package zk.planet_generator.scene_objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.utils.Disposable;
 import zk.planet_generator.Scene;
 
-/**
- * Created by Zach on 5/16/2017.
- */
-public class Planet extends SpaceObject {
+public class Planet extends SpaceObject implements Disposable {
+    private ShaderProgram planetShader;
     private float time;
     private float rotationSpeed;
     private float radius;
@@ -19,21 +20,26 @@ public class Planet extends SpaceObject {
 
         rotationSpeed = 1/50f;
         radius = sprite.getWidth()/2;
+
+        planetShader = new ShaderProgram(Gdx.files.internal("shaders/planet.vsh"), Gdx.files.internal("shaders/planet.fsh"));
+        if(!planetShader.isCompiled()) {
+            Gdx.app.error("Planet Shader Error", "\n" + planetShader.getLog());
+        }
     }
 
     @Override
     public void update(float delta) {
         time += rotationSpeed * delta;
 
-        // If the code below this comment is moved to render, it causes graphic issues with orbiting objects
-        Scene.planetShader.begin();
-        Scene.planetShader.setUniformf("time", direction * time);
-        Scene.planetShader.end();
+        // If the code below this comment is moved to update, it causes graphic issues with orbiting objects
+        planetShader.begin();
+        planetShader.setUniformf("time", direction * time);
+        planetShader.end();
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.setShader(Scene.planetShader);
+        batch.setShader(planetShader);
         super.render(batch);
         batch.setShader(null);
     }
@@ -44,5 +50,10 @@ public class Planet extends SpaceObject {
 
     public float getMinimumCloudRadiusAtY(float y) {
         return getWidthAtY(y) + 6;
+    }
+
+    @Override
+    public void dispose() {
+        planetShader.dispose();
     }
 }

@@ -1,19 +1,10 @@
-package zk.planet_generator;
+package zk.planet_generator.scene_objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.sun.org.apache.xpath.internal.operations.Or;
-import zk.planet_generator.scene_objects.Orbiter;
-import zk.planet_generator.scene_objects.Ring;
+import zk.planet_generator.Scene;
 
-/**
- * Created by Zach on 5/30/2017.
- */
 public class Trajectory {
     private Orbiter orbiter;
     private Ring path;

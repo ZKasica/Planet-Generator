@@ -1,6 +1,5 @@
 package zk.planet_generator.ui;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisSlider;
@@ -8,9 +7,6 @@ import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
 
-/**
- * Created by zach on 5/28/17.
- */
 public class RingEditor extends ObjectEditor {
     private Ring ring;
 
@@ -47,25 +43,25 @@ public class RingEditor extends ObjectEditor {
         });
 
         float radiusMin = scene.getPlanet().getMinimumCloudRadiusAtY(0) + 5;
-        minRadiusSlider = createSlider("Min. Radius", radiusMin, 400, zeroSnap, ring.getMinRadius(), new ChangeListener() {
+        minRadiusSlider = createSlider("Min. Radius", radiusMin, 400, zeroSnap, ring.getMinimumRadius(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(shouldFireChange) {
                     ring.setMinimumRadius(((VisSlider) actor).getValue());
                     shouldFireChange = false;
-                    maxRadiusSlider.setValue(ring.getMaxRadius());
+                    maxRadiusSlider.setValue(ring.getMaximumRadius());
                     shouldFireChange = true;
                 }
             }
         });
 
-        maxRadiusSlider = createSlider("Max. Radius", radiusMin, 400, zeroSnap, ring.getMaxRadius(), new ChangeListener() {
+        maxRadiusSlider = createSlider("Max. Radius", radiusMin, 400, zeroSnap, ring.getMaximumRadius(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(shouldFireChange) {
                     ring.setMaximumRadius(((VisSlider) actor).getValue());
                     shouldFireChange = false;
-                    minRadiusSlider.setValue(ring.getMinRadius());
+                    minRadiusSlider.setValue(ring.getMinimumRadius());
                     shouldFireChange = true;
                 }
             }

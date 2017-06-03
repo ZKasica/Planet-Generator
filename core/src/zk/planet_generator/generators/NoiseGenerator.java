@@ -2,6 +2,9 @@ package zk.planet_generator.generators;
 
 import java.util.Random;
 
+/**
+ * Noise generator code: http://devmag.org.za/2009/04/25/perlin-noise/
+ */
 public class NoiseGenerator {
     private static float[][] GenerateSmoothNoise(float[][] baseNoise, int octave) {
         int width = baseNoise.length;

@@ -1,7 +1,6 @@
 package zk.planet_generator;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.kotcrab.vis.ui.VisUI;
 import zk.planet_generator.ui.EditorUI;
 import zk.planet_generator.ui.SceneUI;
@@ -39,7 +38,7 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
 
         float delta = Gdx.graphics.getDeltaTime();
 
-        scene.render(delta);
+        scene.update(delta);
         editorUI.render(delta);
         sceneUI.render(delta);
     }

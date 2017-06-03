@@ -1,16 +1,11 @@
 package zk.planet_generator.ui;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import zk.planet_generator.PlanetGeneratorGame;
 import zk.planet_generator.Scene;
 
-/**
- * Created by zach on 6/2/17.
- */
 public abstract class GameUI {
     public static final float FADE_DURATION = 0.25f;
 

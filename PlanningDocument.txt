@@ -1,5 +1,5 @@
 Scene Editor
-    * Next to sliders, put text boxes which hold the value that can be changed by the slider or by entering text
+    [] Next to sliders, put text boxes which hold the value that can be changed by the slider or by entering text
 
 To Do List:
     [] Save scene

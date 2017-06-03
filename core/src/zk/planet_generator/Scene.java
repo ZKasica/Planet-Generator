@@ -9,16 +9,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.*;
-import com.sun.corba.se.internal.iiop.ORB;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.ScreenUtils;
 import zk.planet_generator.generators.NoiseGenerator;
 import zk.planet_generator.generators.ObjectGenerator;
 import zk.planet_generator.scene_objects.*;
 
-/**
- * Created by zach on 5/21/17.
- */
-public class Scene extends InputAdapter {
+public class Scene extends InputAdapter implements Disposable {
     public static final int BUFFER_WIDTH = 640;
     public static final int BUFFER_HEIGHT = 360;
     public static final int CENTER_X = BUFFER_WIDTH / 2;
@@ -29,29 +28,24 @@ public class Scene extends InputAdapter {
 
     public static final Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
 
-    public static ShaderProgram planetShader;
-
     private OrthographicCamera gameCamera;
     private OrthographicCamera starCamera;
-    private OrthographicCamera camera;
+    private OrthographicCamera screenCamera;
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
 
     private ObjectGenerator objectGenerator;
-    private Array<SpaceObject> spaceObjects;
     private Planet planet;
-
+    private Array<SpaceObject> spaceObjects;
     private Array<Ring> rings;
     private Array<Cloud> clouds;
     private Array<Star> stars;
     private Array<Orbiter> moons;
-
     private Array<Trajectory> trajectories;
 
     private boolean shouldSpeedUpTime;
 
     private boolean focus;
-    private boolean focusOnUI;
     private float elapsed;
     private float lifetime;
     private float startX;
@@ -74,10 +68,6 @@ public class Scene extends InputAdapter {
 
     private void setupRendering() {
         ShaderProgram.pedantic = false;
-        planetShader = new ShaderProgram(Gdx.files.internal("shaders/planet.vsh"), Gdx.files.internal("shaders/planet.fsh"));
-        if(!planetShader.isCompiled()) {
-            Gdx.app.error("Planet Shader", "\n" + planetShader.getLog());
-        }
 
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
@@ -90,9 +80,9 @@ public class Scene extends InputAdapter {
         starCamera.translate(STAR_EDITOR_OFFSET, 0);
         starCamera.update();
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.update();
+        screenCamera = new OrthographicCamera();
+        screenCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        screenCamera.update();
 
         batch = new SpriteBatch();
         pixelBuffer = new PixelBuffer();
@@ -146,24 +136,17 @@ public class Scene extends InputAdapter {
         return false;
     }
 
-    private Sprite generatePlanetSprite(int size) {
-        return new Sprite(generatePlanetTexture(size));
-    }
-
-    private void createPlanet(int velDir) {
-        Sprite planet = generatePlanetSprite(1024);
-        int size = MathUtils.random(100, 148);
-        planet.setSize(size, size);
-        planet.setPosition(CENTER_X - planet.getWidth() / 2, CENTER_Y - planet.getHeight() / 2);
-        this.planet = new Planet(planet, velDir);
-        spaceObjects.add(this.planet);
-    }
-
-    public void render(float delta) {
+    public void update(float delta) {
         if(shouldSpeedUpTime) {
             delta *= 10;
         }
 
+        tryToTransition(delta);
+        updateObjects(delta);
+        drawObjects();
+    }
+
+    private void tryToTransition(float delta) {
         if(focus) {
             elapsed += delta;
             float progress = Math.min(1f, elapsed / lifetime);
@@ -178,7 +161,9 @@ public class Scene extends InputAdapter {
                 focus = false;
             }
         }
+    }
 
+    private void updateObjects(float delta) {
         for(Trajectory trajectory : trajectories) {
             trajectory.update();
         }
@@ -187,10 +172,9 @@ public class Scene extends InputAdapter {
             spaceObject.update(delta);
         }
         spaceObjects.sort();
+    }
 
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(25f / 255f, 20f / 255f, 30f / 255f, 1);
-
+    private void drawObjects() {
         pixelBuffer.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(30f / 255f, 25f / 255f, 35f / 255f, 1);
@@ -208,14 +192,27 @@ public class Scene extends InputAdapter {
         batch.end();
         pixelBuffer.end();
 
-        batch.setShader(null);
-        pixelBuffer.render(batch, camera);
+        pixelBuffer.render(batch, screenCamera);
     }
 
+    @Override
     public void dispose() {
         batch.dispose();
         pixelBuffer.dispose();
-        planetShader.dispose();
+        planet.dispose();
+    }
+
+    private void createPlanet(int velDir) {
+        Sprite planet = generatePlanetSprite(1024);
+        int size = MathUtils.random(100, 148);
+        planet.setSize(size, size);
+        planet.setPosition(CENTER_X - planet.getWidth() / 2, CENTER_Y - planet.getHeight() / 2);
+        this.planet = new Planet(planet, velDir);
+        spaceObjects.add(this.planet);
+    }
+
+    private Sprite generatePlanetSprite(int size) {
+        return new Sprite(generatePlanetTexture(size));
     }
 
     private Texture generatePlanetTexture(int size) {
@@ -245,7 +242,7 @@ public class Scene extends InputAdapter {
         return planetTexture;
     }
 
-    public void reset() {
+    public void clear() {
         for(SpaceObject object : spaceObjects) {
             object.getSprite().getTexture().dispose();
         }
@@ -310,12 +307,10 @@ public class Scene extends InputAdapter {
 
     public void addStar(Star star) {
         stars.add(star);
-        //spaceObjects.add(star);
     }
 
     public void removeStar(Star star) {
         stars.removeValue(star, false);
-        //removeObject(star);
     }
 
     public Array<Cloud> getClouds() {
@@ -360,7 +355,6 @@ public class Scene extends InputAdapter {
 
     public void focusOnPlanet() {
         focus = true;
-
         lifetime = TRANSITION_DURATION;
         elapsed = 0;
 

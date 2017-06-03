@@ -7,9 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
-/**
- * Created by Zach on 10/1/2016.
- */
 public class PixelBuffer extends FrameBuffer {
     private TextureRegion pixelBufferRegion;
 
@@ -22,6 +19,7 @@ public class PixelBuffer extends FrameBuffer {
     }
 
     public void render(SpriteBatch batch, OrthographicCamera screenCamera) {
+        batch.setShader(null);
         batch.setProjectionMatrix(screenCamera.combined);
         batch.begin();
         batch.draw(pixelBufferRegion, 0, 0, screenCamera.viewportWidth, screenCamera.viewportHeight);

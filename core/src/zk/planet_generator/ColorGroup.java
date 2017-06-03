@@ -2,9 +2,6 @@ package zk.planet_generator;
 
 import com.badlogic.gdx.utils.Array;
 
-/**
- * Created by Zach on 5/17/2017.
- */
 public class ColorGroup {
     private Array<Integer> colors;
 

@@ -4,13 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
 import zk.planet_generator.Scene;
 
-/**
- * Created by Zach on 5/16/2017.
- */
 public class Orbiter extends SpaceObject {
     private float angularVelocity;
     private float zTilt; // Affects how steep of an angle it orbits at
@@ -56,12 +51,19 @@ public class Orbiter extends SpaceObject {
 
         // Set sprite position for 2D rendering and zCoord for ordering
         getSprite().setPosition(Scene.CENTER_X - getSprite().getWidth()/2 + position.x, Scene.CENTER_Y - getSprite().getHeight()/2 + position.y + yOffset);
-        setZCoord((int)position.z);
+        setZPos((int)position.z);
     }
 
-    public void setXTilt(float xTilt) {
-        this.xTilt = xTilt;
-        rotX.setToRotation(Vector3.X, xTilt);
+    public float getAngularVelocity() {
+        return angularVelocity;
+    }
+
+    public void setAngularVelocity(float angularVelocity) {
+        this.angularVelocity = angularVelocity;
+    }
+
+    public float getZTilt() {
+        return zTilt;
     }
 
     public void setZTilt(float amount) {
@@ -69,28 +71,21 @@ public class Orbiter extends SpaceObject {
         rotZ.setToRotation(zTilt);
     }
 
-    public void setAngularVelocity(float angularVelocity) {
-        this.angularVelocity = angularVelocity;
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
-    }
-
-    public float getAngularVelocity() {
-        return angularVelocity;
-    }
-
-    public float getZTilt() {
-        return zTilt;
-    }
-
     public float getXTilt() {
         return xTilt;
     }
 
+    public void setXTilt(float xTilt) {
+        this.xTilt = xTilt;
+        rotX.setToRotation(Vector3.X, xTilt);
+    }
+
     public float getRadius() {
         return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
     }
 
     public float getSize() {
@@ -99,18 +94,6 @@ public class Orbiter extends SpaceObject {
 
     public int getColor() {
         return color;
-    }
-
-    public Matrix3 getRotZ() {
-        return rotZ;
-    }
-
-    public Matrix3 getRotX() {
-        return rotX;
-    }
-
-    public float getAngle() {
-        return angle;
     }
 
     public static class OrbiterBlueprint {
