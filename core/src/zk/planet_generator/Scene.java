@@ -7,121 +7,196 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.*;
+import zk.planet_generator.generators.NoiseGenerator;
+import zk.planet_generator.generators.ObjectGenerator;
+import zk.planet_generator.scene_objects.*;
 
-/**
- * Created by zach on 5/21/17.
- */
-public class Scene {
+public class Scene extends InputAdapter implements Disposable, Json.Serializable {
     public static final int BUFFER_WIDTH = 640;
     public static final int BUFFER_HEIGHT = 360;
     public static final int CENTER_X = BUFFER_WIDTH / 2;
     public static final int CENTER_Y = BUFFER_HEIGHT / 2;
+    public static final int EDITOR_OFFSET = 100;
+    public static final int STAR_EDITOR_OFFSET = 15;
+    public static final float TRANSITION_DURATION = 0.7f;
 
-    public static ShaderProgram planetShader;
+    public static final Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
 
     private OrthographicCamera gameCamera;
-    private OrthographicCamera camera;
+    private OrthographicCamera starCamera;
+    private OrthographicCamera screenCamera;
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
 
-    private Array<SpaceObject> spaceObjects;
-    private Array<Orbiter> moons;
-    private Array<Orbiter> rings;
-    private Array<Orbiter> clouds;
-    private Array<Star> stars;
+    private ObjectGenerator objectGenerator;
     private Planet planet;
+    private Array<SpaceObject> spaceObjects;
+    private Array<Ring> rings;
+    private Array<Cloud> clouds;
+    private Array<Star> stars;
+    private Array<Orbiter> moons;
+    private Array<Trajectory> trajectories;
 
     private boolean shouldSpeedUpTime;
 
+    private boolean focus;
+    private float elapsed;
+    private float lifetime;
+    private float startX;
+    private float targetX;
+    private float startStarX;
+    private float targetStarX;
+
     public Scene() {
         setupRendering();
+
+        spaceObjects = new Array<>();
+        rings = new Array<>();
+        clouds = new Array<>();
+        stars = new Array<>();
+        moons = new Array<>();
+        trajectories = new Array<>();
         generateObjects();
-        initializeInput();
+       // createEmptyScene();
     }
 
     private void setupRendering() {
         ShaderProgram.pedantic = false;
-        planetShader = new ShaderProgram(Gdx.files.internal("shaders/planet.vsh"), Gdx.files.internal("shaders/planet.fsh"));
-        if(!planetShader.isCompiled()) {
-            Gdx.app.error("Planet Shader", "\n" + planetShader.getLog());
-        }
 
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
         gameCamera.zoom = 1f;
-        //gameCamera.translate(100, 0);
+        gameCamera.translate(EDITOR_OFFSET, 0);
         gameCamera.update();
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.update();
+        starCamera = new OrthographicCamera();
+        starCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
+        starCamera.translate(STAR_EDITOR_OFFSET, 0);
+        starCamera.update();
+
+        screenCamera = new OrthographicCamera();
+        screenCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        screenCamera.update();
 
         batch = new SpriteBatch();
         pixelBuffer = new PixelBuffer();
     }
 
-    private void generateObjects() {
-        spaceObjects = new Array<>();
+    public void createEmptyScene() {
+        createPlanet(MathUtils.randomSign());
+        objectGenerator = new ObjectGenerator(this);
+    }
 
+    public void generateObjects() {
         int zDir = MathUtils.randomSign();
         int velDir = MathUtils.randomSign();
 
         createPlanet(velDir);
 
-        ObjectGenerator objectGenerator = new ObjectGenerator(planet);
-        moons = objectGenerator.createMoons(velDir, zDir);
-        rings = objectGenerator.createRings(velDir, zDir);
-        clouds = objectGenerator.createClouds(velDir);
-        stars = objectGenerator.createStars();
-
-        spaceObjects.addAll(moons);
-        spaceObjects.addAll(rings);
-        spaceObjects.addAll(clouds);
+        objectGenerator = new ObjectGenerator(this, velDir, zDir);
+        objectGenerator.createMoons();
+        objectGenerator.createRings();
+        objectGenerator.createClouds();
+        objectGenerator.createStars();
     }
 
-    private void initializeInput() {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            public boolean keyDown(int keycode) {
-                switch(keycode) {
-                    case Input.Keys.ESCAPE:
-                        Gdx.app.exit();
-                        return true;
+    @Override
+    public boolean keyDown(int keycode) {
+        switch(keycode) {
+            case Input.Keys.ESCAPE:
+                Gdx.app.exit();
+                return true;
 
-                    case Input.Keys.R:
-                        reset();
-                        return true;
+            case Input.Keys.E:
+                shouldSpeedUpTime = true;
+                return true;
 
-                    case Input.Keys.E:
-                        shouldSpeedUpTime = true;
-                        return true;
+            case Input.Keys.F12:
+                takeScreenshot();
+                return true;
+        }
 
-                    case Input.Keys.F12:
-                        takeScreenshot();
-                        return true;
-                }
-
-                return false;
-            }
-
-            @Override
-            public boolean keyUp(int keycode) {
-                switch(keycode) {
-                    case Input.Keys.E:
-                        shouldSpeedUpTime = false;
-                        return true;
-                }
-
-                return false;
-            }
-        });
+        return false;
     }
 
-    private Sprite generatePlanetSprite(int size) {
-        return new Sprite(generatePlanetTexture(size));
+    @Override
+    public boolean keyUp(int keycode) {
+        switch(keycode) {
+            case Input.Keys.E:
+                shouldSpeedUpTime = false;
+                return true;
+        }
+
+        return false;
+    }
+
+    public void update(float delta) {
+        if(shouldSpeedUpTime) {
+            delta *= 10;
+        }
+
+        tryToTransition(delta);
+        updateObjects(delta);
+        drawObjects();
+    }
+
+    private void tryToTransition(float delta) {
+        if(focus) {
+            elapsed += delta;
+            float progress = Math.min(1f, elapsed / lifetime);
+
+            gameCamera.position.x = Interpolation.circleOut.apply(startX, targetX, progress);
+            gameCamera.update();
+
+            starCamera.position.x = Interpolation.circleOut.apply(startStarX, targetStarX, progress);
+            starCamera.update();
+
+            if(progress == 1) {
+                focus = false;
+            }
+        }
+    }
+
+    private void updateObjects(float delta) {
+        for(Trajectory trajectory : trajectories) {
+            trajectory.update();
+        }
+
+        for(SpaceObject spaceObject : spaceObjects) {
+            spaceObject.update(delta);
+        }
+        spaceObjects.sort();
+    }
+
+    private void drawObjects() {
+        pixelBuffer.begin();
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(30f / 255f, 25f / 255f, 35f / 255f, 1);
+
+        batch.begin();
+        batch.setProjectionMatrix(starCamera.combined);
+        for(Star star : stars) {
+            star.render(batch);
+        }
+
+        batch.setProjectionMatrix(gameCamera.combined);
+        for(SpaceObject spaceObject : spaceObjects) {
+            spaceObject.render(batch);
+        }
+        batch.end();
+        pixelBuffer.end();
+
+        pixelBuffer.render(batch, screenCamera);
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+        pixelBuffer.dispose();
+        planet.dispose();
     }
 
     private void createPlanet(int velDir) {
@@ -133,53 +208,8 @@ public class Scene {
         spaceObjects.add(this.planet);
     }
 
-    public void render() {
-        float delta = Gdx.graphics.getDeltaTime();
-
-//        if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
-//            for(Orbiter ring : rings) {
-//                ring.updateZTilt(50 * delta);
-//            }
-//        }
-
-        if(shouldSpeedUpTime) {
-            delta *= 10;
-        }
-
-        for(SpaceObject spaceObject : spaceObjects) {
-            spaceObject.update(delta);
-        }
-        spaceObjects.sort();
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(25f / 255f, 20f / 255f, 30f / 255f, 1);
-
-        pixelBuffer.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(30f / 255f, 25f / 255f, 35f / 255f, 1);
-        //Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1);
-
-        batch.setProjectionMatrix(gameCamera.combined);
-        batch.begin();
-        for(Star star : stars) {
-            //star.update(delta);
-            star.render(batch);
-        }
-
-        for(SpaceObject spaceObject : spaceObjects) {
-            spaceObject.render(batch);
-        }
-        batch.end();
-        pixelBuffer.end();
-
-        batch.setShader(null);
-        pixelBuffer.render(batch, camera);
-    }
-
-    public void dispose() {
-        batch.dispose();
-        pixelBuffer.dispose();
-        planetShader.dispose();
+    private Sprite generatePlanetSprite(int size) {
+        return new Sprite(generatePlanetTexture(size));
     }
 
     private Texture generatePlanetTexture(int size) {
@@ -209,22 +239,15 @@ public class Scene {
         return planetTexture;
     }
 
-    public void reset() {
+    public void clear() {
         for(SpaceObject object : spaceObjects) {
             object.getSprite().getTexture().dispose();
         }
         spaceObjects.clear();
-
-        for(Star star : stars) {
-            star.getSprite().getTexture().dispose();
-        }
-        stars.clear();
-
-        moons.clear();
         rings.clear();
         clouds.clear();
-
-        generateObjects();
+        moons.clear();
+        stars.clear();
     }
 
     private void takeScreenshot() {
@@ -235,5 +258,127 @@ public class Scene {
         PixmapIO.writePNG(Gdx.files.external("screenshot.png"), pixmap);
         Gdx.app.log("Screenshot", "Saved screenshot to screenshot.png");
         pixmap.dispose();
+    }
+
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public ObjectGenerator getObjectGenerator() {
+        return objectGenerator;
+    }
+
+    private void removeObjects(Array<? extends SpaceObject> objects) {
+        spaceObjects.removeAll(objects, false);
+    }
+
+    private void removeObject(SpaceObject object) {
+        spaceObjects.removeValue(object, false);
+    }
+
+    public Array<Ring> getRings() {
+        return rings;
+    }
+
+    public void addRingObject(Orbiter ringObject) {
+        spaceObjects.add(ringObject);
+    }
+
+    public void addRing(Ring ring) {
+        rings.add(ring);
+        spaceObjects.addAll(ring.getObjects());
+    }
+
+    public void removeRingObject(Orbiter orbiter) {
+        spaceObjects.removeValue(orbiter, false);
+    }
+
+    public void removeRing(Ring ring) {
+        rings.removeValue(ring, false);
+        removeObjects(ring.getObjects());
+    }
+
+    public Array<Star> getStars() {
+        return stars;
+    }
+
+    public void addStar(Star star) {
+        stars.add(star);
+    }
+
+    public void removeStar(Star star) {
+        stars.removeValue(star, false);
+    }
+
+    public Array<Cloud> getClouds() {
+        return clouds;
+    }
+
+    public void addCloud(Cloud cloud) {
+        clouds.add(cloud);
+        spaceObjects.addAll(cloud.getCloudObjects());
+    }
+
+    public void removeCloud(Cloud cloud) {
+        clouds.removeValue(cloud, false);
+        removeObjects(cloud.getCloudObjects());
+    }
+
+    public Array<Orbiter> getMoons() {
+        return moons;
+    }
+
+    public void addMoon(Orbiter orbiter) {
+        moons.add(orbiter);
+        spaceObjects.add(orbiter);
+    }
+
+    public void removeMoon(Orbiter orbiter) {
+        moons.removeValue(orbiter, false);
+        removeObject(orbiter);
+    }
+
+    public Trajectory addTrajectory(Orbiter orbiter) {
+        Trajectory trajectory = new Trajectory(orbiter);
+        trajectories.add(trajectory);
+        addRing(trajectory.getPath());
+        return trajectory;
+    }
+
+    public void removeTrajectory(Trajectory trajectory) {
+        trajectories.removeValue(trajectory, false);
+        removeRing(trajectory.getPath());
+    }
+
+    public void focusOnPlanet() {
+        focus = true;
+        lifetime = TRANSITION_DURATION;
+        elapsed = 0;
+
+        startX = CENTER_X + EDITOR_OFFSET;
+        targetX = CENTER_X;
+        startStarX = CENTER_X + STAR_EDITOR_OFFSET;
+        targetStarX = CENTER_X;
+    }
+
+    public void focusOnUI() {
+        focus = true;
+        lifetime = TRANSITION_DURATION;
+        elapsed = 0;
+
+        startX = CENTER_X;
+        targetX = CENTER_X + EDITOR_OFFSET;
+        startStarX = CENTER_X;
+        targetStarX = CENTER_X + STAR_EDITOR_OFFSET;
+    }
+
+    @Override
+    public void write(Json json) {
+        json.writeValue("Rings", rings);
+    }
+
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+
     }
 }

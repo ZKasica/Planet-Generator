@@ -1,13 +1,11 @@
-package zk.planet_generator;
+package zk.planet_generator.scene_objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
+import zk.planet_generator.Scene;
 
-/**
- * Created by Zach on 5/16/2017.
- */
 public class Orbiter extends SpaceObject {
     private float angularVelocity;
     private float zTilt; // Affects how steep of an angle it orbits at
@@ -15,6 +13,8 @@ public class Orbiter extends SpaceObject {
     private float angle;
     private float radius;
     private float yOffset;
+
+    private int color;
 
     private Vector3 position;
     private Matrix3 rotZ;
@@ -35,6 +35,11 @@ public class Orbiter extends SpaceObject {
         rotX = new Matrix3().setToRotation(Vector3.X, xTilt);
     }
 
+    public Orbiter(Sprite sprite, OrbiterBlueprint blueprint, int color) {
+        this(sprite, blueprint);
+        this.color = color;
+    }
+
     @Override
     public void update(float delta) {
         angle = (angle + (angularVelocity * delta)) % 360;
@@ -46,7 +51,49 @@ public class Orbiter extends SpaceObject {
 
         // Set sprite position for 2D rendering and zCoord for ordering
         getSprite().setPosition(Scene.CENTER_X - getSprite().getWidth()/2 + position.x, Scene.CENTER_Y - getSprite().getHeight()/2 + position.y + yOffset);
-        setZCoord((int)position.z);
+        setZPos((int)position.z);
+    }
+
+    public float getAngularVelocity() {
+        return angularVelocity;
+    }
+
+    public void setAngularVelocity(float angularVelocity) {
+        this.angularVelocity = angularVelocity;
+    }
+
+    public float getZTilt() {
+        return zTilt;
+    }
+
+    public void setZTilt(float amount) {
+        zTilt = amount;
+        rotZ.setToRotation(zTilt);
+    }
+
+    public float getXTilt() {
+        return xTilt;
+    }
+
+    public void setXTilt(float xTilt) {
+        this.xTilt = xTilt;
+        rotX.setToRotation(Vector3.X, xTilt);
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
+    public float getSize() {
+        return getSprite().getWidth();
+    }
+
+    public int getColor() {
+        return color;
     }
 
     public static class OrbiterBlueprint {
@@ -57,9 +104,4 @@ public class Orbiter extends SpaceObject {
         public float radius;
         public float yOffset;
     }
-
-//    public void updateZTilt(float amount) {
-//        zTilt += amount;
-//        rotZ.setToRotation(zTilt);
-//    }
 }
