@@ -98,7 +98,11 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
         objectGenerator = new ObjectGenerator(this, velDir, zDir);
         objectGenerator.createMoons();
-        objectGenerator.createRings();
+
+        rings = new Array<>();
+        while(rings.size == 0) {
+            objectGenerator.createRings();
+        }
         objectGenerator.createClouds();
         objectGenerator.createStars();
     }
