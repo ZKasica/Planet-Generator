@@ -14,6 +14,7 @@ import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
+import zk.planet_generator.PlanetGeneratorGame;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
@@ -23,30 +24,31 @@ import zk.planet_generator.scene_objects.Star;
 /**
  * Created by zach on 6/2/17.
  */
-public class SceneUI {
-    private Scene scene;
-    private Stage stage;
-
-    public SceneUI(Scene scene) {
-        this.scene = scene;
-        stage = new Stage();
+public class SceneUI extends GameUI {
+    public SceneUI(PlanetGeneratorGame game) {
+        super(game);
     }
 
-    public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
+    @Override
+    protected void initialize() {
+        Table topButtonBar = new Table();
+        topButtonBar.setFillParent(true);
+
+        VisTextButton saveButton = new VisTextButton("Show Editor");
+        saveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                showEditorClicked();
+            }
+        });
+        topButtonBar.top().left().add(saveButton).pad(7);
+
+        stage.addActor(topButtonBar);
     }
 
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
-    }
-
-    public void dispose() {
-        stage.dispose();
-        VisUI.dispose();
-    }
-
-    public Stage getStage() {
-        return stage;
+    private void showEditorClicked() {
+        hide();
+        game.getEditorUI().show();
+        scene.focusOnUI();
     }
 }

@@ -25,6 +25,7 @@ public class Scene extends InputAdapter {
     public static final int CENTER_Y = BUFFER_HEIGHT / 2;
     public static final int EDITOR_OFFSET = 100;
     public static final int STAR_EDITOR_OFFSET = 15;
+    public static final float TRANSITION_DURATION = 0.7f;
 
     public static final Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
 
@@ -49,9 +50,14 @@ public class Scene extends InputAdapter {
 
     private boolean shouldSpeedUpTime;
 
-    private boolean focusOnPlanet;
+    private boolean focus;
+    private boolean focusOnUI;
     private float elapsed;
     private float lifetime;
+    private float startX;
+    private float targetX;
+    private float startStarX;
+    private float targetStarX;
 
     public Scene() {
         setupRendering();
@@ -153,25 +159,23 @@ public class Scene extends InputAdapter {
         spaceObjects.add(this.planet);
     }
 
-    public void render() {
-        float delta = Gdx.graphics.getDeltaTime();
-
+    public void render(float delta) {
         if(shouldSpeedUpTime) {
             delta *= 10;
         }
 
-        if(focusOnPlanet) {
+        if(focus) {
             elapsed += delta;
             float progress = Math.min(1f, elapsed / lifetime);
 
-            gameCamera.position.x = Interpolation.circleOut.apply(CENTER_X + EDITOR_OFFSET, CENTER_X, progress);
+            gameCamera.position.x = Interpolation.circleOut.apply(startX, targetX, progress);
             gameCamera.update();
 
-            starCamera.position.x = Interpolation.circleOut.apply(CENTER_X + STAR_EDITOR_OFFSET, CENTER_X, progress);
+            starCamera.position.x = Interpolation.circleOut.apply(startStarX, targetStarX, progress);
             starCamera.update();
 
             if(progress == 1) {
-                focusOnPlanet = false;
+                focus = false;
             }
         }
 
@@ -355,7 +359,25 @@ public class Scene extends InputAdapter {
     }
 
     public void focusOnPlanet() {
-        focusOnPlanet = true;
-        lifetime = 0.7f;
+        focus = true;
+
+        lifetime = TRANSITION_DURATION;
+        elapsed = 0;
+
+        startX = CENTER_X + EDITOR_OFFSET;
+        targetX = CENTER_X;
+        startStarX = CENTER_X + STAR_EDITOR_OFFSET;
+        targetStarX = CENTER_X;
+    }
+
+    public void focusOnUI() {
+        focus = true;
+        lifetime = TRANSITION_DURATION;
+        elapsed = 0;
+
+        startX = CENTER_X;
+        targetX = CENTER_X + EDITOR_OFFSET;
+        startStarX = CENTER_X;
+        targetStarX = CENTER_X + STAR_EDITOR_OFFSET;
     }
 }

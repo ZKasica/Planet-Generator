@@ -96,4 +96,9 @@ public class RingEditor extends ObjectEditor {
     public void deleteObjects() {
         scene.removeRing(ring);
     }
+
+    @Override
+    public void hideInfo() {
+
+    }
 }

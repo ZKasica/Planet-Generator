@@ -19,6 +19,7 @@ public class MoonEditor extends ObjectEditor {
     private Orbiter moon;
     private boolean showTrajectory;
     private Trajectory trajectory;
+    private VisTextButton trajectoryButton;
 
     public MoonEditor(Scene scene, String objectName, Orbiter moon) {
         super(scene, objectName);
@@ -26,21 +27,21 @@ public class MoonEditor extends ObjectEditor {
 
         float[] zeroSnap = new float[]{0};
 
-        VisTextButton test = new VisTextButton("Show Trajectory");
-        test.addListener(new ClickListener() {
+        trajectoryButton = new VisTextButton("Show Trajectory");
+        trajectoryButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 showTrajectory = !showTrajectory;
                 if(showTrajectory) {
-                    test.setText("Hide Trajectory");
+                    trajectoryButton.setText("Hide Trajectory");
                     trajectory = scene.addTrajectory(moon);
                 } else {
-                    test.setText("Show Trajectory");
+                    trajectoryButton.setText("Show Trajectory");
                     scene.removeTrajectory(trajectory);
                 }
             }
         });
-        getTopBar().add(test).pad(0, 20, 0, 20);
+        getTopBar().add(trajectoryButton).pad(0, 20, 0, 20);
 
         createSlider("Velocity", -200, 200, zeroSnap, moon.getAngularVelocity(), new ChangeListener() {
             @Override
@@ -84,8 +85,15 @@ public class MoonEditor extends ObjectEditor {
     public void deleteObjects() {
         scene.removeMoon(moon);
 
+        hideInfo();
+    }
+
+    @Override
+    public void hideInfo() {
         if(trajectory != null) {
             scene.removeTrajectory(trajectory);
         }
+        trajectoryButton.setText("Show Trajectory");
+        showTrajectory = false;
     }
 }

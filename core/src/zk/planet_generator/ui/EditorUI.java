@@ -1,25 +1,11 @@
 package zk.planet_generator.ui;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectFloatMap;
-import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
-import com.kotcrab.vis.ui.widget.color.ColorPicker;
-import com.kotcrab.vis.ui.widget.color.ColorPickerListener;
-import zk.planet_generator.Scene;
+import zk.planet_generator.PlanetGeneratorGame;
 import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
@@ -28,10 +14,7 @@ import zk.planet_generator.scene_objects.Star;
 /**
  * Created by zach on 5/26/17.
  */
-public class EditorUI {
-    private Scene scene;
-    private Stage stage;
-
+public class EditorUI extends GameUI {
     private Array<ObjectEditor> objectEditors;
     private StarEditor starEditor;
     private CloudEditor cloudEditor;
@@ -41,21 +24,17 @@ public class EditorUI {
 
     private Table objectEditorTable;
 
-    public EditorUI(Scene scene) {
-        this.scene = scene;
-        stage = new Stage();
-
-        initialize();
+    public EditorUI(PlanetGeneratorGame game) {
+        super(game);
     }
 
-    private void initialize() {
-        VisUI.load(VisUI.SkinScale.X2);
-
+    @Override
+    protected void initialize() {
         objectEditors = new Array<>();
 
         // Save Scene Button
-        Table testTable = new Table();
-        testTable.setFillParent(true);
+        Table topButtonBar = new Table();
+        topButtonBar.setFillParent(true);
 
         VisTextButton saveButton = new VisTextButton("Save");
         saveButton.addListener(new ClickListener() {
@@ -64,7 +43,7 @@ public class EditorUI {
                 saveClicked();
             }
         });
-        testTable.top().left().add(saveButton).pad(7);
+        topButtonBar.top().left().add(saveButton).pad(7);
 
         // Load Scene Button
         VisTextButton loadButton = new VisTextButton("Load");
@@ -74,7 +53,7 @@ public class EditorUI {
                 loadClicked();
             }
         });
-        testTable.add(loadButton).pad(7);
+        topButtonBar.add(loadButton).pad(7);
 
         // Reset Button
         VisTextButton createResetButton = new VisTextButton("Clear");
@@ -84,7 +63,7 @@ public class EditorUI {
                 resetClicked();
             }
         });
-        testTable.add(createResetButton).pad(7);
+        topButtonBar.add(createResetButton).pad(7);
 
         resetDialog = new VisDialog("Reset") {
             @Override
@@ -107,7 +86,7 @@ public class EditorUI {
                 randomClicked();
             }
         });
-        testTable.add(randomButton).pad(7);
+        topButtonBar.add(randomButton).pad(7);
 
         // Exit Button
         VisTextButton exitButton = new VisTextButton("Close Editor");
@@ -117,8 +96,8 @@ public class EditorUI {
                 exitClicked();
             }
         });
-        testTable.add(exitButton).pad(7);
-        stage.addActor(testTable);
+        topButtonBar.add(exitButton).pad(7);
+        stage.addActor(topButtonBar);
 
         Table buttonTable = new Table();
         buttonTable.setFillParent(true);
@@ -241,11 +220,13 @@ public class EditorUI {
     }
 
     private void exitClicked() {
-        for(Actor actor : stage.getActors()) {
-            actor.setTouchable(Touchable.disabled);
-        }
-        stage.addAction(Actions.fadeOut(0.25f, Interpolation.circleOut));
+        hide();
+        game.getSceneUI().show();
         scene.focusOnPlanet();
+
+        for(ObjectEditor editor : objectEditors) {
+            editor.hideInfo();
+        }
     }
 
     private void resetScene() {
@@ -260,20 +241,6 @@ public class EditorUI {
         previousRing = null;
 
         scene.reset();
-    }
-
-    public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
-    }
-
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
-    }
-
-    public void dispose() {
-        stage.dispose();
-        VisUI.dispose();
     }
 
     public void updateToMatchScene() {
@@ -294,9 +261,5 @@ public class EditorUI {
         for(Orbiter moon : scene.getMoons()) {
             addObjectEditor(new MoonEditor(scene, "Moon " + (++moonId), moon));
         }
-    }
-
-    public Stage getStage() {
-        return stage;
     }
 }

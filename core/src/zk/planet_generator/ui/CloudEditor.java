@@ -74,4 +74,9 @@ public class CloudEditor extends ObjectEditor {
         }
         clouds.clear();
     }
+
+    @Override
+    public void hideInfo() {
+
+    }
 }

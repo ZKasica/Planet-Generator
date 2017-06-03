@@ -41,6 +41,7 @@ public abstract class ObjectEditor extends Table {
     }
 
     public abstract void deleteObjects();
+    public abstract void hideInfo();
 
     public void delete() {
         deleteObjects();

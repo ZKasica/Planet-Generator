@@ -5,7 +5,7 @@ To Do List:
     [] Save scene
     [] Load scene
     [X] Random scene
-    [] Close and open editor
+    [X] Close and open editor
     [X] Show moon trajectory
 
     *** Use VisUI Color Picker for selecting color ***
@@ -30,6 +30,6 @@ Other ideas:
     [] Use VisUI TabbedPane to organize moons, rings, etc
     [] Add tooltips to parts of the UI
 
-    [] Make it message based so that instead of calling a method in the scene class or ui class when an object is created or destroyed,
-          a message is sent instead?
+    [] Make it event based so that instead of calling a method in the scene class or ui class when an object is created or destroyed,
+          an event is sent instead?
 

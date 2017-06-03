@@ -52,4 +52,9 @@ public class StarEditor extends ObjectEditor {
         }
         stars.clear();
     }
+
+    @Override
+    public void hideInfo() {
+
+    }
 }
