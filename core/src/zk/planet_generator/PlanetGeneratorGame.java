@@ -1,9 +1,12 @@
 package zk.planet_generator;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.utils.Json;
 import com.kotcrab.vis.ui.VisUI;
 import zk.planet_generator.ui.EditorUI;
 import zk.planet_generator.ui.SceneUI;
+
+import javax.swing.*;
 
 /**
  * Planet shader code: https://gamedev.stackexchange.com/questions/9346/2d-shader-to-draw-representation-of-rotating-sphere
@@ -30,6 +33,10 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         sceneUI.hide();
+
+        Json json = new Json();
+        System.out.println(json.prettyPrint(scene));
+        //System.out.println(json.toJson(scene));
     }
 
     @Override

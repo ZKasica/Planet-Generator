@@ -2,9 +2,11 @@ package zk.planet_generator.scene_objects;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import zk.planet_generator.ColorGroup;
 
-public class Ring {
+public class Ring implements Json.Serializable {
     private Array<Orbiter> objects;
     private ColorGroup colors;
 
@@ -118,5 +120,19 @@ public class Ring {
 
     public Orbiter removeObject() {
         return objects.pop();
+    }
+
+    @Override
+    public void write(Json json) {
+        json.writeValue("MinimumRadius", minRadius);
+        json.writeValue("MaximumRadius", maxRadius);
+        json.writeValue("AngularVelocity", angularVelocity);
+        json.writeValue("ZTilt", zTilt);
+        json.writeValue("XTilt", xTilt);
+    }
+
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+
     }
 }

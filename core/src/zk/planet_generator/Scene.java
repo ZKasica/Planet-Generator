@@ -9,15 +9,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.*;
 import zk.planet_generator.generators.NoiseGenerator;
 import zk.planet_generator.generators.ObjectGenerator;
 import zk.planet_generator.scene_objects.*;
 
-public class Scene extends InputAdapter implements Disposable {
+public class Scene extends InputAdapter implements Disposable, Json.Serializable {
     public static final int BUFFER_WIDTH = 640;
     public static final int BUFFER_HEIGHT = 360;
     public static final int CENTER_X = BUFFER_WIDTH / 2;
@@ -62,8 +59,8 @@ public class Scene extends InputAdapter implements Disposable {
         stars = new Array<>();
         moons = new Array<>();
         trajectories = new Array<>();
-        //generateObjects();
-        createEmptyScene();
+        generateObjects();
+       // createEmptyScene();
     }
 
     private void setupRendering() {
@@ -373,5 +370,15 @@ public class Scene extends InputAdapter implements Disposable {
         targetX = CENTER_X + EDITOR_OFFSET;
         startStarX = CENTER_X;
         targetStarX = CENTER_X + STAR_EDITOR_OFFSET;
+    }
+
+    @Override
+    public void write(Json json) {
+        json.writeValue("Rings", rings);
+    }
+
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+
     }
 }
