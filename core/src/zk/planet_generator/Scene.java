@@ -377,26 +377,30 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
     @Override
     public void write(Json json) {
-        addClassTags(json);
-        json.writeValue("Rings", rings);
+        json.writeValue("rings", rings);
+        json.writeValue("stars", stars);
     }
 
     @Override
     public void read(Json json, JsonValue jsonData) {
-        addClassTags(json);
         loadRings(json, jsonData);
+        loadStars(json, jsonData);
     }
 
-    private void addClassTags(Json json) {
-        json.addClassTag("Ring", Ring.class);
-    }
 
     private void loadRings(Json json, JsonValue jsonData) {
-        rings = json.readValue("Rings", Array.class, jsonData);
+        rings = json.readValue("rings", Array.class, jsonData);
         for(Ring ring : rings) {
             for(int i = 0; i < ring.getBaseObjectCount(); i++) {
                 objectGenerator.createObjectInRing(ring);
             }
+        }
+    }
+
+    private void loadStars(Json json, JsonValue jsonData) {
+        stars = json.readValue("stars", Array.class, jsonData);
+        for(Star star : stars) {
+            star.getSprite().setTexture(pixelTexture);
         }
     }
 }

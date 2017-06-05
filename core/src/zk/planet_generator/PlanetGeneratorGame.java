@@ -9,6 +9,7 @@ import com.sun.org.apache.xpath.internal.operations.Or;
 import org.omg.CORBA.ORB;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
+import zk.planet_generator.scene_objects.Star;
 import zk.planet_generator.ui.EditorUI;
 import zk.planet_generator.ui.SceneUI;
 
@@ -44,26 +45,13 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
 
     private void loadSceneFromJson() {
         Json json = new Json();
+        json.addClassTag("Ring", Ring.class);
+        json.addClassTag("Star", Star.class);
         //String sceneJson = json.toJson(scene);
-        //System.out.println(json.prettyPrint(sceneJson));
+//        scene = new Scene();
+//        System.out.println(json.prettyPrint(scene));
 
-        String sceneJson = "{\n" +
-                "Rings: [\n" +
-                "\t{\n" +
-                "\t\tclass: Ring\n" +
-                "\t\tMinimumRadius: 77\n" +
-                "\t\tMaximumRadius: 112\n" +
-                "\t\tAngularVelocity: 25\n" +
-                "\t\tZTilt: -24\n" +
-                "\t\tXTilt: -12\n" +
-                "\t\tObjectCount: 273\n" +
-                "\t\tColorGroup: {\n" +
-                "\t\t\tcolors: [ -538331905, -1436915713 ]\n" +
-                "\t\t}\n" +
-                "\t}\n" +
-                "]\n" +
-                "}";
-        scene = json.fromJson(Scene.class, sceneJson);
+        scene = json.fromJson(Scene.class, Gdx.files.internal("TestScene.txt"));
     }
 
 

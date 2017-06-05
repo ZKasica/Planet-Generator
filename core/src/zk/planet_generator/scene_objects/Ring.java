@@ -135,34 +135,25 @@ public class Ring implements Json.Serializable {
 
     @Override
     public void write(Json json) {
-        json.writeValue("MinimumRadius", minRadius);
-        json.writeValue("MaximumRadius", maxRadius);
-        json.writeValue("AngularVelocity", angularVelocity);
-        json.writeValue("ZTilt", zTilt);
-        json.writeValue("XTilt", xTilt);
-        json.writeValue("ObjectCount", objects.size);
-        json.writeValue("ColorGroup", colors);
+        json.writeValue("minimumRadius", minRadius);
+        json.writeValue("maximumRadius", maxRadius);
+        json.writeValue("angularVelocity", angularVelocity);
+        json.writeValue("zTilt", zTilt);
+        json.writeValue("xTilt", xTilt);
+        json.writeValue("objectCount", objects.size);
+        json.writeValue("colorGroup", colors);
     }
 
     @Override
     public void read(Json json, JsonValue jsonData) {
-        minRadius = json.readValue("MinimumRadius", Float.class, jsonData);
-        maxRadius = json.readValue("MaximumRadius", Float.class, jsonData);
-        angularVelocity = json.readValue("AngularVelocity", Float.class, jsonData);
-        zTilt = json.readValue("ZTilt", Float.class, jsonData);
-        xTilt = json.readValue("XTilt", Float.class, jsonData);
-        colors = json.readValue("ColorGroup", ColorGroup.class, jsonData);
+        minRadius = json.readValue("minimumRadius", Float.class, jsonData);
+        maxRadius = json.readValue("maximumRadius", Float.class, jsonData);
+        angularVelocity = json.readValue("angularVelocity", Float.class, jsonData);
+        zTilt = json.readValue("zTilt", Float.class, jsonData);
+        xTilt = json.readValue("xTilt", Float.class, jsonData);
+        colors = json.readValue("colorGroup", ColorGroup.class, jsonData);
 
-        this.baseObjectCount = json.readValue("ObjectCount", Integer.class, jsonData);
+        this.baseObjectCount = json.readValue("objectCount", Integer.class, jsonData);
         objects = new Array<>(baseObjectCount);
-
-//        System.out.println("Loaded ring:");
-//        System.out.println("Minimum Radius: " + minRadius);
-//        System.out.println("Maximum Radius: " + maxRadius);
-//        System.out.println("Angular Velocity: " + angularVelocity);
-//        System.out.println("zTilt: " + zTilt);
-//        System.out.println("xTilt: " + xTilt);
-//        System.out.println("Colors: " + colors);
-//        System.out.println("Object Count: " + objectCount);
     }
 }
