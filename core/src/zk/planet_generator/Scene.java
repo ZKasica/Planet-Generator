@@ -59,8 +59,8 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         stars = new Array<>();
         moons = new Array<>();
         trajectories = new Array<>();
-        generateObjects();
-       // createEmptyScene();
+        //generateObjects();
+        createEmptyScene();
     }
 
     private void setupRendering() {
@@ -68,7 +68,6 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, BUFFER_WIDTH, BUFFER_HEIGHT);
-        gameCamera.zoom = 1f;
         gameCamera.translate(EDITOR_OFFSET, 0);
         gameCamera.update();
 
@@ -378,11 +377,26 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
     @Override
     public void write(Json json) {
+        addClassTags(json);
         json.writeValue("Rings", rings);
     }
 
     @Override
     public void read(Json json, JsonValue jsonData) {
+        addClassTags(json);
+        loadRings(json, jsonData);
+    }
 
+    private void addClassTags(Json json) {
+        json.addClassTag("Ring", Ring.class);
+    }
+
+    private void loadRings(Json json, JsonValue jsonData) {
+        rings = json.readValue("Rings", Array.class, jsonData);
+        for(Ring ring : rings) {
+            for(int i = 0; i < ring.getBaseObjectCount(); i++) {
+                objectGenerator.createObjectInRing(ring);
+            }
+        }
     }
 }

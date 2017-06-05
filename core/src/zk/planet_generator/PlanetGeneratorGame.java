@@ -1,8 +1,14 @@
 package zk.planet_generator;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.kotcrab.vis.ui.VisUI;
+import com.sun.org.apache.xpath.internal.operations.Or;
+import org.omg.CORBA.ORB;
+import zk.planet_generator.scene_objects.Orbiter;
+import zk.planet_generator.scene_objects.Ring;
 import zk.planet_generator.ui.EditorUI;
 import zk.planet_generator.ui.SceneUI;
 
@@ -22,7 +28,8 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
     public void create() {
         VisUI.load(VisUI.SkinScale.X2);
 
-        scene = new Scene();
+        //scene = new Scene();
+        loadSceneFromJson();
         editorUI = new EditorUI(this);
         sceneUI = new SceneUI(this);
 
@@ -33,11 +40,32 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         sceneUI.hide();
-
-        Json json = new Json();
-        System.out.println(json.prettyPrint(scene));
-        //System.out.println(json.toJson(scene));
     }
+
+    private void loadSceneFromJson() {
+        Json json = new Json();
+        //String sceneJson = json.toJson(scene);
+        //System.out.println(json.prettyPrint(sceneJson));
+
+        String sceneJson = "{\n" +
+                "Rings: [\n" +
+                "\t{\n" +
+                "\t\tclass: Ring\n" +
+                "\t\tMinimumRadius: 77\n" +
+                "\t\tMaximumRadius: 112\n" +
+                "\t\tAngularVelocity: 25\n" +
+                "\t\tZTilt: -24\n" +
+                "\t\tXTilt: -12\n" +
+                "\t\tObjectCount: 273\n" +
+                "\t\tColorGroup: {\n" +
+                "\t\t\tcolors: [ -538331905, -1436915713 ]\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "]\n" +
+                "}";
+        scene = json.fromJson(Scene.class, sceneJson);
+    }
+
 
     @Override
     public void render() {
