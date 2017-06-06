@@ -381,6 +381,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         json.writeValue("rings", rings);
         json.writeValue("stars", stars);
         json.writeValue("moons", moons);
+        json.writeValue("clouds", clouds);
     }
 
     @Override
@@ -388,6 +389,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         loadRings(json, jsonData);
         loadStars(json, jsonData);
         loadMoons(json, jsonData);
+        loadClouds(json, jsonData);
     }
 
 
@@ -412,6 +414,18 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         for(Orbiter moon : moons) {
             moon.setSprite(objectGenerator.createMoonSprite(moon.getColor(), moon.getSize()));
             addMoon(moon);
+        }
+    }
+
+    private void loadClouds(Json json, JsonValue jsonData) {
+        Array<Cloud> clouds = json.readValue("clouds", Array.class, new Array(), jsonData);
+        int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
+        for(Cloud cloud : clouds) {
+            for(int i = 0; i < cloud.getCloudObjects().size; i++) {
+                Orbiter cloudObject = cloud.getCloudObjects().get(i);
+                cloudObject.setSprite(objectGenerator.createMoonSprite(cloudColor, cloudObject.getSize()));
+            }
+            addCloud(cloud);
         }
     }
 }

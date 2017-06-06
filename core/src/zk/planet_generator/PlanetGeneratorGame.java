@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Json;
 import com.kotcrab.vis.ui.VisUI;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.omg.CORBA.ORB;
+import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
 import zk.planet_generator.scene_objects.Star;
@@ -48,6 +49,7 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         json.addClassTag("Ring", Ring.class);
         json.addClassTag("Star", Star.class);
         json.addClassTag("Orbiter", Orbiter.class);
+        json.addClassTag("Cloud", Cloud.class);
 
         //scene = new Scene();
         //System.out.println(json.prettyPrint(scene));
