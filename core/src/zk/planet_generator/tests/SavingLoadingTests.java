@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import zk.planet_generator.ColorGroup;
 import zk.planet_generator.Scene;
+import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
 import zk.planet_generator.scene_objects.Star;
@@ -124,5 +125,27 @@ public class SavingLoadingTests {
         assertEquals(120, loadMoon.getAngle());
         assertEquals(20, loadMoon.getSize());
         assertEquals(Color.rgba8888(Color.RED), loadMoon.getColor());
+    }
+
+    @Test
+    public void testCloud() {
+        Array<Orbiter> orbiters = new Array<>();
+        Orbiter.OrbiterBlueprint orbiterBlueprint = new Orbiter.OrbiterBlueprint();
+        orbiterBlueprint.angularVelocity = 70;
+        int cloudObjectsCount = 10;
+        for(int i = 0; i < cloudObjectsCount; i++) {
+            orbiters.add(new Orbiter(new Sprite(), orbiterBlueprint));
+        }
+
+        Cloud saveCloud = new Cloud(orbiters);
+
+        String cloudJson = json.toJson(saveCloud);
+        assertNotEquals("", cloudJson);
+
+        Cloud loadCloud = json.fromJson(Cloud.class, cloudJson);
+
+        assertNotEquals(null, loadCloud);
+        assertEquals(cloudObjectsCount, loadCloud.getCloudObjects().size);
+        assertEquals(70, loadCloud.getAngularVelocity());
     }
 }
