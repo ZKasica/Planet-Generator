@@ -92,10 +92,37 @@ public class SavingLoadingTests {
         Star loadStar = json.fromJson(Star.class, starJson);
 
         assertNotEquals(null, loadStar);
-        assertNotEquals(null, loadStar.getSprite());
         assertEquals(2, loadStar.getSprite().getWidth());
         assertEquals(2, loadStar.getSprite().getHeight());
         assertEquals(150, loadStar.getSprite().getX());
         assertEquals(100, loadStar.getSprite().getY());
+    }
+
+    @Test
+    public void testMoonJson() {
+        Orbiter.OrbiterBlueprint orbiterBlueprint = new Orbiter.OrbiterBlueprint();
+        orbiterBlueprint.angularVelocity = 50;
+        orbiterBlueprint.xTilt = -20;
+        orbiterBlueprint.zTilt = 35;
+        orbiterBlueprint.radius = 240;
+        orbiterBlueprint.angle = 120;
+
+        Sprite sprite = new Sprite();
+        sprite.setSize(20, 20);
+        Orbiter saveMoon = new Orbiter(sprite, orbiterBlueprint, Color.rgba8888(Color.RED));
+
+        String moonJson = json.toJson(saveMoon);
+        assertNotEquals("", moonJson);
+
+        Orbiter loadMoon = json.fromJson(Orbiter.class, moonJson);
+
+        assertNotEquals(null, loadMoon);
+        assertEquals(50, loadMoon.getAngularVelocity());
+        assertEquals(-20, loadMoon.getXTilt());
+        assertEquals(35, loadMoon.getZTilt());
+        assertEquals(240, loadMoon.getRadius());
+        assertEquals(120, loadMoon.getAngle());
+        assertEquals(20, loadMoon.getSize());
+        assertEquals(Color.rgba8888(Color.RED), loadMoon.getColor());
     }
 }

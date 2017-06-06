@@ -40,15 +40,15 @@ public class Orbiter extends SpaceObject {
         initializeMatrices();
     }
 
+    public Orbiter(Sprite sprite, OrbiterBlueprint blueprint, int color) {
+        this(sprite, blueprint);
+        this.color = color;
+    }
+
     private void initializeMatrices() {
         position = new Vector3();
         rotZ = new Matrix3().setToRotation(zTilt);
         rotX = new Matrix3().setToRotation(Vector3.X, xTilt);
-    }
-
-    public Orbiter(Sprite sprite, OrbiterBlueprint blueprint, int color) {
-        this(sprite, blueprint);
-        this.color = color;
     }
 
     @Override
@@ -105,6 +105,10 @@ public class Orbiter extends SpaceObject {
 
     public int getColor() {
         return color;
+    }
+
+    public float getAngle() {
+        return angle;
     }
 
     public static class OrbiterBlueprint {
