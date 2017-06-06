@@ -341,7 +341,7 @@ public class ObjectGenerator {
         return sprite;
     }
 
-    protected Sprite createSquare(int color, int size) {
+    public Sprite createSquare(int color, int size) {
         Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
         pixmap.setColor(color);
         pixmap.fillRectangle(0, 0, size, size);

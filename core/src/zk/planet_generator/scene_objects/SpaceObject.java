@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Serializable {
     private Sprite sprite;
     private int zPos;
+    private int size;
 
     protected SpaceObject() {
 
@@ -35,6 +36,10 @@ public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Seria
         this.sprite = sprite;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     @Override
     public int compareTo(SpaceObject other) {
         return zPos - other.zPos;
@@ -53,6 +58,6 @@ public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Seria
 
     @Override
     public void read(Json json, JsonValue jsonData) {
-
+        size = json.readValue("size", Integer.class, jsonData);
     }
 }

@@ -47,9 +47,10 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         Json json = new Json();
         json.addClassTag("Ring", Ring.class);
         json.addClassTag("Star", Star.class);
-        //String sceneJson = json.toJson(scene);
-//        scene = new Scene();
-//        System.out.println(json.prettyPrint(scene));
+        json.addClassTag("Orbiter", Orbiter.class);
+
+        //scene = new Scene();
+        //System.out.println(json.prettyPrint(scene));
 
         scene = json.fromJson(Scene.class, Gdx.files.internal("TestScene.txt"));
     }

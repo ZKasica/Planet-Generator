@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.*;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import zk.planet_generator.generators.NoiseGenerator;
 import zk.planet_generator.generators.ObjectGenerator;
 import zk.planet_generator.scene_objects.*;
@@ -379,17 +380,19 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     public void write(Json json) {
         json.writeValue("rings", rings);
         json.writeValue("stars", stars);
+        json.writeValue("moons", moons);
     }
 
     @Override
     public void read(Json json, JsonValue jsonData) {
         loadRings(json, jsonData);
         loadStars(json, jsonData);
+        loadMoons(json, jsonData);
     }
 
 
     private void loadRings(Json json, JsonValue jsonData) {
-        rings = json.readValue("rings", Array.class, jsonData);
+        rings = json.readValue("rings", Array.class, new Array(), jsonData);
         for(Ring ring : rings) {
             for(int i = 0; i < ring.getBaseObjectCount(); i++) {
                 objectGenerator.createObjectInRing(ring);
@@ -398,9 +401,17 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     private void loadStars(Json json, JsonValue jsonData) {
-        stars = json.readValue("stars", Array.class, jsonData);
+        stars = json.readValue("stars", Array.class, new Array(), jsonData);
         for(Star star : stars) {
             star.getSprite().setTexture(pixelTexture);
+        }
+    }
+
+    private void loadMoons(Json json, JsonValue jsonData) {
+        Array<Orbiter> moons = json.readValue("moons", Array.class, new Array(), jsonData);
+        for(Orbiter moon : moons) {
+            moon.setSprite(objectGenerator.createMoonSprite(moon.getColor(), moon.getSize()));
+            addMoon(moon);
         }
     }
 }

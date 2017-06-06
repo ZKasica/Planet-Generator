@@ -2,26 +2,14 @@
 rings: [
 	{
 		class: Ring
-		minimumRadius: 85
-		maximumRadius: 144
-		angularVelocity: 21
-		zTilt: -24
-		xTilt: -36
-		objectCount: 278
+		minimumRadius: 81.5
+		maximumRadius: 112.5
+		angularVelocity: -22
+		zTilt: -48
+		xTilt: -24
+		objectCount: 293
 		colorGroup: {
 			colors: [ -538331905, -1436915713 ]
-		}
-	}
-	{
-		class: Ring
-		minimumRadius: 149
-		maximumRadius: 186
-		angularVelocity: 16
-		zTilt: -24
-		xTilt: -36
-		objectCount: 273
-		colorGroup: {
-			colors: [ -1446858753, 509684479 ]
 		}
 	}
 ]
@@ -29,1160 +17,526 @@ stars: [
 	{
 		class: Star
 		size: 1
-		xPos: 438
-		yPos: 151
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 229
-		yPos: 323
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 209
-		yPos: 235
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 551
-		yPos: 237
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 562
+		xPos: 178
 		yPos: 145
 	}
 	{
 		class: Star
 		size: 1
-		xPos: 469
-		yPos: 115
+		xPos: 413
+		yPos: 274
 	}
 	{
 		class: Star
 		size: 1
-		xPos: 15
-		yPos: 210
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 506
-		yPos: 173
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 727
-		yPos: 322
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 475
-		yPos: 67
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 44
-		yPos: 27
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 649
-		yPos: 162
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 37
-		yPos: 197
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 117
-		yPos: 133
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 523
-		yPos: 95
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 700
-		yPos: 218
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 279
-		yPos: 43
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 518
-		yPos: 97
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 654
-		yPos: 146
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 362
-		yPos: 51
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 179
-		yPos: 23
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 324
-		yPos: 90
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 417
-		yPos: 359
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 343
-		yPos: 193
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 172
-		yPos: 96
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 538
-		yPos: 312
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 703
-		yPos: 82
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 312
-		yPos: 58
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 368
-		yPos: 342
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 139
-		yPos: 182
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 441
-		yPos: 121
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 278
-		yPos: 29
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 182
-		yPos: 334
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 80
-		yPos: 245
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 272
-		yPos: 344
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 398
-		yPos: 34
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 376
-		yPos: 225
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 349
-		yPos: 268
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 175
-		yPos: 118
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 220
-		yPos: 280
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 677
-		yPos: 244
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 419
-		yPos: 28
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 668
-		yPos: 126
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 723
-		yPos: 335
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 141
-		yPos: 43
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 375
-		yPos: 230
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 164
-		yPos: 99
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 208
-		yPos: 140
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 163
-		yPos: 268
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 642
-		yPos: 45
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 343
-		yPos: 120
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 520
-		yPos: 308
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 216
+		xPos: 264
 		yPos: 190
 	}
 	{
 		class: Star
 		size: 1
-		xPos: 682
-		yPos: 321
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 211
-		yPos: 107
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 293
-		yPos: 205
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 145
-		yPos: 109
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 519
-		yPos: 312
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 428
-		yPos: 346
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 216
-		yPos: 111
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 451
-		yPos: 323
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 382
-		yPos: 276
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 707
-		yPos: 286
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 598
-		yPos: 12
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 494
-		yPos: 265
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 19
-		yPos: 225
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 363
-		yPos: 67
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 599
-		yPos: 120
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 554
-		yPos: 324
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 197
-		yPos: 194
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 456
-		yPos: 42
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 121
-		yPos: 147
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 101
-		yPos: 124
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 535
-		yPos: 133
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 280
-		yPos: 111
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 670
-		yPos: 15
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 606
-		yPos: 144
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 38
-		yPos: 71
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 210
-		yPos: 19
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 38
-		yPos: 230
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 208
-		yPos: 199
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 431
-		yPos: 28
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 308
-		yPos: 119
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 457
-		yPos: 54
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 675
-		yPos: 58
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 392
-		yPos: 135
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 99
-		yPos: 111
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 165
-		yPos: 160
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 177
-		yPos: 237
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 354
-		yPos: 242
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 519
-		yPos: 67
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 163
-		yPos: 218
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 607
-		yPos: 46
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 95
-		yPos: 156
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 293
-		yPos: 155
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 270
-		yPos: 318
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 156
-		yPos: 289
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 124
-		yPos: 181
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 468
-		yPos: 45
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 107
-		yPos: 320
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 357
-		yPos: 58
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 267
-		yPos: 144
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 91
-		yPos: 321
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 518
-		yPos: 131
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 631
-		yPos: 342
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 570
-		yPos: 233
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 673
-		yPos: 94
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 526
-		yPos: 106
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 671
-		yPos: 242
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 607
-		yPos: 20
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 652
-		yPos: 357
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 479
-		yPos: 43
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 213
-		yPos: 84
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 585
-		yPos: 28
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 205
-		yPos: 92
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 121
-		yPos: 154
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 381
-		yPos: 29
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 34
-		yPos: 122
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 454
-		yPos: 115
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 12
-		yPos: 298
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 581
-		yPos: 108
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 14
-		yPos: 9
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 644
-		yPos: 20
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 559
-		yPos: 157
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 364
-		yPos: 78
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 145
-		yPos: 169
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 427
-		yPos: 305
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 78
-		yPos: 91
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 308
-		yPos: 341
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 50
-		yPos: 170
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 559
-		yPos: 276
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 258
-		yPos: 136
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 348
-		yPos: 276
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 555
-		yPos: 26
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 213
-		yPos: 46
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 331
-		yPos: 118
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 97
-		yPos: 4
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 295
-		yPos: 79
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 365
-		yPos: 143
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 378
-		yPos: 268
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 658
-		yPos: 177
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 414
-		yPos: 209
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 177
-		yPos: 261
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 451
-		yPos: 123
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 619
-		yPos: 225
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 163
-		yPos: 269
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 725
-		yPos: 297
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 64
-		yPos: 320
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 297
-		yPos: 268
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 513
-		yPos: 207
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 124
-		yPos: 6
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 502
-		yPos: 74
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 341
-		yPos: 66
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 665
-		yPos: 303
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 155
-		yPos: 78
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 547
-		yPos: 176
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 219
-		yPos: 80
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 16
-		yPos: 51
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 392
-		yPos: 178
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 691
-		yPos: 298
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 476
-		yPos: 147
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 35
-		yPos: 314
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 526
-		yPos: 22
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 66
-		yPos: 251
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 434
-		yPos: 21
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 86
-		yPos: 180
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 224
-		yPos: 136
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 114
-		yPos: 243
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 149
-		yPos: 166
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 209
-		yPos: 83
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 317
-		yPos: 14
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 23
-		yPos: 37
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 211
-		yPos: 327
-	}
-	{
-		class: Star
-		size: 2
-		xPos: 105
-		yPos: 161
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 590
-		yPos: 177
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 287
-		yPos: 51
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 739
-		yPos: 82
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 713
-		yPos: 159
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 364
-		yPos: 54
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 578
-		yPos: 348
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 530
-		yPos: 40
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 511
-		yPos: 164
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 177
-		yPos: 268
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 187
-		yPos: 122
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 371
-		yPos: 177
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 529
-		yPos: 316
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 412
-		yPos: 60
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 34
-		yPos: 263
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 574
-		yPos: 149
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 217
-		yPos: 165
-	}
-	{
-		class: Star
-		size: 1
-		xPos: 415
+		xPos: 61
 		yPos: 34
 	}
 	{
 		class: Star
 		size: 1
-		xPos: 11
-		yPos: 114
+		xPos: 295
+		yPos: 12
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 295
+		yPos: 360
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 679
+		yPos: 115
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 231
+		yPos: 278
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 504
+		yPos: 78
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 90
+		yPos: 155
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 299
+		yPos: 98
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 220
+		yPos: 69
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 403
+		yPos: 248
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 349
+		yPos: 117
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 121
+		yPos: 304
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 470
+		yPos: 26
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 298
+		yPos: 323
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 366
+		yPos: 68
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 688
+		yPos: 199
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 212
+		yPos: 277
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 697
+		yPos: 112
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 29
+		yPos: 16
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 600
+		yPos: 281
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 208
+		yPos: 321
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 382
+		yPos: 165
+	}
+	{
+		class: Star
+		size: 2
+		xPos: 203
+		yPos: 121
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 681
+		yPos: 10
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 17
+		yPos: 300
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 281
+		yPos: 171
 	}
 	{
 		class: Star
 		size: 1
 		xPos: 324
+		yPos: 223
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 711
+		yPos: 42
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 42
+		yPos: 92
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 462
+		yPos: 25
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 525
+		yPos: 329
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 137
+		yPos: 26
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 159
+		yPos: 13
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 198
+		yPos: 252
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 366
+		yPos: 247
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 570
+		yPos: 125
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 427
+		yPos: 203
+	}
+	{
+		class: Star
+		size: 2
+		xPos: 142
+		yPos: 15
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 662
+		yPos: 333
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 178
+		yPos: 219
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 380
+		yPos: 60
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 11
+		yPos: 191
+	}
+	{
+		class: Star
+		size: 2
+		xPos: 264
+		yPos: 75
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 281
+		yPos: 179
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 721
+		yPos: 116
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 207
+		yPos: 100
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 259
+		yPos: 336
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 8
+		yPos: 190
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 406
+		yPos: 112
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 567
+		yPos: 128
+	}
+	{
+		class: Star
+		size: 2
+		xPos: 457
+		yPos: 98
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 363
+		yPos: 248
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 595
+		yPos: 239
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 259
+		yPos: 53
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 121
+		yPos: 221
+	}
+	{
+		class: Star
+		size: 2
+		xPos: 430
+		yPos: 43
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 702
 		yPos: 118
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 710
+		yPos: 94
+	}
+	{
+		class: Star
+		size: 2
+		xPos: 190
+		yPos: 175
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 39
+		yPos: 119
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 165
+		yPos: 37
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 462
+		yPos: 223
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 274
+		yPos: 244
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 20
+		yPos: 37
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 186
+		yPos: 83
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 589
+		yPos: 328
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 205
+		yPos: 176
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 560
+		yPos: 267
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 81
+		yPos: 62
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 246
+		yPos: 235
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 499
+		yPos: 236
+	}
+	{
+		class: Star
+		size: 1
+		xPos: 237
+		yPos: 232
+	}
+	{
+		class: Star
+		size: 2
+		xPos: 726
+		yPos: 83
+	}
+]
+moons: [
+	{
+		class: Orbiter
+		size: 6
+		angularVelocity: -38
+		zTilt: -36
+		xTilt: -27
+		radius: 192
+		angle: 245
+		color: 1265468927
+		yOffset: 0
+	}
+	{
+		class: Orbiter
+		size: 6
+		angularVelocity: -24
+		zTilt: -32
+		xTilt: -27
+		radius: 247
+		angle: 37
+		color: -538331905
+		yOffset: 0
+	}
+	{
+		class: Orbiter
+		size: 6
+		angularVelocity: -55
+		zTilt: -33
+		xTilt: -33
+		radius: 185
+		angle: 88
+		color: -1331973377
+		yOffset: 0
+	}
+	{
+		class: Orbiter
+		size: 6
+		angularVelocity: -35
+		zTilt: -38
+		xTilt: -27
+		radius: 236
+		angle: 311
+		color: -538331905
+		yOffset: 0
+	}
+	{
+		class: Orbiter
+		size: 6
+		angularVelocity: -37
+		zTilt: -47
+		xTilt: -33
+		radius: 185
+		angle: 322
+		color: -1667514625
+		yOffset: 0
+	}
+	{
+		class: Orbiter
+		size: 6
+		angularVelocity: -17
+		zTilt: -37
+		xTilt: -33
+		radius: 207
+		angle: 333
+		color: -1331973377
+		yOffset: 0
 	}
 ]
 }
