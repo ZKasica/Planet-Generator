@@ -11,6 +11,8 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.kotcrab.vis.ui.widget.file.FileTypeFilter;
+import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import zk.planet_generator.PlanetGeneratorGame;
 import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
@@ -163,24 +165,31 @@ public class EditorUI extends GameUI {
 
         stage.addActor(editorWindow);
 
+        FileChooser.setDefaultPrefsName("planet_generator_prefs");
+
+        FileTypeFilter planetFileFilter = new FileTypeFilter(false);
+        planetFileFilter.addRule("Planet File (*.plt)", "plt");
+
         saveFileChooser = new FileChooser(FileChooser.Mode.SAVE);
         saveFileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
         saveFileChooser.setSize(1000, 600);
-        saveFileChooser.setListener(new FileChooserAdapter() {
+        saveFileChooser.setFileTypeFilter(planetFileFilter);
+        saveFileChooser.setListener(new SingleFileChooserListener() {
             @Override
-            public void selected(Array<FileHandle> files) {
-                game.saveScene(files.first().path());
+            protected void selected(FileHandle file) {
+                game.saveScene(file.path());
             }
         });
 
         loadFileChooser = new FileChooser(FileChooser.Mode.OPEN);
         loadFileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
         loadFileChooser.setSize(1000, 600);
-        loadFileChooser.setListener(new FileChooserAdapter() {
+        loadFileChooser.setFileTypeFilter(planetFileFilter);
+        loadFileChooser.setListener(new SingleFileChooserListener() {
             @Override
-            public void selected(Array<FileHandle> files) {
+            public void selected(FileHandle file) {
                 clearEditors();
-                game.loadScene(files.first().path());
+                game.loadScene(file.path());
                 updateScene();
                 updateToMatchScene();
             }
