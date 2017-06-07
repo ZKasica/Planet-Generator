@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.kotcrab.vis.ui.VisUI;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.omg.CORBA.ORB;
@@ -30,8 +31,8 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
     public void create() {
         VisUI.load(VisUI.SkinScale.X2);
 
-        //scene = new Scene();
-        loadSceneFromJson();
+        scene = new Scene();
+        //loadSceneFromJson();
         editorUI = new EditorUI(this);
         sceneUI = new SceneUI(this);
 
@@ -50,9 +51,6 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         json.addClassTag("Star", Star.class);
         json.addClassTag("Orbiter", Orbiter.class);
         json.addClassTag("Cloud", Cloud.class);
-
-        //scene = new Scene();
-        //System.out.println(json.prettyPrint(scene));
 
         scene = json.fromJson(Scene.class, Gdx.files.internal("TestScene.txt"));
     }
@@ -103,5 +101,15 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
 
     public void removeProcessor(InputProcessor inputProcessor) {
         inputMultiplexer.removeProcessor(inputProcessor);
+    }
+
+    public void saveScene(String path) {
+        Json json = new Json();
+        json.toJson(scene, Gdx.files.absolute(path));
+    }
+
+    public void loadScene(String path) {
+        Json json = new Json();
+        scene = json.fromJson(Scene.class, Gdx.files.absolute(path));
     }
 }

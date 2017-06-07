@@ -49,4 +49,8 @@ public abstract class GameUI {
     public Stage getStage() {
         return stage;
     }
+
+    protected void updateScene() {
+        scene = game.getScene();
+    }
 }

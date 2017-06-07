@@ -1,22 +1,19 @@
 package zk.planet_generator.tests;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import zk.planet_generator.ColorGroup;
-import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
 import zk.planet_generator.scene_objects.Star;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Created by zach on 6/5/17.
