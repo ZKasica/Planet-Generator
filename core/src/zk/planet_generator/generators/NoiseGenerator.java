@@ -1,5 +1,7 @@
 package zk.planet_generator.generators;
 
+import com.badlogic.gdx.math.MathUtils;
+
 import java.util.Random;
 
 /**
@@ -87,12 +89,11 @@ public class NoiseGenerator {
     }
 
     public static float[][] GenerateWhiteNoise(int width, int height) {
-        Random random = new Random(); //Seed to 0 for testing
         float[][] noise = new float[width][height];
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                noise[i][j] = (float) random.nextDouble() % 1;
+                noise[i][j] = (float) MathUtils.random.nextDouble() % 1;
             }
         }
 

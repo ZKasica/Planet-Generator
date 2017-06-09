@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.*;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import zk.planet_generator.generators.NoiseGenerator;
 import zk.planet_generator.generators.ObjectGenerator;
 import zk.planet_generator.scene_objects.*;
@@ -60,8 +59,6 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         stars = new Array<>();
         moons = new Array<>();
         trajectories = new Array<>();
-        //generateObjects();
-        createEmptyScene();
     }
 
     private void setupRendering() {
@@ -204,19 +201,16 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     private void createPlanet(int velDir) {
-        Sprite planet = generatePlanetSprite(1024);
+        Pixmap pixmap = generatePlanetPixmap(1024);
+        Sprite planet = new Sprite(new Texture(pixmap));
         int size = MathUtils.random(100, 148);
         planet.setSize(size, size);
         planet.setPosition(CENTER_X - planet.getWidth() / 2, CENTER_Y - planet.getHeight() / 2);
-        this.planet = new Planet(planet, velDir);
+        this.planet = new Planet(planet, pixmap, velDir);
         spaceObjects.add(this.planet);
     }
 
-    private Sprite generatePlanetSprite(int size) {
-        return new Sprite(generatePlanetTexture(size));
-    }
-
-    private Texture generatePlanetTexture(int size) {
+    private Pixmap generatePlanetPixmap(int size) {
         float[][] generated = NoiseGenerator.GenerateWhiteNoise(size, size);
         generated = NoiseGenerator.GeneratePerlinNoise(generated, 8);
 
@@ -237,10 +231,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
                 }
             }
         }
-
-        Texture planetTexture = new Texture(pixmap);
-        pixmap.dispose();
-        return planetTexture;
+        return pixmap;
     }
 
     public void clear() {
@@ -252,6 +243,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         clouds.clear();
         moons.clear();
         stars.clear();
+        planet.dispose();
     }
 
     private void takeScreenshot() {
@@ -378,6 +370,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
     @Override
     public void write(Json json) {
+        json.writeValue("planet", planet);
         json.writeValue("rings", rings);
         json.writeValue("stars", stars);
         json.writeValue("moons", moons);
@@ -386,6 +379,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
     @Override
     public void read(Json json, JsonValue jsonData) {
+        loadPlanet(json, jsonData);
         loadRings(json, jsonData);
         loadStars(json, jsonData);
         loadMoons(json, jsonData);
@@ -427,5 +421,42 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
             }
             addCloud(cloud);
         }
+    }
+
+    private void loadPlanet(Json json, JsonValue jsonData) {
+        planet = json.readValue("planet", Planet.class, jsonData);
+
+        Pixmap loadPixmap = new Pixmap(1024, 1024, Pixmap.Format.RGBA8888);
+        int index = 0;
+        for(int x = 0; x < 1024; x++) {
+            for (int y = 0; y < 1024; y++) {
+                int color = 0;
+                switch (planet.getTextureString().charAt(index)) {
+                    case 'd':
+                        color = Color.rgba8888(47f / 255f, 86f / 255f, 118f / 255f, 1f);
+                        break;
+
+                    case 'o':
+                        color = Color.rgba8888(62f / 255f, 120f / 255f, 160f / 255f, 1f);
+                        break;
+
+                    case 'l':
+                        color = Color.rgba8888(146f / 255f, 209f / 255f, 135f / 255f, 1f);
+                        break;
+                }
+
+                index++;
+
+                loadPixmap.setColor(color);
+                loadPixmap.drawPixel(x, y);
+            }
+        }
+
+        Sprite sprite = new Sprite(new Texture(loadPixmap));
+        sprite.setSize(planet.getSize(), planet.getSize());
+        sprite.setPosition(CENTER_X - planet.getSize() / 2, CENTER_Y - planet.getSize() / 2);
+        planet = new Planet(sprite, loadPixmap, 1);
+
+        spaceObjects.add(planet);
     }
 }
