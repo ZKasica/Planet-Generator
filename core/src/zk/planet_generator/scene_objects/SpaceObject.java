@@ -16,7 +16,10 @@ public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Seria
 
     public SpaceObject(Sprite sprite) {
         this.sprite = sprite;
-        this.size = (int)sprite.getWidth();
+
+        if(sprite != null) {
+            this.size = (int)sprite.getWidth();
+        }
     }
 
     public abstract void update(float delta);

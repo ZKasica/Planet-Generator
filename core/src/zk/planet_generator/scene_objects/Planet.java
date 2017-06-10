@@ -57,14 +57,6 @@ public class Planet extends SpaceObject implements Disposable {
         batch.setShader(null);
     }
 
-    public Pixmap getPixmap() {
-        return pixmap;
-    }
-
-    public void setPixmap(Pixmap pixmap) {
-        this.pixmap = pixmap;
-    }
-
     public float getWidthAtY(float y) {
         return (float) Math.sqrt(radius*radius - y*y);
     }
@@ -75,6 +67,10 @@ public class Planet extends SpaceObject implements Disposable {
 
     public String getTextureString() {
         return texture;
+    }
+
+    public void setDirection(float direction) {
+        this.direction = direction;
     }
 
     @Override

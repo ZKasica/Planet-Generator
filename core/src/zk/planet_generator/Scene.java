@@ -83,8 +83,10 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     public void createEmptyScene() {
+        int zDir = MathUtils.randomSign();
+        int velDir = MathUtils.randomSign();
         createPlanet(MathUtils.randomSign());
-        objectGenerator = new ObjectGenerator(this);
+        objectGenerator = new ObjectGenerator(this, velDir, zDir);
     }
 
     public void generateObjects() {
@@ -370,6 +372,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
     @Override
     public void write(Json json) {
+        json.writeValue("object_generator", objectGenerator);
         json.writeValue("planet", planet);
         json.writeValue("rings", rings);
         json.writeValue("stars", stars);
@@ -379,6 +382,9 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
     @Override
     public void read(Json json, JsonValue jsonData) {
+        objectGenerator = json.readValue("object_generator", ObjectGenerator.class, jsonData);
+        objectGenerator.setScene(this);
+
         loadPlanet(json, jsonData);
         loadRings(json, jsonData);
         loadStars(json, jsonData);
@@ -455,7 +461,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         Sprite sprite = new Sprite(new Texture(loadPixmap));
         sprite.setSize(planet.getSize(), planet.getSize());
         sprite.setPosition(CENTER_X - planet.getSize() / 2, CENTER_Y - planet.getSize() / 2);
-        planet = new Planet(sprite, loadPixmap, 1);
+        planet = new Planet(sprite, loadPixmap, objectGenerator.getVelDir());
 
         spaceObjects.add(planet);
     }
