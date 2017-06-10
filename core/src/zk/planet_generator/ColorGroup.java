@@ -17,4 +17,16 @@ public class ColorGroup {
     public int random() {
         return colors.random();
     }
+
+    @Override
+    public String toString() {
+        String str = "";
+        for(int i = 0; i < colors.size; i++) {
+            str += "0x" + Integer.toHexString(colors.get(i));
+            if(i != colors.size - 1) {
+                str += ", ";
+            }
+        }
+        return str;
+    }
 }

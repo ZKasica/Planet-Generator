@@ -56,7 +56,12 @@ public class CloudEditor extends ObjectEditor {
     public void setClouds(Array<Cloud> clouds) {
         this.clouds = new Array<>(clouds);
         count.setValue(this.clouds.size);
-        velocitySlider.setValue(this.clouds.first().getAngularVelocity());
+
+        if(this.clouds.size > 0) {
+            velocitySlider.setValue(this.clouds.first().getAngularVelocity());
+        } else {
+            velocitySlider.setValue(0);
+        }
     }
 
     @Override

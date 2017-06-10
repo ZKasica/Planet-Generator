@@ -6,23 +6,29 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import zk.planet_generator.ColorGroup;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.*;
 
-public class ObjectGenerator {
+public class ObjectGenerator implements Json.Serializable{
     private Scene scene;
     private int velDir;
     private int zDir;
 
-    public ObjectGenerator(Scene scene) {
-        this(scene, 0, 0);
+    private ObjectGenerator() {
+
     }
 
     public ObjectGenerator(Scene scene, int velDir, int zDir) {
         this.scene = scene;
         this.velDir = velDir;
         this.zDir = zDir;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
     }
 
     public Array<Orbiter> createMoons() {
@@ -341,12 +347,32 @@ public class ObjectGenerator {
         return sprite;
     }
 
-    protected Sprite createSquare(int color, int size) {
+    public Sprite createSquare(int color, int size) {
         Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
         pixmap.setColor(color);
         pixmap.fillRectangle(0, 0, size, size);
         Sprite sprite = new Sprite(new Texture(pixmap));
         pixmap.dispose();
         return sprite;
+    }
+
+    public int getVelDir() {
+        return velDir;
+    }
+
+    public int getZDir() {
+        return zDir;
+    }
+
+    @Override
+    public void write(Json json) {
+        json.writeValue("vel-dir", velDir);
+        json.writeValue("z-dir", zDir);
+    }
+
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+        velDir = json.readValue("vel-dir", Integer.class, jsonData);
+        zDir = json.readValue("z-dir", Integer.class, jsonData);
     }
 }

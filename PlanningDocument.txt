@@ -2,8 +2,8 @@ Scene Editor
     [] Next to sliders, put text boxes which hold the value that can be changed by the slider or by entering text
 
 To Do List:
-    [] Save scene
-    [] Load scene
+    [X] Save scene
+    [X] Load scene
     [X] Random scene
     [X] Close and open editor
     [X] Show moon trajectory

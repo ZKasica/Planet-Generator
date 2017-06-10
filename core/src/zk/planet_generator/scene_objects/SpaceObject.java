@@ -2,13 +2,24 @@ package zk.planet_generator.scene_objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 
-public abstract class SpaceObject implements Comparable<SpaceObject> {
+public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Serializable {
     private Sprite sprite;
     private int zPos;
+    private int size;
+
+    protected SpaceObject() {
+
+    }
 
     public SpaceObject(Sprite sprite) {
         this.sprite = sprite;
+
+        if(sprite != null) {
+            this.size = (int)sprite.getWidth();
+        }
     }
 
     public abstract void update(float delta);
@@ -29,6 +40,10 @@ public abstract class SpaceObject implements Comparable<SpaceObject> {
         this.sprite = sprite;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     @Override
     public int compareTo(SpaceObject other) {
         return zPos - other.zPos;
@@ -38,5 +53,15 @@ public abstract class SpaceObject implements Comparable<SpaceObject> {
     public boolean equals(Object o) {
         SpaceObject other = (SpaceObject) o;
         return sprite.equals(other.sprite) && zPos == other.zPos;
+    }
+
+    @Override
+    public void write(Json json) {
+        json.writeValue("size", sprite.getWidth());
+    }
+
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+        size = json.readValue("size", Integer.class, jsonData);
     }
 }

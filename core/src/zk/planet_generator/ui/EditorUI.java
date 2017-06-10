@@ -1,5 +1,6 @@
 package zk.planet_generator.ui;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -8,6 +9,10 @@ import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
+import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.kotcrab.vis.ui.widget.file.FileTypeFilter;
+import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import zk.planet_generator.PlanetGeneratorGame;
 import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
@@ -21,8 +26,10 @@ public class EditorUI extends GameUI {
     private Ring previousRing; // TODO: Handle previousRing when the outer ring is deleted
 
     private VisDialog resetDialog;
-
     private Table objectEditorTable;
+
+    private FileChooser saveFileChooser;
+    private FileChooser loadFileChooser;
 
     public EditorUI(PlanetGeneratorGame game) {
         super(game);
@@ -47,7 +54,7 @@ public class EditorUI extends GameUI {
 
         // Load Scene Button
         VisTextButton loadButton = new VisTextButton("Load");
-        saveButton.addListener(new ClickListener() {
+        loadButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 loadClicked();
@@ -157,6 +164,36 @@ public class EditorUI extends GameUI {
         editorWindow.setMovable(false);
 
         stage.addActor(editorWindow);
+
+        FileChooser.setDefaultPrefsName("planet_generator_prefs");
+
+        FileTypeFilter planetFileFilter = new FileTypeFilter(false);
+        planetFileFilter.addRule("Planet File (*.plt)", "plt");
+
+        saveFileChooser = new FileChooser(FileChooser.Mode.SAVE);
+        saveFileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
+        saveFileChooser.setSize(1000, 600);
+        saveFileChooser.setFileTypeFilter(planetFileFilter);
+        saveFileChooser.setListener(new SingleFileChooserListener() {
+            @Override
+            protected void selected(FileHandle file) {
+                game.saveScene(file.path());
+            }
+        });
+
+        loadFileChooser = new FileChooser(FileChooser.Mode.OPEN);
+        loadFileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
+        loadFileChooser.setSize(1000, 600);
+        loadFileChooser.setFileTypeFilter(planetFileFilter);
+        loadFileChooser.setListener(new SingleFileChooserListener() {
+            @Override
+            public void selected(FileHandle file) {
+                clearEditors();
+                game.loadScene(file.path());
+                updateScene();
+                updateToMatchScene();
+            }
+        });
     }
 
     private void addObjectEditor(ObjectEditor objectEditor) {
@@ -165,11 +202,11 @@ public class EditorUI extends GameUI {
     }
 
     private void saveClicked() {
-
+        getStage().addActor(saveFileChooser.fadeIn());
     }
 
     private void loadClicked() {
-
+        getStage().addActor(loadFileChooser.fadeIn());
     }
 
     private void createStarsClicked() {
@@ -229,12 +266,16 @@ public class EditorUI extends GameUI {
         }
     }
 
-    private void resetScene() {
+    private void clearEditors() {
         int objectEditorCount = objectEditors.size;
         for(int i = 0; i < objectEditorCount; i++) {
             ObjectEditor editor = objectEditors.pop();
             editor.delete();
         }
+    }
+
+    private void resetScene() {
+        clearEditors();
 
         starEditor = null;
         cloudEditor = null;

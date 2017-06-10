@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import zk.planet_generator.ColorGroup;
 
+import java.awt.*;
+
 public class Ring implements Json.Serializable {
     private Array<Orbiter> objects;
     private ColorGroup colors;
@@ -15,6 +17,11 @@ public class Ring implements Json.Serializable {
     private float angularVelocity;
     private float zTilt;
     private float xTilt;
+    private int baseObjectCount;
+
+    private Ring() {
+
+    }
 
     public Ring(Array<Orbiter> objects) {
         this.objects = objects;
@@ -110,6 +117,10 @@ public class Ring implements Json.Serializable {
         return objects.size;
     }
 
+    public int getBaseObjectCount() {
+        return baseObjectCount;
+    }
+
     public ColorGroup getColors() {
         return colors;
     }
@@ -124,15 +135,25 @@ public class Ring implements Json.Serializable {
 
     @Override
     public void write(Json json) {
-        json.writeValue("MinimumRadius", minRadius);
-        json.writeValue("MaximumRadius", maxRadius);
-        json.writeValue("AngularVelocity", angularVelocity);
-        json.writeValue("ZTilt", zTilt);
-        json.writeValue("XTilt", xTilt);
+        json.writeValue("minimumRadius", minRadius);
+        json.writeValue("maximumRadius", maxRadius);
+        json.writeValue("angularVelocity", angularVelocity);
+        json.writeValue("zTilt", zTilt);
+        json.writeValue("xTilt", xTilt);
+        json.writeValue("objectCount", objects.size);
+        json.writeValue("colorGroup", colors);
     }
 
     @Override
     public void read(Json json, JsonValue jsonData) {
+        minRadius = json.readValue("minimumRadius", Float.class, jsonData);
+        maxRadius = json.readValue("maximumRadius", Float.class, jsonData);
+        angularVelocity = json.readValue("angularVelocity", Float.class, jsonData);
+        zTilt = json.readValue("zTilt", Float.class, jsonData);
+        xTilt = json.readValue("xTilt", Float.class, jsonData);
+        colors = json.readValue("colorGroup", ColorGroup.class, jsonData);
 
+        this.baseObjectCount = json.readValue("objectCount", Integer.class, jsonData);
+        objects = new Array<>(baseObjectCount);
     }
 }
