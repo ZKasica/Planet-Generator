@@ -33,10 +33,6 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         sceneUI.hide();
-
-        Json json = new Json();
-        System.out.println(json.prettyPrint(scene));
-        //System.out.println(json.toJson(scene));
     }
 
     @Override
