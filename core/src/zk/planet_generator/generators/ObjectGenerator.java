@@ -360,6 +360,10 @@ public class ObjectGenerator implements Json.Serializable{
         return velDir;
     }
 
+    public int getZDir() {
+        return zDir;
+    }
+
     @Override
     public void write(Json json) {
         json.writeValue("vel-dir", velDir);

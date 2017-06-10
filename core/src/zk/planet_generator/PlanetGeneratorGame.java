@@ -31,7 +31,6 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
 
         scene = new Scene();
         scene.createEmptyScene();
-        //loadSceneFromJson();
         editorUI = new EditorUI(this);
         sceneUI = new SceneUI(this);
 
@@ -43,18 +42,6 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
 
         sceneUI.hide();
     }
-
-    private void loadSceneFromJson() {
-        Json json = new Json();
-        json.addClassTag("Ring", Ring.class);
-        json.addClassTag("Star", Star.class);
-        json.addClassTag("Orbiter", Orbiter.class);
-        json.addClassTag("Cloud", Cloud.class);
-        json.addClassTag("Planet", Planet.class);
-
-        scene = json.fromJson(Scene.class, Gdx.files.internal("TestScene.txt"));
-    }
-
 
     @Override
     public void render() {

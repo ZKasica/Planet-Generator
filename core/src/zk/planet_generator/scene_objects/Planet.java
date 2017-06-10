@@ -73,6 +73,10 @@ public class Planet extends SpaceObject implements Disposable {
         this.direction = direction;
     }
 
+    public float getRadius() {
+        return radius;
+    }
+
     @Override
     public void dispose() {
         planetShader.dispose();
@@ -104,5 +108,6 @@ public class Planet extends SpaceObject implements Disposable {
         super.read(json, jsonData);
         texture = json.readValue("texture", String.class, jsonData);
         getSprite().setSize(getSize(), getSize());
+        radius = getSprite().getWidth()/2;
     }
 }

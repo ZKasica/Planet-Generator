@@ -1,16 +1,16 @@
 package zk.planet_generator.tests;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import zk.planet_generator.ColorGroup;
-import zk.planet_generator.scene_objects.Cloud;
-import zk.planet_generator.scene_objects.Orbiter;
-import zk.planet_generator.scene_objects.Ring;
-import zk.planet_generator.scene_objects.Star;
+import zk.planet_generator.generators.ObjectGenerator;
+import zk.planet_generator.scene_objects.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -125,7 +125,7 @@ public class SavingLoadingTests {
     }
 
     @Test
-    public void testCloud() {
+    public void testCloudJson() {
         Array<Orbiter> orbiters = new Array<>();
         Orbiter.OrbiterBlueprint orbiterBlueprint = new Orbiter.OrbiterBlueprint();
         orbiterBlueprint.angularVelocity = 70;
@@ -144,5 +144,45 @@ public class SavingLoadingTests {
         assertNotEquals(null, loadCloud);
         assertEquals(cloudObjectsCount, loadCloud.getCloudObjects().size);
         assertEquals(70, loadCloud.getAngularVelocity());
+    }
+
+    @Test
+    public void testPlanetJson() {
+        // Can't test this at the moment because libGDX is not loaded fully
+
+//        Pixmap pixmap = new Pixmap(3, 3, Pixmap.Format.RGBA8888);
+//        for(int i = 0; i < pixmap.getWidth(); i++) {
+//            for(int j = 0; j < pixmap.getHeight(); j++) {
+//                pixmap.setColor(Color.rgba8888(47f / 255f, 86f / 255f, 118f / 255f, 1f));
+//                pixmap.drawPixel(i, j);
+//            }
+//        }
+//
+//        Sprite sprite = new Sprite(new Texture(pixmap));
+//        sprite.setSize(100, 100);
+//        int planetDirection = 1;
+//        Planet planet = new Planet(sprite, pixmap, 1);
+//
+//        String planetJson = json.toJson(planet);
+//        assertNotEquals("", planetJson);
+//
+//        Planet loadPlanet = json.fromJson(Planet.class, planetJson);
+//
+//        assertNotEquals(null, loadPlanet);
+//        assertEquals(pixmap.getWidth() * pixmap.getHeight(), planet.getTextureString().length());
+//        assertEquals(sprite.getWidth(), planet.getSprite().getWidth());
+//        assertEquals(sprite.getHeight(), planet.getSprite().getHeight());
+//        assertEquals(sprite.getWidth() / 2, planet.getRadius());
+    }
+
+    @Test
+    public void testObjectGeneratorJson() {
+        ObjectGenerator objectGenerator = new ObjectGenerator(null, 1, 1);
+
+        String objectGeneratorJson = json.toJson(objectGenerator);
+
+        ObjectGenerator loadObjectGenerator = json.fromJson(ObjectGenerator.class, objectGeneratorJson);
+        assertEquals(1, loadObjectGenerator.getVelDir());
+        assertEquals(1, loadObjectGenerator.getZDir());
     }
 }
