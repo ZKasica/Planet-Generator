@@ -1,5 +1,6 @@
 package zk.planet_generator.scene_objects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
@@ -17,8 +18,6 @@ public class Orbiter extends SpaceObject {
     private float radius;
     private float yOffset;
 
-    private int color;
-
     private Vector3 position;
     private Matrix3 rotZ;
     private Matrix3 rotX;
@@ -28,6 +27,10 @@ public class Orbiter extends SpaceObject {
     }
 
     public Orbiter(Sprite sprite, OrbiterBlueprint blueprint) {
+        this(sprite, blueprint, Color.rgba8888(Color.WHITE));
+    }
+
+    public Orbiter(Sprite sprite, OrbiterBlueprint blueprint, int color) {
         super(sprite);
 
         this.angularVelocity = blueprint.angularVelocity;
@@ -37,12 +40,9 @@ public class Orbiter extends SpaceObject {
         this.radius = blueprint.radius;
         this.yOffset = blueprint.yOffset;
 
-        initializeMatrices();
-    }
+        setColor(color);
 
-    public Orbiter(Sprite sprite, OrbiterBlueprint blueprint, int color) {
-        this(sprite, blueprint);
-        this.color = color;
+        initializeMatrices();
     }
 
     private void initializeMatrices() {
@@ -103,10 +103,6 @@ public class Orbiter extends SpaceObject {
         return getSprite().getWidth();
     }
 
-    public int getColor() {
-        return color;
-    }
-
     public float getAngle() {
         return angle;
     }
@@ -129,7 +125,6 @@ public class Orbiter extends SpaceObject {
         json.writeValue("xTilt", xTilt);
         json.writeValue("radius", radius);
         json.writeValue("angle", angle);
-        json.writeValue("color", color);
         json.writeValue("yOffset", yOffset);
     }
 
@@ -141,7 +136,6 @@ public class Orbiter extends SpaceObject {
         xTilt = json.readValue("xTilt", Float.class, jsonData);
         radius = json.readValue("radius", Float.class, jsonData);
         angle = json.readValue("angle", Float.class, jsonData);
-        color = json.readValue("color", Integer.class, jsonData);
         yOffset = json.readValue("yOffset", Float.class, jsonData);
         initializeMatrices();
     }

@@ -1,5 +1,6 @@
 package zk.planet_generator.scene_objects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Json;
@@ -9,13 +10,22 @@ public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Seria
     private Sprite sprite;
     private int zPos;
     private int size;
+    private int color;
+    private Color drawColor;
 
     protected SpaceObject() {
 
     }
 
     public SpaceObject(Sprite sprite) {
+        this(sprite, Color.rgba8888(Color.WHITE));
+    }
+
+    public SpaceObject(Sprite sprite, int color) {
         this.sprite = sprite;
+        this.color = color;
+
+        drawColor = new Color(color);
 
         if(sprite != null) {
             this.size = (int)sprite.getWidth();
@@ -25,6 +35,7 @@ public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Seria
     public abstract void update(float delta);
 
     public void render(SpriteBatch batch) {
+        sprite.setColor(drawColor);
         sprite.draw(batch);
     }
 
@@ -44,6 +55,15 @@ public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Seria
         return size;
     }
 
+    public void setColor(int color) {
+        this.color = color;
+        this.drawColor = new Color(color);
+    }
+
+    public int getColor() {
+        return color;
+    }
+
     @Override
     public int compareTo(SpaceObject other) {
         return zPos - other.zPos;
@@ -58,10 +78,13 @@ public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Seria
     @Override
     public void write(Json json) {
         json.writeValue("size", sprite.getWidth());
+        json.writeValue("color", color);
     }
 
     @Override
     public void read(Json json, JsonValue jsonData) {
         size = json.readValue("size", Integer.class, jsonData);
+        color = json.readValue("color", Integer.class, jsonData);
+        drawColor = new Color(color);
     }
 }

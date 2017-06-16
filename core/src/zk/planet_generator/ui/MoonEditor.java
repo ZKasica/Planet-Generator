@@ -71,8 +71,9 @@ public class MoonEditor extends ObjectEditor {
         createSlider("Size", 5, 32, null, moon.getSpriteSize(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Sprite sprite = scene.getObjectGenerator().createMoonSprite(moon.getColor(), (int) ((VisSlider) actor).getValue());
+                Sprite sprite = scene.getObjectGenerator().createMoonSprite((int) ((VisSlider) actor).getValue());
                 moon.setSprite(sprite);
+                moon.setColor(moon.getColor());
             }
         });
     }

@@ -56,7 +56,7 @@ public class ObjectGenerator implements Json.Serializable{
             moonBlueprint.radius = MathUtils.random(100, 250);
 
             int color = colors.random();
-            Orbiter moon = new Orbiter(createMoonSprite(color, MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint, color);
+            Orbiter moon = new Orbiter(createMoonSprite(MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint, color);
             moons.add(moon);
         }
 
@@ -89,7 +89,7 @@ public class ObjectGenerator implements Json.Serializable{
         moonBlueprint.radius = MathUtils.random(100, 250);
 
         int color = colors.random();
-        Orbiter moon = new Orbiter(createMoonSprite(color, MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint, color);
+        Orbiter moon = new Orbiter(createMoonSprite(MathUtils.random(16, 20) / (moonCount / 3 + 1)), moonBlueprint, color);
 
         scene.addMoon(moon);
 
@@ -138,9 +138,9 @@ public class ObjectGenerator implements Json.Serializable{
 
             Orbiter ringObject = null;
             if (MathUtils.randomBoolean(0.9f)) {
-                ringObject = new Orbiter(createMoonSprite(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
+                ringObject = new Orbiter(createMoonSprite(MathUtils.random(4, 6)), blueprint, colorGroup.random());
             } else {
-                ringObject = new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint);
+                ringObject = new Orbiter(createSquare(MathUtils.random(4, 5)), blueprint, colorGroup.random());
             }
             ringObjects.add(ringObject);
         }
@@ -174,9 +174,9 @@ public class ObjectGenerator implements Json.Serializable{
 
             Orbiter ringObject = null;
             if (MathUtils.randomBoolean(0.9f)) {
-                ringObject = new Orbiter(createMoonSprite(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
+                ringObject = new Orbiter(createMoonSprite(MathUtils.random(4, 6)), blueprint, colorGroup.random());
             } else {
-                ringObject = new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint);
+                ringObject = new Orbiter(createSquare(MathUtils.random(4, 5)), blueprint, colorGroup.random());
             }
             ringObjects2.add(ringObject);
         }
@@ -225,9 +225,9 @@ public class ObjectGenerator implements Json.Serializable{
 
             Orbiter ringObject = null;
             if (MathUtils.randomBoolean(0.9f)) {
-                ringObject = new Orbiter(createMoonSprite(colorGroup.random(), MathUtils.random(4, 6)), blueprint);
+                ringObject = new Orbiter(createMoonSprite(MathUtils.random(4, 6)), blueprint, colorGroup.random());
             } else {
-                ringObject = new Orbiter(createSquare(colorGroup.random(), MathUtils.random(4, 5)), blueprint);
+                ringObject = new Orbiter(createSquare(MathUtils.random(4, 5)), blueprint, colorGroup.random());
             }
             ringObjects.add(ringObject);
         }
@@ -247,7 +247,7 @@ public class ObjectGenerator implements Json.Serializable{
         blueprint.xTilt = ring.getXTilt();
         blueprint.angularVelocity = ring.getAngularVelocity();
 
-        Orbiter ringObject = new Orbiter(createMoonSprite(ring.getColors().random(), MathUtils.random(4, 6)), blueprint);
+        Orbiter ringObject = new Orbiter(createMoonSprite(MathUtils.random(4, 6)), blueprint, ring.getColors().random());
         //scene.addSpaceObject(ringObject);
         scene.addRingObject(ringObject);
         ring.addObject(ringObject);
@@ -276,7 +276,7 @@ public class ObjectGenerator implements Json.Serializable{
                 cloudBlueprint.yOffset = yOffset + MathUtils.random(-5, 5);
                 cloudBlueprint.radius = scene.getPlanet().getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
-                Orbiter cloud = new Orbiter(createMoonSprite(cloudColor, MathUtils.random(5, 8)), cloudBlueprint);
+                Orbiter cloud = new Orbiter(createMoonSprite(MathUtils.random(5, 8)), cloudBlueprint, cloudColor);
                 cloudObjects.add(cloud);
             }
 
@@ -307,7 +307,7 @@ public class ObjectGenerator implements Json.Serializable{
             cloudBlueprint.yOffset = yOffset + MathUtils.random(-5, 5);
             cloudBlueprint.radius = scene.getPlanet().getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
-            Orbiter cloud = new Orbiter(createMoonSprite(cloudColor, MathUtils.random(5, 8)), cloudBlueprint);
+            Orbiter cloud = new Orbiter(createMoonSprite(MathUtils.random(5, 8)), cloudBlueprint, cloudColor);
             cloudObjects.add(cloud);
         }
 
@@ -343,18 +343,20 @@ public class ObjectGenerator implements Json.Serializable{
         return stars;
     }
 
-    public Sprite createMoonSprite(int color, int size) {
+    public Sprite createMoonSprite(int size) {
         Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
-        pixmap.setColor(color);
+//        pixmap.setColor(color);
+        pixmap.setColor(Color.WHITE);
         pixmap.fillCircle(pixmap.getWidth()/2, pixmap.getHeight()/2, size / 2 - 1);
         Sprite sprite = new Sprite(new Texture(pixmap));
         pixmap.dispose();
         return sprite;
     }
 
-    public Sprite createSquare(int color, int size) {
+    public Sprite createSquare(int size) {
         Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
-        pixmap.setColor(color);
+//        pixmap.setColor(color);
+        pixmap.setColor(Color.WHITE);
         pixmap.fillRectangle(0, 0, size, size);
         Sprite sprite = new Sprite(new Texture(pixmap));
         pixmap.dispose();
