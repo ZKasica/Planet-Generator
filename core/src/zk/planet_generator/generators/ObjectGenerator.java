@@ -16,6 +16,7 @@ public class ObjectGenerator implements Json.Serializable{
     private Scene scene;
     private int velDir;
     private int zDir;
+    private Ring previousRing;
 
     private ObjectGenerator() {
 
@@ -146,6 +147,7 @@ public class ObjectGenerator implements Json.Serializable{
 
         //scene.addSpaceObjects(ringObjects);
         Ring ring = new Ring(ringObjects, colorGroup, minimumRadius, maximumRadius);
+        previousRing = ring;
         rings.add(ring);
         scene.addRing(ring);
 
@@ -181,12 +183,13 @@ public class ObjectGenerator implements Json.Serializable{
         //scene.addSpaceObjects(ringObjects2);
         Ring ring2 = new Ring(ringObjects2, colorGroup, minimumRadius, maximumRadius);
         rings.add(ring2);
+        previousRing = ring2;
         scene.addRing(ring2);
 
         return rings;
     }
 
-    public Ring createRing(Ring previousRing) {
+    public Ring createRing(Ring ring) {
         Array<ColorGroup> colors = new Array<ColorGroup>();
 
         colors.add(new ColorGroup()
@@ -201,12 +204,14 @@ public class ObjectGenerator implements Json.Serializable{
                 .add(Color.rgba8888(169f / 255f, 194f / 255f, 175f / 255f, 1f))
                 .add(Color.rgba8888(30f / 255f, 97f / 255f, 42f / 255f, 1f)));
 
-        int objectCount = previousRing == null ? MathUtils.random(200, 300) : MathUtils.random(200, 350);
+        Ring innerRing = ring != null ? ring : previousRing;
+
+        int objectCount = innerRing == null ? MathUtils.random(200, 300) : MathUtils.random(200, 350);
         float angularVelocity = 0;
-        float zTilt = previousRing == null ? 30 : previousRing.getZTilt();
-        float xTilt = previousRing == null ? -20 : previousRing.getXTilt();
-        float minimumRadius = previousRing == null ? scene.getPlanet().getWidthAtY(0) + 25 : previousRing.getMaximumRadius() + 5;
-        float maximumRadius = previousRing == null ? minimumRadius + MathUtils.random(20, 60) : minimumRadius + MathUtils.random(20, 50);
+        float zTilt = innerRing == null ? 30 : innerRing.getZTilt();
+        float xTilt = innerRing == null ? -20 : innerRing.getXTilt();
+        float minimumRadius = innerRing == null ? scene.getPlanet().getWidthAtY(0) + 25 : innerRing.getMaximumRadius() + 5;
+        float maximumRadius = innerRing == null ? minimumRadius + MathUtils.random(20, 60) : minimumRadius + MathUtils.random(20, 50);
         ColorGroup colorGroup = colors.random();
 
         Array<Orbiter> ringObjects = new Array<>();
@@ -229,9 +234,9 @@ public class ObjectGenerator implements Json.Serializable{
 
         //scene.addSpaceObjects(ringObjects);
 
-        Ring ring = new Ring(ringObjects, colorGroup, minimumRadius, maximumRadius);
-        scene.addRing(ring);
-        return ring;
+        Ring newRing = new Ring(ringObjects, colorGroup, minimumRadius, maximumRadius);
+        scene.addRing(newRing);
+        return newRing;
     }
 
     public Orbiter createObjectInRing(Ring ring) {
