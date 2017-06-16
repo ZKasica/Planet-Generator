@@ -25,8 +25,6 @@ public abstract class ObjectEditor extends Table {
     public ObjectEditor(Scene scene, String objectName) {
         this.scene = scene;
 
-        debug();
-
         top = new Table();
         top.add(new VisLabel(objectName)).expandX().pad(0, 20, 0, 20);
 

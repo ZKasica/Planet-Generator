@@ -1,5 +1,7 @@
 package zk.planet_generator.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -16,14 +18,17 @@ public class SceneUI extends GameUI {
         Table topButtonBar = new Table();
         topButtonBar.setFillParent(true);
 
-        VisTextButton saveButton = new VisTextButton("Show Editor");
-        saveButton.addListener(new ClickListener() {
+        VisTextButton showEditorButton = new VisTextButton("Show Editor");
+        showEditorButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 showEditorClicked();
             }
         });
-        topButtonBar.top().left().add(saveButton).pad(7);
+        topButtonBar.top().left().add(showEditorButton).pad(7);
+
+        Table bottomButtonBar = new Table();
+        bottomButtonBar.setFillParent(true);
 
         stage.addActor(topButtonBar);
     }
