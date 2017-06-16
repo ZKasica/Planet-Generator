@@ -31,7 +31,7 @@ public class Orbiter extends SpaceObject {
     }
 
     public Orbiter(Sprite sprite, OrbiterBlueprint blueprint, int color) {
-        super(sprite);
+        super(sprite, color);
 
         this.angularVelocity = blueprint.angularVelocity;
         this.zTilt = blueprint.zTilt;
@@ -40,7 +40,7 @@ public class Orbiter extends SpaceObject {
         this.radius = blueprint.radius;
         this.yOffset = blueprint.yOffset;
 
-        setColor(color);
+//        setColor(color);
 
         initializeMatrices();
     }

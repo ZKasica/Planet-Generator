@@ -254,10 +254,8 @@ public class ObjectGenerator implements Json.Serializable{
         return ringObject;
     }
 
-    public Array<Cloud> createClouds() {
+    public Array<Cloud> createClouds(int color) {
         Array<Cloud> clouds = new Array<>();
-
-        int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
 
         int cloudCount = MathUtils.random(10, 40);
         int velocity = MathUtils.random(15, 30);
@@ -276,7 +274,7 @@ public class ObjectGenerator implements Json.Serializable{
                 cloudBlueprint.yOffset = yOffset + MathUtils.random(-5, 5);
                 cloudBlueprint.radius = scene.getPlanet().getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
-                Orbiter cloud = new Orbiter(createMoonSprite(MathUtils.random(5, 8)), cloudBlueprint, cloudColor);
+                Orbiter cloud = new Orbiter(createMoonSprite(MathUtils.random(5, 8)), cloudBlueprint, color);
                 cloudObjects.add(cloud);
             }
 
@@ -290,9 +288,7 @@ public class ObjectGenerator implements Json.Serializable{
         return clouds;
     }
 
-    public Cloud createCloud(float velocity) {
-        int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
-
+    public Cloud createCloud(float velocity, Color color) {
         int clusterCount = MathUtils.random(6, 40);
         int yOffset = MathUtils.random(-56, 56);
         int angle = MathUtils.random(0, 360);
@@ -307,7 +303,7 @@ public class ObjectGenerator implements Json.Serializable{
             cloudBlueprint.yOffset = yOffset + MathUtils.random(-5, 5);
             cloudBlueprint.radius = scene.getPlanet().getMinimumCloudRadiusAtY(cloudBlueprint.yOffset) + MathUtils.random(0, 6);
 
-            Orbiter cloud = new Orbiter(createMoonSprite(MathUtils.random(5, 8)), cloudBlueprint, cloudColor);
+            Orbiter cloud = new Orbiter(createMoonSprite(MathUtils.random(5, 8)), cloudBlueprint, Color.rgba8888(color));
             cloudObjects.add(cloud);
         }
 

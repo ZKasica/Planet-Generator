@@ -1,5 +1,6 @@
 package zk.planet_generator.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisSlider;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Trajectory;
@@ -76,6 +78,20 @@ public class MoonEditor extends ObjectEditor {
                 moon.setColor(moon.getColor());
             }
         });
+
+        createColorButton("Edit Color", moon.getDrawColor(), new ColorPickerAdapter() {
+            @Override
+            public void changed(Color newColor) {
+                moon.setColor(Color.rgba8888(newColor));
+            }
+
+            @Override
+            public void finished(Color newColor) {
+                moon.setColor(Color.rgba8888(newColor));
+            }
+        });
+
+        addBottomBar();
     }
 
     @Override

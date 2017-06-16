@@ -1,8 +1,10 @@
 package zk.planet_generator.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisSlider;
+import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
@@ -86,6 +88,32 @@ public class RingEditor extends ObjectEditor {
                 }
             }
         });
+
+        createColorButton("Edit Color 1", new Color(ring.getColors().at(0)), new ColorPickerAdapter() {
+            @Override
+            public void changed(Color newColor) {
+                ring.setColor(0, Color.rgba8888(newColor));
+            }
+
+            @Override
+            public void finished(Color newColor) {
+                ring.setColor(0, Color.rgba8888(newColor));
+            }
+        });
+
+        createColorButton("Edit Color 2", new Color(ring.getColors().at(1)), new ColorPickerAdapter() {
+            @Override
+            public void changed(Color newColor) {
+                ring.setColor(1, Color.rgba8888(newColor));
+            }
+
+            @Override
+            public void finished(Color newColor) {
+                ring.setColor(1, Color.rgba8888(newColor));
+            }
+        });
+
+        addBottomBar();
     }
 
     @Override

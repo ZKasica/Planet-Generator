@@ -102,7 +102,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         while(rings.size == 0) {
             objectGenerator.createRings();
         }
-        objectGenerator.createClouds();
+        objectGenerator.createClouds(Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f));
         objectGenerator.createStars();
     }
 

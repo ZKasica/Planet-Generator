@@ -64,6 +64,10 @@ public abstract class SpaceObject implements Comparable<SpaceObject>, Json.Seria
         return color;
     }
 
+    public Color getDrawColor() {
+        return drawColor;
+    }
+
     @Override
     public int compareTo(SpaceObject other) {
         return zPos - other.zPos;

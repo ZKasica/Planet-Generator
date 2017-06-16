@@ -1,11 +1,13 @@
 package zk.planet_generator.scene_objects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 
 public class Cloud implements Json.Serializable {
     private Array<Orbiter> cloudObjects;
+    private int color;
 
     private Cloud() {
 
@@ -13,6 +15,7 @@ public class Cloud implements Json.Serializable {
 
     public Cloud(Array<Orbiter> cloudObjects) {
         this.cloudObjects = cloudObjects;
+        color = cloudObjects.first().getColor();
     }
 
     public Array<Orbiter> getCloudObjects() {
@@ -21,6 +24,17 @@ public class Cloud implements Json.Serializable {
 
     public float getAngularVelocity() {
         return cloudObjects.first().getAngularVelocity();
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+        for(Orbiter cloudObj : cloudObjects) {
+            cloudObj.setColor(color);
+        }
     }
 
     @Override

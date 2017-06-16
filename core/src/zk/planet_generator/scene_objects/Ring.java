@@ -113,6 +113,15 @@ public class Ring implements Json.Serializable {
         }
     }
 
+    public void setColor(int index, int color) {
+        for(Orbiter ringObj : objects) {
+            if(ringObj.getColor() == colors.at(index)) {
+                ringObj.setColor(color);
+            }
+        }
+        colors.set(index, color);
+    }
+
     public int getObjectCount() {
         return objects.size;
     }

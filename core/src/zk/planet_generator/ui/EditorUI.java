@@ -1,6 +1,7 @@
 package zk.planet_generator.ui;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -242,7 +243,7 @@ public class EditorUI extends GameUI {
             cloudEditor.deleteObjects();
         }
 
-        Array<Cloud> clouds = scene.getObjectGenerator().createClouds();
+        Array<Cloud> clouds = scene.getObjectGenerator().createClouds(Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f));
         cloudEditor.setClouds(clouds);
     }
 

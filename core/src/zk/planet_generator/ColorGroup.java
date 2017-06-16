@@ -9,6 +9,14 @@ public class ColorGroup {
         colors = new Array<Integer>();
     }
 
+    public int at(int index) {
+        return colors.get(index);
+    }
+
+    public void set(int index, int newColor) {
+        colors.set(index, newColor);
+    }
+
     public ColorGroup add(int color) {
         colors.add(color);
         return this;

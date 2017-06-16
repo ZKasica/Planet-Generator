@@ -1,9 +1,11 @@
 package zk.planet_generator.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisSlider;
+import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter;
 import zk.planet_generator.Scene;
 import zk.planet_generator.scene_objects.Cloud;
 
@@ -11,12 +13,15 @@ public class CloudEditor extends ObjectEditor {
     private Array<Cloud> clouds;
     private VisSlider count;
     private VisSlider velocitySlider;
+    private Color color;
 
     private float velocity;
 
     public CloudEditor(Scene scene, String objectName) {
         super(scene, objectName);
         float[] zeroSnap = new float[]{0};
+
+        color = new Color(245f / 255f, 245f / 255f, 213f / 255f, 1f);
 
         count = createSlider("Count", 0, 100, null, 0, new ChangeListener() {
             @Override
@@ -26,7 +31,7 @@ public class CloudEditor extends ObjectEditor {
                 if(count > clouds.size) {
                     int amountToAdd = count - clouds.size;
                     for(int i = 0; i < amountToAdd; i++) {
-                        Cloud cloud = scene.getObjectGenerator().createCloud(velocity);
+                        Cloud cloud = scene.getObjectGenerator().createCloud(velocity, color);
                         clouds.add(cloud);
                     }
                 } else {
@@ -51,6 +56,26 @@ public class CloudEditor extends ObjectEditor {
                 }
             }
         });
+
+        createColorButton("Edit Color", color, new ColorPickerAdapter() {
+            @Override
+            public void changed(Color newColor) {
+                color = newColor;
+                for(Cloud cloud : clouds) {
+                    cloud.setColor(Color.rgba8888(color));
+                }
+            }
+
+            @Override
+            public void finished(Color newColor) {
+                color = newColor;
+                for(Cloud cloud : clouds) {
+                    cloud.setColor(Color.rgba8888(color));
+                }
+            }
+        });
+
+        addBottomBar();
     }
 
     public void setClouds(Array<Cloud> clouds) {
