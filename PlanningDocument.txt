@@ -1,6 +1,3 @@
-Scene Editor
-    [] Next to sliders, put text boxes which hold the value that can be changed by the slider or by entering text
-
 To Do List:
     [X] Save scene
     [X] Load scene
@@ -10,26 +7,12 @@ To Do List:
 
     *** Use VisUI Color Picker for selecting color ***
     [] Change background color
-    [] Change moon color
-    [] Change ring colors
-        [] List of possible colors for the ring
-    [] Change cloud colors
+    [X] Change moon color
+    [X] Change ring colors
+    [X] Change cloud colors
     [] Change star colors
 
     [] Planet customization ** (Would probably involve recreating the planet texture)
         [] Change planet layer colors
         [] Change height of planet layers
         [] ??? Add additional planet layers
-
-Bugs
-    [X] Can't add more clouds once you add them and then delete them
-            Fix 1: Always have a cloud slider that goes down to zero, can do the same for stars
-            Fix 2: Use the code that the StarEditor did
-
-Other ideas:
-    [] Use VisUI TabbedPane to organize moons, rings, etc
-    [] Add tooltips to parts of the UI
-
-    [] Make it event based so that instead of calling a method in the scene class or ui class when an object is created or destroyed,
-          an event is sent instead?
-

@@ -22,8 +22,9 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     public static final int EDITOR_OFFSET = 100;
     public static final int STAR_EDITOR_OFFSET = 15;
     public static final float TRANSITION_DURATION = 0.7f;
-
     public static final Texture pixelTexture = new Texture(Gdx.files.internal("pixel.png"));
+
+    public static Color backgroundColor = new Color(30f / 255f, 25f / 255f, 35f / 255f, 1);
 
     private OrthographicCamera gameCamera;
     private OrthographicCamera starCamera;
@@ -177,7 +178,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     private void drawObjects() {
         pixelBuffer.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(30f / 255f, 25f / 255f, 35f / 255f, 1);
+        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1);
 
         batch.begin();
         batch.setProjectionMatrix(starCamera.combined);
