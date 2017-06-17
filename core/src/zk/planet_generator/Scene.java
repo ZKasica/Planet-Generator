@@ -114,23 +114,8 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
                 Gdx.app.exit();
                 return true;
 
-            case Input.Keys.E:
-                shouldSpeedUpTime = true;
-                return true;
-
             case Input.Keys.F12:
                 takeScreenshot();
-                return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        switch(keycode) {
-            case Input.Keys.E:
-                shouldSpeedUpTime = false;
                 return true;
         }
 
