@@ -30,7 +30,6 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         VisUI.load(VisUI.SkinScale.X2);
 
         scene = new Scene();
-        scene.createEmptyScene();
         editorUI = new EditorUI(this);
         sceneUI = new SceneUI(this);
 

@@ -10,11 +10,11 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 public class PixelBuffer extends FrameBuffer {
     private TextureRegion pixelBufferRegion;
 
-    public PixelBuffer() {
-        super(Pixmap.Format.RGBA8888, Scene.BUFFER_WIDTH, Scene.BUFFER_HEIGHT, false);
+    public PixelBuffer(int width, int height) {
+        super(Pixmap.Format.RGBA8888, width, height, false);
         getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        pixelBufferRegion = new TextureRegion(getColorBufferTexture(), 0, 0, Scene.BUFFER_WIDTH, Scene.BUFFER_HEIGHT);
+        pixelBufferRegion = new TextureRegion(getColorBufferTexture(), 0, 0, width, height);
         pixelBufferRegion.flip(false, true);
     }
 

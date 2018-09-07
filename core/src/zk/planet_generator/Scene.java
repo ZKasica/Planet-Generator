@@ -60,6 +60,8 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         stars = new Array<>();
         moons = new Array<>();
         trajectories = new Array<>();
+
+        createEmptyScene();
     }
 
     private void setupRendering() {
@@ -80,7 +82,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         screenCamera.update();
 
         batch = new SpriteBatch();
-        pixelBuffer = new PixelBuffer();
+        pixelBuffer = new PixelBuffer(BUFFER_WIDTH, BUFFER_HEIGHT);
     }
 
     public void createEmptyScene() {
